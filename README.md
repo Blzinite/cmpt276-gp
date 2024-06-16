@@ -4,6 +4,7 @@ Project Group 1
 
 GitHub
 https://github.com/Blzinite/cmpt276-gp
+
 Abstract
 SchedulEx is a web application designed to streamline and automate the process of exam scheduling for educational institutions. By utilizing user-friendly interfaces, SchedulEx aims to enhance the efficiency of scheduling exams, reducing the manual workload on school staff and ensuring a more organized and timely arrangement of exam timetables. The application hopes to improve current scheduling methods by allowing instructors to select and prioritize their preferred exam dates, enabling admins to create, edit, and finalize exam schedules, and notifying invigilators of their assignments. Additionally, SchedulEx integrates with Gmail API to notify via email. The target audience includes school staff, instructors, and exam invigilators, with distinct interfaces and functionalities tailored to their specific needs. The project scope encompasses multiple key features, including account management, calendar visualization, and a prioritization algorithm to balance scheduling preferences. SchedulEx is poised to significantly improve the exam scheduling process, making it more efficient and less cumbersome for all involved parties.
 
@@ -37,27 +38,30 @@ What is the scope of your project?
 - Does this project have many individual features or one main feature (a possibility with many subproblems)? These are the ‘epics’ of your project.
   - Epic: Login and Account Levels, eg (only admin level accounts can create new accounts for other people or allow sign up, and admin can approve sign ups)
   - Epic: Account level designates features, instructor to post requests, admin to manage and invigilators to accept. All three should have the ability to see the schedule
-    ■ Instructor Interface
+    - Instructor Interface
       View Calendar
       Submit Preferred Times for exam
       Check Assigned Exam Time
-    ■ Admin Interface
+    - Admin Interface
       Modify calendar(create, read, update and delete)
       Approve new accounts, create new accounts
       Review schedule (possibly edit schedule?)
       Finalize Exam schedule
-    ■ Invigilator Interface
+    - Invigilator Interface
       View Calendar
       Mark days(or hours??) as unavailable
       Accept/reject exam assignments
   - Epic: Prioritize choices (Have a few very unhappy instructors by prioritizing first choices or [have everyone equally unhappy by prioritizing later choices])
-    ■ R&D of priority Algorithm
+    - R&D of priority Algorithm
   - Epic: Calendar Visual(Monthly/Weekly/?Yearly? Probably not needed)
-    ■ Monthly to show all exams on which days
-    ■ Weekly shows a detailed timetable
+    - Monthly to show all exams on which days
+    - Weekly shows a detailed timetable
 What are some sample stories/scenarios? For example, as a regular user of your site, what types of things can I do?  These are the ‘stories’ of your project.
+
   See ■’s above ^^
+
 You may choose to start creating some UI mockups on paper.
   “On it” -Blz
+
 Be honest, is the amount of work required in this proposal enough for five group members
   -Yes.
