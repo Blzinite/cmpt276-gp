@@ -2,8 +2,6 @@ package com.example.SchedulEx.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "Exams")
 public class Exam {
@@ -13,12 +11,12 @@ public class Exam {
     private Long requestId;
     private String assignedRooms; //list of rooms separated by comma
     private String invigilators; //list of invigilators separated by comma
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Long startTime;
+    private Long endTime;
 
     public Exam() {}
     public Exam(int examId, Long requestId, String assignedRooms, String invigilators,
-                LocalDateTime startTime, LocalDateTime endTime) {
+                Long startTime, Long endTime) {
         this.examId = examId;
         this.requestId = requestId;
         this.assignedRooms = assignedRooms;
@@ -50,16 +48,16 @@ public class Exam {
     public void setInvigilators(String invigilators) {
         this.invigilators = invigilators;
     }
-    public LocalDateTime getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
-    public LocalDateTime getEndTime() {
+    public Long getEndTime() {
         return endTime;
     }
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
 }

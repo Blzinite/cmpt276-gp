@@ -2,9 +2,6 @@ package com.example.SchedulEx.models;
 
 import jakarta.persistence.*;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "ExamRequests")
 public class ExamRequest {
@@ -14,14 +11,14 @@ public class ExamRequest {
     private String courseName;
     private int numberOfRooms;
     private int numberOfInvigilators;
-    private Duration duration;
-    private LocalDateTime firstDate;
-    private LocalDateTime secondDate;
-    private LocalDateTime thirdDate;
+    private Long duration; //duration in ms
+    private Long firstDate; //unix timestamp
+    private Long secondDate; //unix timestamp
+    private Long thirdDate; //unix timestamp
 
     public ExamRequest() {}
-    public ExamRequest(String courseName, int numberOfRooms, Duration duration,
-                       LocalDateTime firstDate, LocalDateTime secondDate, LocalDateTime thirdDate) {
+    public ExamRequest(String courseName, int numberOfRooms, Long duration,
+                       Long firstDate, Long secondDate, Long thirdDate) {
         this.courseName = courseName;
         this.numberOfRooms = numberOfRooms;
         this.duration = duration;
@@ -53,28 +50,28 @@ public class ExamRequest {
     public void setNumberOfInvigilators(int numberOfInvigilators) {
         this.numberOfInvigilators = numberOfInvigilators;
     }
-    public Duration getDuration() {
+    public Long getDuration() {
         return duration;
     }
-    public void setDuration(Duration duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
-    public LocalDateTime getFirstDate() {
+    public Long getFirstDate() {
         return firstDate;
     }
-    public void setFirstDate(LocalDateTime firstDate) {
+    public void setFirstDate(Long firstDate) {
         this.firstDate = firstDate;
     }
-    public LocalDateTime getSecondDate() {
+    public Long getSecondDate() {
         return secondDate;
     }
-    public void setSecondDate(LocalDateTime secondDate) {
+    public void setSecondDate(Long secondDate) {
         this.secondDate = secondDate;
     }
-    public LocalDateTime getThirdDate() {
+    public Long getThirdDate() {
         return thirdDate;
     }
-    public void setThirdDate(LocalDateTime thirdDate) {
+    public void setThirdDate(Long thirdDate) {
         this.thirdDate = thirdDate;
     }
 }
