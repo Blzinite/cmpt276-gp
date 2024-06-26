@@ -20,8 +20,7 @@ public class ExamController {
 
     public String addExam(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
         //TODO: validate user
-        //TODO: actually add an exam
-        examRepository.save(new Exam());
+        //TODO: call db
         response.setStatus(HttpServletResponse.SC_CREATED);
         return "success";
     }
