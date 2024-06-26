@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week Calendar</title>
+    <link rel="stylesheet" href="weekCalendar.css">
+
+</head>
+<body>
+    <button id="lastWeek" onclick="lastWeek()"></button>
+    <h1>Week Calendar</h1>
+    <button id="nextWeek" onclick="nextWeek()"></button>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Sun.<br><span id="day0"></span></th>
+                <Th>Mon.<br><span id="day1"></span></Th>
+                <th>Tues.<br><span id="day2"></span></th>
+                <th>Wed.<br><span id="day3"></span></th>
+                <th>Thurs.<br><span id="day4"></span></th>
+                <th>Fri.<br><span id="day5"></span></th>
+                <th>Sat.<br><span id="day6"></span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>8am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>9am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>10am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>11am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>12pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>1pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>2pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>3pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>4pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>5pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>6pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>7pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        let startDay = new Date();
+
+        let year = startDay.getFullYear();
+        let month = startDay.getMonth();
+        let dayOfMonth = startDay.getDate();
+        let dayOfWeek = startDay.getDay();
+
+        function leapYear(y){
+            return (
+            (y % 4 == 0 && y % 100 != 0 && y % 400 != 0) ||
+            (y % 100 == 0 && y % 400 == 0)
+            );
+        }
+
+        let daysOfMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+        function days(m, y){
+            if (leapYear(y) && m == 1){
+                return 29;
+            }
+            return daysOfMonth[m];
+        }
+
+        let j = dayOfWeek;
+        for (let i = 0; i < 30; i++){
+            day = dayOfMonth + i;
+            if (day > days(month)){
+                day = day - days(month);
+            }
+            document.getElementById("day"+ j).innerHTML = day;
+            j++;
+            if (j > 6){
+                j - 7;
+            }
+        }
+
+        let currentSat = dayOfMonth + (6 - dayOfWeek);
+        function lastWeek(){
+            return currentSat -= 7;
+        }
+
+        // document.getElementsByID("lastWeek").addEventListener("click", lastWeek);
+
+        function nextWeek(){
+            return currentSat += 7;
+        }
+
+        // document.getElementByID("nextWeek").addEventListener("click", nextWeek);
+    </script>
+</body>
+</html>
