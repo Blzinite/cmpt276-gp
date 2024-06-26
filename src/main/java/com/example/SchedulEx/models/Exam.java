@@ -11,13 +11,12 @@ public class Exam {
     private Long requestId;
     private String assignedRooms; //list of rooms separated by comma
     private String invigilators; //list of invigilators separated by comma
-    private Long startTime;
-    private Long endTime;
+    private Long startTime; //unix timestamp
+    private Long endTime; //unix timestamp
 
     public Exam() {}
-    public Exam(int examId, Long requestId, String assignedRooms, String invigilators,
+    public Exam(Long requestId, String assignedRooms, String invigilators,
                 Long startTime, Long endTime) {
-        this.examId = examId;
         this.requestId = requestId;
         this.assignedRooms = assignedRooms;
         this.invigilators = invigilators;
