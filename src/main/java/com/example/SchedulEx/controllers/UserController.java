@@ -99,7 +99,6 @@ public class UserController {
         }
         if (toFind.isEmpty()) {
             //TODO: Error Handling (User Not Found)
-            model.addAttribute("error", "Invalid email");
             return "redirect:login/error";
         }
         User user = toFind.get();
@@ -111,7 +110,6 @@ public class UserController {
         }
         if (!matches) {
             //TODO: Error Handling (Incorrect Password)
-            model.addAttribute("error", "Invalid password");
             return "redirect:login/error";
         }
         //TODO: login the user
