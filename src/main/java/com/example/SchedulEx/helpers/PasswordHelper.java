@@ -1,4 +1,4 @@
-package com.example.SchedulEx.models;
+package com.example.SchedulEx.helpers;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

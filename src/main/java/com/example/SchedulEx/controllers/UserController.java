@@ -1,7 +1,7 @@
 package com.example.SchedulEx.controllers;
 
 import com.example.SchedulEx.models.AccessLevel;
-import com.example.SchedulEx.models.PasswordHelper;
+import com.example.SchedulEx.helpers.PasswordHelper;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.models.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;

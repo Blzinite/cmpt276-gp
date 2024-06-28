@@ -1,5 +1,6 @@
 package com.example.SchedulEx.models;
 
+import com.example.SchedulEx.helpers.PasswordHelper;
 import jakarta.persistence.*;
 
 
