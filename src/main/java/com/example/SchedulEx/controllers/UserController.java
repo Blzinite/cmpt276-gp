@@ -23,6 +23,7 @@ public class UserController {
     private UserRepository userRepo;
 
     //TODO: resolve mappings
+    //TODO: better error handling
 
     @GetMapping("/user/all")
     public String getAllUsers(Model model, HttpSession session){
@@ -58,6 +59,7 @@ public class UserController {
             toAdd = new User(params.get("email"), params.get("password"), params.get("firstname"),
                     params.get("lastname"), params.get("accesslevel"));
         } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
         userRepo.save(toAdd);
