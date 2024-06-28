@@ -14,6 +14,7 @@ public class User {
     //TODO: password encoding
 
     private String password;
+    private byte[] salt;
     private String firstName;
     private String lastName;
     private int accessLevel;
@@ -25,17 +26,19 @@ public class User {
     private String exams;
 
     public User() {}
-    public User(String email, String password, String firstName, String lastName, String accessLevel) {
+    public User(String email, String password, String firstName, String lastName, String accessLevel) throws Exception {
         this.email = email;
-        this.password = password;
+        this.salt = PasswordHelper.generateSalt();
+        this.password = PasswordHelper.encryptPassword(password, this.salt);
         this.firstName = firstName;
         this.lastName = lastName;
         this.accessLevel = AccessLevel.parse(accessLevel);
         this.exams = "";
     }
-    public User(String email, String password, String firstName, String lastName, String accessLevel, String exams) {
+    public User(String email, String password, String firstName, String lastName, String accessLevel, String exams) throws Exception {
         this.email = email;
-        this.password = password;
+        this.salt = PasswordHelper.generateSalt();
+        this.password = PasswordHelper.encryptPassword(password, this.salt);
         this.firstName = firstName;
         this.lastName = lastName;
         this.accessLevel = AccessLevel.parse(accessLevel);
@@ -56,8 +59,14 @@ public class User {
     public String getPassword() {
         return password;
     }
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws Exception {
+        this.password = PasswordHelper.encryptPassword(password, this.salt);
+    }
+    public byte[] getSalt() {
+        return salt;
+    }
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
     public String getFirstName() {
         return firstName;

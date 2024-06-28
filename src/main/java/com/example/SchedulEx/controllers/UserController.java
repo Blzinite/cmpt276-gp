@@ -49,12 +49,19 @@ public class UserController {
 //            return "homepage"; //how did we get here?
 //        }
         //only admin can add users
-        userRepo.save(new User(params.get("email"), params.get("password"), params.get("firstname"), params.get("lastname"), params.get("accesslevel")));
+        User toAdd;
+        try {
+            toAdd = new User(params.get("email"), params.get("password"), params.get("firstname"),
+                    params.get("lastname"), params.get("accesslevel"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        userRepo.save(toAdd);
         return "redirect:all";
     }
 
     @PostMapping("/user/update")
-    public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
+    public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) throws Exception {
         User requester = (User) session.getAttribute("user");
         if(requester == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
