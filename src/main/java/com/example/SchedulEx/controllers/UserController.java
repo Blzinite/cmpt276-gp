@@ -1,6 +1,7 @@
 package com.example.SchedulEx.controllers;
 
 import com.example.SchedulEx.models.AccessLevel;
+import com.example.SchedulEx.models.PasswordHelper;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.models.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,9 @@ public class UserController {
         List<User> users = userRepo.findAll();
         model.addAttribute("users", users);
         User curr = (User) session.getAttribute("user");
+        if(curr == null){
+            return "redirect:/login";
+        }
         model.addAttribute("current", curr);
         return "allUsers";
     }
@@ -90,24 +94,48 @@ public class UserController {
         String email = params.get("email");
         String password = params.get("password");
         Optional<User> toFind = userRepo.findByEmail(email);
-        if(toFind.isEmpty()) {
+        if (session.getAttribute("user") != null) {
+            return "redirect:logout";
+        }
+        if (toFind.isEmpty()) {
             //TODO: Error Handling (User Not Found)
-            return "redirect:false";
+            model.addAttribute("error", "Invalid email");
+            return "redirect:login/error";
         }
         User user = toFind.get();
-        if(!password.equals(user.getPassword())) {
+        boolean matches;
+        try {
+            matches = PasswordHelper.verifyPassword(password, user.getPassword(), user.getSalt());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (!matches) {
             //TODO: Error Handling (Incorrect Password)
-            return "redirect:false";
+            model.addAttribute("error", "Invalid password");
+            return "redirect:login/error";
         }
         //TODO: login the user
         session.setAttribute("user", user);
         model.addAttribute("user", user);
         response.setStatus(HttpServletResponse.SC_OK);
-        return switch(user.getAccessLevel()){
+        return switch (user.getAccessLevel()) {
             case AccessLevel.ADMIN -> "redirect:all";
             case AccessLevel.PROFESSOR -> "redirect:all";
             case AccessLevel.INVIGILATOR -> "redirect:all";
             default -> null;
         };
     }
+
+    @GetMapping("/user/login/error")
+    public String loginError(Model model){
+        model.addAttribute("error", "Invalid email or password");
+        return "login";
+    }
+
+    @GetMapping("/user/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/login";
+    }
+
 }
