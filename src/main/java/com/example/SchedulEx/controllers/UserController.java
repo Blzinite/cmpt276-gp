@@ -42,7 +42,12 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/user/add")
+    @GetMapping("/user/add")
+    public String getAddUser(Model model){
+        return "addUser";
+    }
+
+    @PostMapping("/user/add/new")
     public String addUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
 //        User requester = (User) session.getAttribute("user");
 //        if(requester == null) {

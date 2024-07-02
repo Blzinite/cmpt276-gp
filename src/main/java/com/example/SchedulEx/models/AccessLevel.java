@@ -6,7 +6,7 @@ public class AccessLevel {
     public static final int INVIGILATOR = 603;
 
     public static int parse(String accessLevel) {
-        return switch (accessLevel) {
+        return switch (accessLevel.toLowerCase()) {
             case "admin" -> ADMIN;
             case "professor" -> PROFESSOR;
             case "invigilator" -> INVIGILATOR;
