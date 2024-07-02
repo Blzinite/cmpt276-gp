@@ -24,6 +24,7 @@ public class UserController {
 
     //TODO: resolve mappings
     //TODO: better error handling
+    //TODO: resolve redirects
 
     @GetMapping("/user/all")
     public String getAllUsers(Model model, HttpSession session){
@@ -31,7 +32,7 @@ public class UserController {
         model.addAttribute("users", users);
         User curr = (User) session.getAttribute("user");
         if(curr == null){
-            return "redirect:/login";
+            return "login";
         }
         model.addAttribute("current", curr);
         return "allUsers";
@@ -47,6 +48,15 @@ public class UserController {
         return "addUser";
     }
 
+
+    //POST should include:
+    //User Email - named "email"
+    //User Password - temporarily named "password"
+    //Password will be randomly generated in production
+    //User First Name - named "firstname"
+    //User Surname - named "lastname"
+    //User Account Type - named "accesslevel"
+    //Upon success a new user will be created in the db
     @PostMapping("/user/add/new")
     public String addUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
 //        User requester = (User) session.getAttribute("user");
@@ -74,12 +84,21 @@ public class UserController {
         return "redirect:all";
     }
 
+    //POST should include
+    //New Email - named "email"
+    //New Password - named "password"
+    //New First Name - named "firstname"
+    //New Surname - named "lastname"
+    //New Access Level - named "accesslevel"
+    //Form validation should be done on FE
+    //Upon success "toEdit" will be updated in the db
+    //Upon success redirect the user to wherever they need to go
     @PostMapping("/user/update")
     public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) throws Exception {
         User requester = (User) session.getAttribute("user");
         if(requester == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "redirect: /login";
+            return "redirect:/login";
         }
         User toEdit = userRepo.findById(Integer.parseInt(params.get("id"))).get();
         boolean selfEdit = toEdit.getUid() == requester.getUid();
@@ -99,6 +118,12 @@ public class UserController {
         return selfEdit ? "userSettings" : "redirect:allUsers";
     }
 
+    //POST should include
+    //User Email - named "email"
+    //User Password - named "password"
+    //
+    //If this is the user's first login, they will be redirected to change their password
+    //Else they will be directed to the homepage with the required data stored in the session
     @PostMapping("/user/login")
     public String loginUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
         String email = params.get("email");
@@ -142,6 +167,10 @@ public class UserController {
         return "newPwd";
     }
 
+    //POST should include
+    //New User Password - named "password1"
+    //Input validation is done on the FE
+    //User will be logged out after successfully updating their password
     @PostMapping("/user/newPwd/update")
     public String updatePassword(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
         User requester = (User) session.getAttribute("user");
@@ -172,5 +201,22 @@ public class UserController {
         session.invalidate();
         return "redirect:/login";
     }
+
+/*    @GetMapping("/action-panel/admin")
+    public String admin(Model model, HttpSession session){
+        List<User> users = userRepo.findAll();
+        model.addAttribute("users", users);
+
+    }
+
+    @GetMapping("/action-panel/professor")
+    public String professor(Model model){
+
+    }
+
+    @GetMapping("/action-panel/invigilator")
+    public String invigilator(Model model){
+
+    }*/
 
 }
