@@ -155,7 +155,12 @@
         }
 
 
-        let examDate = [2024,6,30,10];
+        let examDate = new Date();
+        examDate.setFullYear(2024);
+        examDate.setMonth(7 - 1);
+        examDate.setDate(4);
+        examDate.setHours(15);
+        examDate.setMinutes(30);
         let examLength = 3;
         let examName = "CMPT 276";
         let examPriority = 2;
@@ -163,21 +168,20 @@
         let exam = [examDate, examLength, examName, examPriority];
 
         function highlight(e){
-            if (e[0][0] == currentSunday.getFullYear() && e[0][1] == (currentSunday.getMonth() + 1)){
-                let x = document.getElementsByTagName("td");
-                let color = getRandomColor();
-                let time = (e[0][3] - 8) * 16;
-                let length = e[1];
-                for (let i = 0; i < length; i++){
-                    let j = 0;
-                    j += i * 8;
-                    x[time + 1 + j].style.backgroundColor = color;
-                    x[time + 1 + j].style.border = "none";
-                }
-                let name = e[2];
-                let priority = e[3];
-                x[time + ((Math.ceil(length/2) - 1) * 8) + 1].innerHTML = name + "(" + priority + ")";
+            let x = document.getElementsByTagName("td");
+            let color = getRandomColor();
+            let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
+            let length = e[1];
+            let weekOfDay = e[0].getDay();
+            for (let i = 0; i < length; i++){
+                let j = 0;
+                j += i * 8;
+                x[time + weekOfDay + j + 1].style.backgroundColor = color;                    
+                x[time + weekOfDay + j + 1].style.border = "none";
             }
+            let name = e[2];
+            let priority = e[3];
+            x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
         }
 
         function getRandomColor() {
