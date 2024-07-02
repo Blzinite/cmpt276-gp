@@ -137,7 +137,7 @@
         const month = ["DEC.","JAN.","FEB.","MAR.","APR.","MAY","JUN.","JUL.","AUG.","SEP.","OCT.","NOV."];
 
         function showMonth(){
-            document.getElementById("currentMonth").innerHTML = currentSunday.getMonth() + 1;
+            document.getElementById("currentMonth").innerHTML = month[(currentSunday.getMonth() + 1) % 12];
         }
 
         function lastWeek(){
