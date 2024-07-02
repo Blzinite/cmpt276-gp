@@ -11,9 +11,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
     private String email;
-
-    //TODO: password encoding
-
     private String password;
     private byte[] salt;
     private String firstName;
@@ -25,6 +22,7 @@ public class User {
     //Eg "Req1,Req2,Req3:Ex1,Ex2,Ex3" where Reqn is a request and Exn is an exam
     //Invigilators will have comma separated exam ids
     private String exams;
+    private boolean newUser;
 
     public User() {}
     public User(String email, String password, String firstName, String lastName, String accessLevel) throws Exception {
@@ -35,6 +33,7 @@ public class User {
         this.lastName = lastName;
         this.accessLevel = AccessLevel.parse(accessLevel);
         this.exams = "";
+        this.newUser = true;
     }
     public User(String email, String password, String firstName, String lastName, String accessLevel, String exams) throws Exception {
         this.email = email;
@@ -44,6 +43,7 @@ public class User {
         this.lastName = lastName;
         this.accessLevel = AccessLevel.parse(accessLevel);
         this.exams = exams;
+        this.newUser = true;
     }
     public int getUid() {
         return uid;
@@ -92,5 +92,11 @@ public class User {
     }
     public void setExams(String exams) {
         this.exams = exams;
+    }
+    public boolean isNewUser() {
+        return newUser;
+    }
+    public void setNewUser(boolean newUser) {
+        this.newUser = newUser;
     }
 }

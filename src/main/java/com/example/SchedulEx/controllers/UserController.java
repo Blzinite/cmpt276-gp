@@ -42,9 +42,14 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/user/add")
+    @GetMapping("/user/add")
+    public String getAddUser(Model model){
+        return "addUser";
+    }
+
+    @PostMapping("/user/add/new")
     public String addUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
-        User requester = (User) session.getAttribute("user");
+//        User requester = (User) session.getAttribute("user");
 //        if(requester == null) {
 //            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 //            return "login"; //how did we get here?
@@ -55,6 +60,9 @@ public class UserController {
 //        }
         //only admin can add users
         User toAdd;
+        //TODO: only one user per email
+        //TODO: Email new users with random password
+        //String pwd = PasswordHelper.generatePassword();
         try {
             toAdd = new User(params.get("email"), params.get("password"), params.get("firstname"),
                     params.get("lastname"), params.get("accesslevel"));
@@ -118,12 +126,39 @@ public class UserController {
         session.setAttribute("user", user);
         model.addAttribute("user", user);
         response.setStatus(HttpServletResponse.SC_OK);
+        if(user.isNewUser()){
+            return "redirect:newPwd";
+        }
         return switch (user.getAccessLevel()) {
             case AccessLevel.ADMIN -> "redirect:all";
             case AccessLevel.PROFESSOR -> "redirect:all";
             case AccessLevel.INVIGILATOR -> "redirect:all";
             default -> null;
         };
+    }
+
+    @GetMapping("/user/newPwd")
+    public String setNewPassword(Model model, HttpSession session, HttpServletResponse response) {
+        return "newPwd";
+    }
+
+    @PostMapping("/user/newPwd/update")
+    public String updatePassword(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
+        User requester = (User) session.getAttribute("user");
+        if(requester == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:login";
+        }
+        String password = params.get("password1");
+        try {
+            requester.setPassword(password);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
+        requester.setNewUser(false);
+        userRepo.save(requester);
+        return "redirect:/user/logout";
     }
 
     @GetMapping("/user/login/error")
