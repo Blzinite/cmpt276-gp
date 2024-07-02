@@ -1,0 +1,39 @@
+/*
+Palette
+#4D869C
+#7AB2B2
+#CDE8E5
+#EEF7FF
+*/
+
+.aspect-wrapper {
+    width: 98vw;
+    height: 98vh;
+    margin: auto;
+    display: flex;
+    background: #4D869C;
+    border-radius: 20px;
+}
+
+.calendar-wrapper {
+    width: 58vw;
+    height: 96vh;
+    margin: auto;
+    background: #EEF7FF;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.actionPanel-wrapper {
+    width: 38vw;
+    height: 96vh;
+    margin: auto;
+    background: #EEF7FF;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+embed {
+    width: 100%;
+    height: 100%;
+}
