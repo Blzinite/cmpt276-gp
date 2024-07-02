@@ -24,7 +24,7 @@
                 <th>Sat.<br><span id="day6"></span></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tableBody">
             <tr>
                 <td>8am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
@@ -121,17 +121,14 @@
         }
 
         let currentSunday = getSunday();
-
-        showDays();
-        showMonth();
+        let currentWeek = 0;
 
         function showDays(){
             for (let i = 0; i < 7; i++){
                 let day = currentSunday.getDate() + i;
-                let daysOfCurrentMonth = getDaysOfMonth(
-                    currentSunday.getMonth(),currentSunday.getFullYear());
-                if (day > daysOfCurrentMonth){
-                    day -= daysOfCurrentMonth;
+                let daysOfcurrentMonth = getDaysOfMonth(currentSunday.getMonth(), currentSunday.getFullYear());
+                if (day > daysOfcurrentMonth){
+                    day -= daysOfcurrentMonth;
                 }
                 document.getElementById("day"+ i).innerHTML = day;
             }
@@ -140,22 +137,65 @@
         const month = ["DEC.","JAN.","FEB.","MAR.","APR.","MAY","JUN.","JUL.","AUG.","SEP.","OCT.","NOV."];
 
         function showMonth(){
-            document.getElementById("currentMonth").innerHTML = currentSunday.getMonth();
+            document.getElementById("currentMonth").innerHTML = currentSunday.getMonth() + 1;
         }
 
         function lastWeek(){
             const i = currentSunday.getDate() - 7;
             currentSunday.setDate(i);
-            showDays();
-            showMonth();
+            currentWeek--;
+            update();
         }
 
         function nextWeek(){
             const i = currentSunday.getDate() + 7;
             currentSunday.setDate(i);
+            currentWeek++;
+            update();
+        }
+
+
+        let examDate = [2024,6,30,10];
+        let examLength = 3;
+        let examName = "CMPT 276";
+        let examPriority = 2;
+
+        let exam = [examDate, examLength, examName, examPriority];
+
+        function highlight(e){
+            if (e[0][0] == currentSunday.getFullYear() && e[0][1] == (currentSunday.getMonth() + 1)){
+                let x = document.getElementsByTagName("td");
+                let color = getRandomColor();
+                let time = (e[0][3] - 8) * 16;
+                let length = e[1];
+                for (let i = 0; i < length; i++){
+                    let j = 0;
+                    j += i * 8;
+                    x[time + 1 + j].style.backgroundColor = color;
+                    x[time + 1 + j].style.border = "none";
+                }
+                let name = e[2];
+                let priority = e[3];
+                x[time + ((Math.ceil(length/2) - 1) * 8) + 1].innerHTML = name + "(" + priority + ")";
+            }
+        }
+
+        function getRandomColor() {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function update(){
             showDays();
             showMonth();
+            highlight(exam);
         }
+
+        update();    
     </script>
 </body>
 </html>
