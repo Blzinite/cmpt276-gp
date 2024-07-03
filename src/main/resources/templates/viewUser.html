@@ -10,7 +10,7 @@
 <body>
     <h1 class="data-name" th:text="${user.getEmail()}"></h1>
     <div class="form-wrapper">
-        <form method="post" id="userForm">
+        <form method="post">
             <div class="form-element">
                 <input type="hidden" th:value="${user.getEmail()}" id="email" name="email">
             </div>

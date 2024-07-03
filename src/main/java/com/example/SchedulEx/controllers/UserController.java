@@ -171,6 +171,23 @@ public class UserController {
         return "redirect:../action-panel";
     }
 
+    @PostMapping("/user/delete")
+    public String deleteUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response){
+        User requester = (User) session.getAttribute("user");
+        if(requester == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:../login";
+        }
+        String email = params.get("email");
+        if(requester.getAccessLevel() != AccessLevel.ADMIN && !Objects.equals(requester.getEmail(), email)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:../login";
+        }
+        userRepo.delete(userRepo.findByEmail(email).get());
+        response.setStatus(HttpServletResponse.SC_OK);
+        return "redirect:../action-panel";
+    }
+
     //POST should include
     //User Email - named "email"
     //User Password - named "password"
