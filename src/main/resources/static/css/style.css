@@ -6,6 +6,12 @@ Palette
 #EEF7FF
 */
 
+.viewport-wrapper {
+    width: 96vw;
+    height: 96vh;
+    margin: auto;
+}
+
 .aspect-wrapper {
     width: 98vw;
     height: 98vh;
@@ -36,4 +42,74 @@ Palette
 embed {
     width: 100%;
     height: 100%;
+}
+
+#lastWeek {
+    margin: 3% 0% 3% 0%;
+    padding: 2%;
+    border: solid #7AB2B2;
+    border-width: 0px 0px 3px 3px;
+    transform: rotate(45deg);
+    background: url("../assets/Pointer.svg");
+    float: left;
+}
+
+#nextWeek {
+    margin: 3% 0% 3% 0%;
+    padding: 2%;
+    border: solid #7AB2B2;
+    border-width: 3px 3px 0px 0px;
+    transform: rotate(45deg);
+    background-color: white;
+    float: right;
+}
+
+form {
+    clear: left;
+}
+
+th, td {
+    width: auto;
+    height: auto;
+    margin: 0;
+}
+
+td {
+    border: 1px solid #7AB2B2;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    height: 80%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border: 1px solid #000;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+#currentMonth {
+    width: 175px;
+    text-align: center;
+}
+
+#currentYear {
+    text-align: center;
+}
+
+.calendar-header-list:first-child {
+    text-decoration: underline;
+}
+
+.left-arrow {
+    rotate: 90deg;
+}
+
+.right-arrow {
+    rotate: -90deg;
 }
