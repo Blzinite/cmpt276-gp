@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="viewport-wrapper">
+        <div class="form-wrapper">
+            <h1 class="data-name" th:text="${user.getEmail()}"></h1>
+            <form action="/user/update" onsubmit="return confirm('Confirm Update')" method="post">
+                <div class="form-element">
+                    <input type="hidden" th:value="${user.getEmail()}" id="email" name="email">
+                    <h2>First Name</h2>
+                    <input type="text" th:value="${user.getFirstName()}" id="firstname" name="firstname">
+                    <h2>Surname</h2>
+                    <input type="text" th:value="${user.getLastName()}" id="lastname" name="lastname">
+                </div>
+                <div class="form-element">
+                    <label for="accesslevel">
+                        <h2>Select Account Type</h2>
+                    </label>
+                    <select class="list-element" id="accesslevel" name="accesslevel">
+                        <option value="admin" th:selected="${user.getAccessLevel()==601}">Admin</option>
+                        <option value="professor" th:selected="${user.getAccessLevel()==602}">Professor</option>
+                        <option value="invigilator" th:selected="${user.getAccessLevel()==603}">Invigilator</option>
+                    </select>
+                </div>
+                <div class="form-element">
+                    <button type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
