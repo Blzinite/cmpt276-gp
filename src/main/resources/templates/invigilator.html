@@ -8,13 +8,18 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="aspect-wrapper">
-        <div class="calendar-wrapper">
-            <embed type="text/html" src="/calendarMonth.html">
-        </div>
-        <div class="actionPanel-wrapper">
-            <embed type="text/html" src="action-panel">
-        </div>
-    </div>
+<h1 th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+<h2>Invigilator</h2>
+
+<h3>Accounts</h3>
+<details>
+    <summary>Current</summary>
+    <h3 th:text="${currentUser.getEmail()}"></h3>
+</details>
+
+<form action="user/logout" method="get">
+    <button type="submit">Logout</button>
+</form>
+
 </body>
 </html>
