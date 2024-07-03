@@ -44,26 +44,6 @@ embed {
     height: 100%;
 }
 
-#lastWeek {
-    margin: 3% 0% 3% 0%;
-    padding: 2%;
-    border: solid #7AB2B2;
-    border-width: 0px 0px 3px 3px;
-    transform: rotate(45deg);
-    background: url("../assets/Pointer.svg");
-    float: left;
-}
-
-#nextWeek {
-    margin: 3% 0% 3% 0%;
-    padding: 2%;
-    border: solid #7AB2B2;
-    border-width: 3px 3px 0px 0px;
-    transform: rotate(45deg);
-    background-color: white;
-    float: right;
-}
-
 form {
     clear: left;
 }
