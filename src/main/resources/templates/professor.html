@@ -8,18 +8,19 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h1 th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
-<h2>Professor</h2>
-
-<h3>Accounts</h3>
-<details>
-    <summary>Current</summary>
-    <h3 th:text="${currentUser.getEmail()}"></h3>
-</details>
-
-<form action="user/logout" method="get">
-    <button type="submit">Logout</button>
-</form>
-
+    <div class="viewport-wrapper">
+        <h1 class="data-name" th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+        <h2 class="data-rank">Professor</h2>
+        <h3>Accounts</h3>
+        <details>
+            <summary class="list-element">Current</summary>
+            <div class="list-element">
+                <a class="list-element" th:text="${currentUser.getEmail()}"></a>
+            </div>
+            <div class="list-element">
+                <a href="user/logout" class="list-element">Log Out  ></a>
+            </div>
+        </details>
+    </div>
 </body>
 </html>
