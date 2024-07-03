@@ -26,17 +26,6 @@ public class UserController {
     //TODO: better error handling
     //TODO: resolve redirects
 
-    @GetMapping("/user/all")
-    public String getAllUsers(Model model, HttpSession session){
-        List<User> users = userRepo.findAll();
-        model.addAttribute("users", users);
-        User curr = (User) session.getAttribute("user");
-        if(curr == null){
-            return "redirect:../login";
-        }
-        model.addAttribute("current", curr);
-        return "allUsers";
-    }
 
     @GetMapping("/login")
     public String getLogin(Model model){
@@ -54,15 +43,15 @@ public class UserController {
     //Upon success a new user will be created in the db
     @PostMapping("/user/add")
     public String addUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
-//        User requester = (User) session.getAttribute("user");
-//        if(requester == null) {
-//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//            return "login"; //how did we get here?
-//        }
-//        if(requester.getAccessLevel() != AccessLevel.ADMIN){
-//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//            return "homepage"; //how did we get here?
-//        }
+        User requester = (User) session.getAttribute("user");
+        if(requester == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:../login"; //how did we get here?
+        }
+        if(requester.getAccessLevel() != AccessLevel.ADMIN){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:../action-panel"; //how did we get here?
+        }
         //only admin can add users
         User toAdd;
         //TODO: only one user per email
@@ -80,7 +69,8 @@ public class UserController {
     }
 
     //POST should include
-    //New Email - named "email"
+    //User Email - named "email"
+    //Email address should not be changed ever !!
     //New Password - named "password"
     //New First Name - named "firstname"
     //New Surname - named "lastname"
@@ -88,19 +78,19 @@ public class UserController {
     //Form validation should be done on FE
     //Upon success "toEdit" will be updated in the db
     //Upon success redirect the user to wherever they need to go
-    @PostMapping("/user/update")
-    public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) throws Exception {
+    @PostMapping("/user/updateSelf")
+    public String updateSelf(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) throws Exception {
         User requester = (User) session.getAttribute("user");
         if(requester == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "redirect:/login";
+            return "redirect:../login";
         }
         User toEdit = userRepo.findById(Integer.parseInt(params.get("id"))).get();
         boolean selfEdit = toEdit.getUid() == requester.getUid();
         if(!selfEdit && requester.getAccessLevel() != AccessLevel.ADMIN){
             //only admins can edit other accounts
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "redirect:login";
+            return "redirect:../login";
         }
 
         toEdit.setEmail(params.get("email"));
@@ -111,6 +101,20 @@ public class UserController {
 
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
         return selfEdit ? "userSettings" : "redirect:allUsers";
+    }
+
+    //POST should include
+    //New Email - named "email"
+    //New Password - named "password"
+    //New First Name - named "firstname"
+    //New Surname - named "lastname"
+    //New Access Level - named "accesslevel"
+    //Form validation should be done on FE
+    //Upon success "toEdit" will be updated in the db
+    //Upon success redirect the user to wherever they need to go
+    @PostMapping("/user/update")
+    public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session) {
+
     }
 
     //POST should include
@@ -126,7 +130,8 @@ public class UserController {
         String password = params.get("password");
         Optional<User> toFind = userRepo.findByEmail(email);
         if (session.getAttribute("user") != null) {
-            return "redirect:logout";
+            session.removeAttribute("user");
+            session.invalidate();
         }
         if (toFind.isEmpty()) {
             //TODO: Error Handling (User Not Found)
@@ -178,17 +183,24 @@ public class UserController {
         }
         requester.setNewUser(false);
         userRepo.save(requester);
-        return "redirect:/user/logout";
+        return "redirect:/user/login/newPwd";
+    }
+
+    @GetMapping("/user/login/newPwd")
+    public String loginNewPwd(Model model){
+        model.addAttribute("msg", "Password successfully updated.");
+        return "login";
     }
 
     @GetMapping("/user/login/error")
     public String loginError(Model model){
-        model.addAttribute("error", "Invalid email or password");
+        model.addAttribute("msg", "Invalid email or password");
         return "login";
     }
 
     @GetMapping("/user/logout")
     public String logout(HttpSession session){
+        session.removeAttribute("user");
         session.invalidate();
         return "redirect:/login";
     }
