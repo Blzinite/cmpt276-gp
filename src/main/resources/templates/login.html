@@ -13,9 +13,9 @@
             <form action="/user/login" method="post">
                 <p th:text="${error?.toString()}"></p>
                 <div>Email</div>
-                <input type="text" id="email" name="email" placeholder="example@sfu.ca">
+                <input type="text" id="email" name="email" placeholder="example@sfu.ca" required>
                 <div>Password</div>
-                <input type="password" id="password" name="password" placeholder="P@ssw0rd">
+                <input type="password" id="password" name="password" placeholder="P@ssw0rd" required>
                 <input type="submit" value="Sign In">
             </form>
         </div>
