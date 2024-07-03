@@ -117,15 +117,17 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "redirect:../login";
         }
-        try {
-            toEdit.setPassword(params.get("password"));
-            toEdit.setFirstName(params.get("firstname"));
-            toEdit.setLastName(params.get("lastname"));
-            userRepo.save(toEdit);
-        }catch (Exception e){
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            throw new RuntimeException(e);
+        String pwd = params.get("password");
+        if(pwd != null){
+            try{
+                toEdit.setPassword(pwd);
+            }catch (Exception e){
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                throw new RuntimeException(e);
+            }
         }
+        toEdit.setFirstName(params.get("firstname"));
+        toEdit.setLastName(params.get("lastname"));
         response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:../action-panel";
     }
@@ -157,16 +159,19 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "redirect:../action-panel";
         }
-        try {
-            toEdit.setPassword(params.get("password"));
-            toEdit.setFirstName(params.get("firstname"));
-            toEdit.setLastName(params.get("lastname"));
-            toEdit.setAccessLevel(params.get("accesslevel"));
-            userRepo.save(toEdit);
-        }catch (Exception e){
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            throw new RuntimeException(e);
+        String pwd = params.get("password");
+        if(pwd != null){
+            try{
+                toEdit.setPassword(pwd);
+            }catch (Exception e){
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                throw new RuntimeException(e);
+            }
         }
+        toEdit.setFirstName(params.get("firstname"));
+        toEdit.setLastName(params.get("lastname"));
+        toEdit.setAccessLevel(params.get("accesslevel"));
+        userRepo.save(toEdit);
         response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:../action-panel";
     }
