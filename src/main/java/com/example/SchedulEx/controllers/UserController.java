@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -70,7 +71,7 @@ public class UserController {
 
     //POST should include
     //User Email - named "email"
-    //Email address should not be changed ever !!
+    //Email address should not be changed ever ! (used for user identification)
     //New Password - named "password"
     //New First Name - named "firstname"
     //New Surname - named "lastname"
@@ -79,32 +80,38 @@ public class UserController {
     //Upon success "toEdit" will be updated in the db
     //Upon success redirect the user to wherever they need to go
     @PostMapping("/user/updateSelf")
-    public String updateSelf(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) throws Exception {
+    public String updateSelf(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
         User requester = (User) session.getAttribute("user");
         if(requester == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "redirect:../login";
         }
-        User toEdit = userRepo.findById(Integer.parseInt(params.get("id"))).get();
-        boolean selfEdit = toEdit.getUid() == requester.getUid();
-        if(!selfEdit && requester.getAccessLevel() != AccessLevel.ADMIN){
-            //only admins can edit other accounts
+        String email = params.get("email");
+        if(!Objects.equals(requester.getEmail(), email)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "redirect:../login";
         }
-
-        toEdit.setEmail(params.get("email"));
-        toEdit.setPassword(params.get("password"));
-        toEdit.setFirstName(params.get("firstname"));
-        toEdit.setLastName(params.get("lastname"));
-        toEdit.setAccessLevel(params.get("accesslevel"));
-
-        response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        return selfEdit ? "userSettings" : "redirect:allUsers";
+        User toEdit = userRepo.findByEmail(email).orElse(null);
+        if(toEdit == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "redirect:../login";
+        }
+        try {
+            toEdit.setPassword(params.get("password"));
+            toEdit.setFirstName(params.get("firstname"));
+            toEdit.setLastName(params.get("lastname"));
+            userRepo.save(toEdit);
+        }catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        return "redirect:../action-panel";
     }
 
     //POST should include
-    //New Email - named "email"
+    //User Email - named "email"
+    //Email address should not  be changed ! (used for user identification)
     //New Password - named "password"
     //New First Name - named "firstname"
     //New Surname - named "lastname"
@@ -113,8 +120,34 @@ public class UserController {
     //Upon success "toEdit" will be updated in the db
     //Upon success redirect the user to wherever they need to go
     @PostMapping("/user/update")
-    public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session) {
-
+    public String updateUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
+        User requester = (User) session.getAttribute("user");
+        if(requester == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:../login";
+        }
+        if(requester.getAccessLevel() != AccessLevel.ADMIN){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "redirect:../action-panel";
+        }
+        String email = params.get("email");
+        User toEdit = userRepo.findByEmail(email).orElse(null);
+        if(toEdit == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "redirect:../action-panel";
+        }
+        try {
+            toEdit.setPassword(params.get("password"));
+            toEdit.setFirstName(params.get("firstname"));
+            toEdit.setLastName(params.get("lastname"));
+            toEdit.setAccessLevel(params.get("accesslevel"));
+            userRepo.save(toEdit);
+        }catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        return "redirect:../action-panel";
     }
 
     //POST should include
@@ -148,7 +181,6 @@ public class UserController {
             //TODO: Error Handling (Incorrect Password)
             return "redirect:login/error";
         }
-        //TODO: login the user
         session.setAttribute("user", user);
         model.addAttribute("user", user);
         response.setStatus(HttpServletResponse.SC_OK);
