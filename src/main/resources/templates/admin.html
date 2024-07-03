@@ -8,24 +8,28 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h1 th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
-<h2>Admin</h2>
-
-<h3>Accounts</h3>
-<details>
-    <summary>Current</summary>
-    <h3 th:text="${currentUser.getEmail()}"></h3>
-</details>
-<details>
-    <summary>Registered</summary>
-    <div th:each="user:${users}">
-        <h3 th:text="${user.email}"></h3>
+    <div class="viewport-wrapper">
+        <h1 class="data-name" th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+        <h2 class="data-rank">Admin</h2>
+        <h3>Accounts</h3>
+        <details>
+            <summary class="list-element">Current</summary>
+            <div class="list-element">
+                <a class="list-element" th:text="${currentUser.getEmail()}"></a>
+            </div>
+            <div class="list-element">
+                <a href="user/logout" class="list-element">Log Out  ></a>
+            </div>
+        </details>
+        <details>
+            <summary class="list-element">Registered</summary>
+            <div class="list-element" th:each="user:${users}">
+                <a class="list-element" th:text="${user.email}"></a>
+            </div>
+        </details>
+        <div class="list-element">
+            <a href="/addUser.html">Add User  ></a>
+        </div>
     </div>
-</details>
-<form action="user/logout" method="get">
-    <button type="submit">Logout</button>
-</form>
-<a href="addUser.html">Add User</a>
-
 </body>
 </html>
