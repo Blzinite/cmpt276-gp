@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SchedulEx Login</title>
     <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="aspect-wrapper">
-        <div class="actionPanel-wrapper">
-            <form action="/user/login" method="post">
+    <div class="form-wrapper">
+        <form action="/user/login" method="post">
+            <div class="form-element">
                 <p th:text="${error?.toString()}"></p>
-                <div>Email</div>
-                <input type="text" id="email" name="email" placeholder="example@sfu.ca">
-                <div>Password</div>
-                <input type="password" id="password" name="password" placeholder="P@ssw0rd">
-                <input type="submit" value="Sign In">
-            </form>
-        </div>
+            </div>
+            <div class="form-element">
+                <h2>Email</h2>
+                <input class="text-input" type="text" id="email" name="email" placeholder="example@sfu.ca">
+                <h2>Password</h2>
+                <input class="text-input" type="password" id="password" name="password" placeholder="P@ssw0rd">
+            </div>
+            <div class="form-element">
+                <input class="button-input" type="submit" value="Sign In">
+            </div>
+        </form>
     </div>
 </body>
 </html>

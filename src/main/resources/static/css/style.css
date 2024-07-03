@@ -6,6 +6,12 @@ Palette
 #EEF7FF
 */
 
+html, body {
+    margin-left: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive;
+}
+
 .viewport-wrapper {
     width: 96vw;
     height: 96vh;
@@ -21,9 +27,18 @@ Palette
     border-radius: 20px;
 }
 
+.form-wrapper {
+    width: 96vw;
+    height: 96vh;
+    margin: auto;
+    background: #EEF7FF;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
 .calendar-wrapper {
     width: 58vw;
-    height: 96vh;
+    height: 94vh;
     margin: auto;
     background: #EEF7FF;
     border-radius: 15px;
@@ -32,7 +47,7 @@ Palette
 
 .actionPanel-wrapper {
     width: 38vw;
-    height: 96vh;
+    height: 94vh;
     margin: auto;
     background: #EEF7FF;
     border-radius: 15px;
@@ -41,7 +56,7 @@ Palette
 
 .table-wrapper {
     width: 100%;
-    height: 80vh;
+    height: 76vh;
 }
 
 embed {
@@ -49,19 +64,17 @@ embed {
     height: 100%;
 }
 
-form {
-    clear: left;
-}
-
 th, td {
     width: auto;
     height: auto;
     margin: 0;
+    border-left: 2px solid #7AB2B2;
+    border-top: 2px solid #7AB2B2;
+    text-align: center;
 }
 
-td {
-    border: 1px solid #7AB2B2;
-    text-align: center;
+td:first-child, th:first-child {
+     border-left: none;
 }
 
 table {
@@ -70,6 +83,7 @@ table {
     border-collapse: collapse;
     table-layout: fixed;
     border: 1px solid #000;
+    border-radius: 10px;
 }
 
 h1 {
@@ -92,4 +106,35 @@ h1 {
 
 .right-arrow {
     rotate: -90deg;
+}
+
+.form-element {
+    width: fit-content;
+    margin: auto;
+}
+
+.text-input {
+    width: 80vw;
+    background: #EEF7FF;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+}
+
+.text-input:focus {
+    background: #7AB2B2;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+}
+
+.button-input {
+    margin-top: 20px;
+    width: 80vw;
+    background: #EEF7FF;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+    font-size: 12pt;
+}
+
+.button-input:hover {
+    background: #7AB2B2;
 }
