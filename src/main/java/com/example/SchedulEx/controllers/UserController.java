@@ -121,6 +121,7 @@ public class UserController {
     //POST should include
     //User Email - named "email"
     //User Password - named "password"
+    //Input validation should be done on the FE
     //
     //If this is the user's first login, they will be redirected to change their password
     //Else they will be directed to the homepage with the required data stored in the session
