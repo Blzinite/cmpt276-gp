@@ -32,7 +32,7 @@ public class UserController {
         model.addAttribute("users", users);
         User curr = (User) session.getAttribute("user");
         if(curr == null){
-            return "login";
+            return "redirect:../login";
         }
         model.addAttribute("current", curr);
         return "allUsers";
@@ -81,7 +81,7 @@ public class UserController {
             throw new RuntimeException(e);
         }
         userRepo.save(toAdd);
-        return "redirect:all";
+        return "redirect:../action-panel";
     }
 
     //POST should include
@@ -154,16 +154,11 @@ public class UserController {
         if(user.isNewUser()){
             return "redirect:newPwd";
         }
-        return switch (user.getAccessLevel()) {
-            case AccessLevel.ADMIN -> "redirect:all";
-            case AccessLevel.PROFESSOR -> "redirect:all";
-            case AccessLevel.INVIGILATOR -> "redirect:all";
-            default -> null;
-        };
+        return "redirect:../action-panel";
     }
 
     @GetMapping("/user/newPwd")
-    public String setNewPassword(Model model, HttpSession session, HttpServletResponse response) {
+    public String setNewPassword() {
         return "newPwd";
     }
 
@@ -202,21 +197,30 @@ public class UserController {
         return "redirect:/login";
     }
 
-/*    @GetMapping("/action-panel/admin")
-    public String admin(Model model, HttpSession session){
-        List<User> users = userRepo.findAll();
-        model.addAttribute("users", users);
-
+    @GetMapping("action-panel")
+    public String getActionPanel(Model model, HttpSession session){
+        User curr = (User) session.getAttribute("user");
+        if(curr == null){
+            return "login";
+        }
+        switch(curr.getAccessLevel()){
+            case AccessLevel.ADMIN -> {
+                model.addAttribute("currentUser", curr);
+                model.addAttribute("users", userRepo.findAll());
+                return "admin";
+            }
+            case AccessLevel.INVIGILATOR -> {
+                model.addAttribute("currentUser", curr);
+                return "invigilator";
+            }
+            case AccessLevel.PROFESSOR -> {
+                model.addAttribute("currentUser", curr);
+                return "professor";
+            }
+            default -> {
+                return "login";
+            }
+        }
     }
-
-    @GetMapping("/action-panel/professor")
-    public String professor(Model model){
-
-    }
-
-    @GetMapping("/action-panel/invigilator")
-    public String invigilator(Model model){
-
-    }*/
 
 }

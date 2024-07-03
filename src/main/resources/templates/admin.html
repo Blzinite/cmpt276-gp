@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1 th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+<h2>Admin</h2>
+
+<h3>Accounts</h3>
+<details>
+    <summary>Current</summary>
+    <h3 th:text="${currentUser.getEmail()}"></h3>
+</details>
+<details>
+    <summary>Registered</summary>
+    <div th:each="user:${users}">
+        <h3 th:text="${user.email}"></h3>
+    </div>
+</details>
+<form action="user/logout" method="get">
+    <button type="submit">Logout</button>
+</form>
+<a href="addUser.html">Add User</a>
+
+</body>
+</html>
