@@ -5,11 +5,12 @@ Palette
 #CDE8E5
 #EEF7FF
 */
+@import url('https://fonts.googleapis.com/css?family=Akshar');
 
 html, body {
     margin-left: 0;
     padding: 0;
-    font: normal 100% verdana, tahoma, arial, sans-serif;
+    font: normal 100% Akshar, "Trebuchet MS", verdana, tahoma, arial, sans-serif;
 }
 
 a {
@@ -174,7 +175,6 @@ select.list-element {
     cursor: pointer;
     float: left;
     margin-top: 20px;
-    width: 80vw;
     background: #EEF7FF;
     border: 0;
     border-bottom: 2px solid #4D869C;
