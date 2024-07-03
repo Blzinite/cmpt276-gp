@@ -21,6 +21,9 @@ public class User {
     //The split will be denoted with a colon
     //Eg "Req1,Req2,Req3:Ex1,Ex2,Ex3" where Reqn is a request and Exn is an exam
     //Invigilators will have comma separated exam ids
+    //followed by a binary string representing whether an exam is accepted
+    //The split will be denoted with a colon
+    //Eg "Ex1,Ex2,Ex3:101" where Exn is an exam, and the user has accepted Ex1 and Ex3
     private String exams;
     private boolean newUser;
 
