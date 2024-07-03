@@ -167,3 +167,28 @@ button.list-element {
 select.list-element {
     width: 80vw;
 }
+
+.btn-group button {
+    background-color: #4D869C;
+    border: 1px solid black;
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer; 
+    float: left;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #7AB2B2;
+}
