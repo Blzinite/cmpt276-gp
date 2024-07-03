@@ -160,7 +160,7 @@ public class UserController {
             return "redirect:../action-panel";
         }
         String pwd = params.get("password");
-        if(pwd != null){
+        if(!Objects.equals(pwd, "")){
             try{
                 toEdit.setPassword(pwd);
             }catch (Exception e){

@@ -9,7 +9,7 @@ Palette
 html, body {
     margin-left: 0;
     padding: 0;
-    font-family: 'Comic Sans MS', cursive;
+    font: normal 100% verdana, tahoma, arial, sans-serif;
 }
 
 a {
@@ -169,13 +169,16 @@ select.list-element {
 }
 
 .btn-group button {
-    background-color: #4D869C;
-    border: 1px solid black;
-    color: white;
+    color: black;
     padding: 10px 24px;
-    margin-top: 10px;
     cursor: pointer;
     float: left;
+    margin-top: 20px;
+    width: 80vw;
+    background: #EEF7FF;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+    font-size: 12pt;
 }
 
 .btn-group button:not(:last-child) {
@@ -192,4 +195,18 @@ select.list-element {
 /* Add a background color on hover */
 .btn-group button:hover {
     background-color: #7AB2B2;
+}
+
+.message {
+    display:none;
+    background: #EEF7FF;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.message p {
+    padding: 10px 35px;
+    font-size: 18px;
 }

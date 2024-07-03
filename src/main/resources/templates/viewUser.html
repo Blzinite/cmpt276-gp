@@ -8,19 +8,27 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <a href="/action-panel">  Back  <  </a>
     <h1 class="data-name" th:text="${user.getEmail()}"></h1>
     <div class="form-wrapper">
         <form method="post">
             <div class="form-element">
                 <input type="hidden" th:value="${user.getEmail()}" id="email" name="email">
             </div>
-            <div class="form-element">
+            <div class="form-element" style="margin-bottom: 10px;">
                 <h2>First Name</h2>
-                <input type="text" th:value="${user.getFirstName()}" id="firstname" name="firstname">
+                <input class="text-input" type="text" th:value="${user.getFirstName()}" id="firstname" name="firstname">
                 <h2>Surname</h2>
-                <input type="text" th:value="${user.getLastName()}" id="lastname" name="lastname">
+                <input class="text-input" type="text" th:value="${user.getLastName()}" id="lastname" name="lastname">
             </div>
             <div class="form-element">
+                <h2 id="passchange" style="text-underline: black">Change Password</h2>
+                <input class="text-input" type="hidden" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                <h2 id="matchlabel" hidden="hidden">Retype Password</h2>
+                <input class="text-input" type="hidden" id="passmatch" name="passmatch" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+            </div>
+            <div class="message">
 
             </div>
             <div class="form-element">
@@ -34,10 +42,59 @@
                 </select>
             </div>
             <div class="form-element btn-group">
-                <button type="submit" onclick="return confirm('Update Account?')" formaction="/user/update">Update</button>
-                <button type="submit" onclick="return confirm('Delete Account?')" formaction="/user/delete">Delete</button>
+                <button id="update" type="submit"
+                        onclick="return confirm('Update Account?')" formaction="/user/update">Update</button>
+                <button type="submit"
+                        onclick="return confirm('Delete Account?')" formaction="/user/delete">Delete</button>
             </div>
         </form>
     </div>
+<script>
+    let pwd = document.getElementById("password")
+    let match = document.getElementById("passmatch")
+    let label = document.getElementById("matchlabel")
+    let update = document.getElementById("update")
+    let change = document.getElementById("passchange")
+
+    change.onclick = function() {
+        if(pwd.type === "password" && pwd.value === "" && match.value === ""){
+            pwd.type = "hidden"
+        }else{
+            pwd.type = "password"
+        }
+    }
+
+    pwd.onfocus = function() {
+        label.removeAttribute("hidden")
+        match.type = "password"
+    }
+
+    pwd.onblur = function() {
+        if(pwd.value === "" && match.value === ""){
+            label.hidden = "hidden"
+            match.type = "hidden"
+        }
+    }
+
+    pwd.onkeyup = function() {
+        if(pwd.value !== match.value){
+            update.disabled = "disabled"
+        }
+    }
+
+    match.onkeyup = function() {
+        if(pwd.value !== match.value){
+            update.disabled = "disabled"
+        }
+        if(pwd.value === match.value){
+            update.removeAttribute("disabled")
+        }
+        if(match.value === "" && pwd.value === ""){
+            label.hidden = "hidden"
+            match.type = "hidden"
+        }
+    }
+
+</script>
 </body>
 </html>
