@@ -96,6 +96,12 @@ h1, h2, label {
     height: 76vh;
 }
 
+.userSettings-wrapper {
+    margin: auto;
+    background: #EEF7FF;
+    overflow: scroll;
+}
+
 .data-name {
     margin-bottom: 0;
     text-decoration: 2px solid black underline;
@@ -169,20 +175,27 @@ select.list-element {
     width: 80vw;
 }
 
+#passchange:hover {
+    cursor: pointer;
+}
+
 .btn-group button {
     color: black;
     padding: 10px 24px;
     cursor: pointer;
     float: left;
     margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     background: #EEF7FF;
-    border: 0;
-    border-bottom: 2px solid #4D869C;
+    border: none;
+    border-radius: 2px;
     font-size: 12pt;
 }
 
 .btn-group button:not(:last-child) {
     border-right: none; /* Prevent double borders */
+    margin-right: 0px;
 }
 
 /* Clear floats (clearfix hack) */
@@ -194,6 +207,24 @@ select.list-element {
 
 /* Add a background color on hover */
 .btn-group button:hover {
+    background-color: #7AB2B2;
+}
+
+#deleteBtn {
+    background: #C41E3A;
+    color: white
+}
+
+#deleteBtn:hover {
+    background-color: darkred;
+}
+
+#updateBtn {
+    background: #4D869C;
+    color: white
+}
+
+#updateBtn:hover {
     background-color: #7AB2B2;
 }
 
@@ -209,4 +240,26 @@ select.list-element {
 .message p {
     padding: 10px 35px;
     font-size: 18px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -35px;
+    content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -35px;
+    content: "✖";
 }
