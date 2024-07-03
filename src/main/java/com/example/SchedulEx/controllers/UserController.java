@@ -42,12 +42,7 @@ public class UserController {
     public String getLogin(Model model){
         return "login";
     }
-
-    @GetMapping("/user/add")
-    public String getAddUser(Model model){
-        return "addUser";
-    }
-
+    
 
     //POST should include:
     //User Email - named "email"
@@ -57,7 +52,7 @@ public class UserController {
     //User Surname - named "lastname"
     //User Account Type - named "accesslevel"
     //Upon success a new user will be created in the db
-    @PostMapping("/user/add/new")
+    @PostMapping("/user/add")
     public String addUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
 //        User requester = (User) session.getAttribute("user");
 //        if(requester == null) {
