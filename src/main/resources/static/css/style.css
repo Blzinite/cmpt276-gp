@@ -1,0 +1,265 @@
+/*
+Palette
+#4D869C
+#7AB2B2
+#CDE8E5
+#EEF7FF
+*/
+@import url('https://fonts.googleapis.com/css?family=Akshar');
+
+html, body {
+    margin-left: 0;
+    padding: 0;
+    font: normal 100% Akshar, "Trebuchet MS", verdana, tahoma, arial, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+embed {
+    width: 100%;
+    height: 100%;
+}
+
+th, td {
+    width: auto;
+    height: auto;
+    margin: 0;
+    border-left: 2px solid #7AB2B2;
+    border-top: 2px solid #7AB2B2;
+    text-align: center;
+}
+
+td:first-child, th:first-child {
+     border-left: none;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
+
+h1, h2, label {
+    text-align: center;
+}
+
+.viewport-wrapper {
+    width: 96vw;
+    height: 96vh;
+    margin: auto;
+}
+
+.aspect-wrapper {
+    width: 98vw;
+    height: 98vh;
+    margin: auto;
+    display: flex;
+    background: #4D869C;
+    border-radius: 20px;
+}
+
+.form-wrapper {
+    width: 96vw;
+    height: 96vh;
+    margin: auto;
+    background: #EEF7FF;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.calendar-wrapper {
+    width: 58vw;
+    height: 94vh;
+    margin: auto;
+    background: #EEF7FF;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.actionPanel-wrapper {
+    width: 38vw;
+    height: 94vh;
+    margin: auto;
+    background: #EEF7FF;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table-wrapper {
+    width: 100%;
+    height: 76vh;
+}
+
+.userSettings-wrapper {
+    margin: auto;
+    background: #EEF7FF;
+    overflow: scroll;
+}
+
+.data-name {
+    margin-bottom: 0;
+    text-decoration: 2px solid black underline;
+}
+
+.data-rank {
+    margin-top: 0;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.calendar-header-list:first-child {
+    text-decoration: underline;
+}
+
+.left-arrow {
+    rotate: 90deg;
+}
+
+.right-arrow {
+    rotate: -90deg;
+}
+
+.form-element {
+    width: fit-content;
+    margin: auto;
+}
+
+.text-input {
+    width: 80vw;
+    background: #EEF7FF;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+}
+
+.text-input:focus {
+    background: #7AB2B2;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+}
+
+.button-input {
+    margin-top: 20px;
+    width: 80vw;
+    background: #EEF7FF;
+    border: 0;
+    border-bottom: 2px solid #4D869C;
+    font-size: 12pt;
+}
+
+.button-input:hover {
+    background: #7AB2B2;
+}
+
+.list-element {
+    padding: 4px;
+    margin: 4px;
+    border-bottom: 2px #7AB2B2 solid;
+}
+
+button.list-element {
+    background: none;
+    border: 0;
+}
+
+select.list-element {
+    width: 80vw;
+}
+
+#passchange:hover {
+    cursor: pointer;
+}
+
+.btn-group button {
+    color: black;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: left;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: #EEF7FF;
+    border: none;
+    border-radius: 2px;
+    font-size: 12pt;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+    margin-right: 0px;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #7AB2B2;
+}
+
+#deleteBtn {
+    background: #C41E3A;
+    color: white
+}
+
+#deleteBtn:hover {
+    background-color: darkred;
+}
+
+#updateBtn {
+    background: #4D869C;
+    color: white
+}
+
+#updateBtn:hover {
+    background-color: #7AB2B2;
+}
+
+.message {
+    display:none;
+    background: #EEF7FF;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.message p {
+    padding: 10px 35px;
+    font-size: 18px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -35px;
+    content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -35px;
+    content: "✖";
+}

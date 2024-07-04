@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="userSettings-wrapper">
+        <a href="/action-panel">  Back  <  </a>
+        <h1 class="data-name" th:text="${user.getEmail()}"></h1>
+        <div class="form-wrapper" style="overflow: visible">
+            <form method="post">
+                <div class="form-element">
+                    <input type="hidden" th:value="${user.getEmail()}" id="email" name="email">
+                </div>
+                <div class="form-element" style="margin-bottom: 10px;">
+                    <h2>First Name</h2>
+                    <input class="text-input" type="text" th:value="${user.getFirstName()}" id="firstname" name="firstname">
+                    <h2>Surname</h2>
+                    <input class="text-input" type="text" th:value="${user.getLastName()}" id="lastname" name="lastname">
+                </div>
+                <div class="form-element">
+                    <h2 id="passchange" style="text-decoration: 2px black underline">Change Password</h2>
+                    <h2 id="passlabel" hidden="hidden">Enter Password</h2>
+                    <input class="text-input" type="hidden" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                    <h2 id="matchlabel" hidden="hidden">Retype Password</h2>
+                    <input class="text-input" type="hidden" id="passmatch" name="passmatch" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                </div>
+                <div id="message1" class="form-element message">
+                    <p id="match" class="invalid">Passwords must match</p>
+                    <h3>Password must contain the following:</h3>
+                    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                    <p id="number" class="invalid">A <b>number</b></p>
+                    <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                </div>
+                <div class="form-element">
+                    <label for="accesslevel">
+                        <h2>Select Account Type</h2>
+                    </label>
+                    <select class="list-element" id="accesslevel" name="accesslevel">
+                        <option value="admin" th:selected="${user.getAccessLevel()==601}">Admin</option>
+                        <option value="professor" th:selected="${user.getAccessLevel()==602}">Professor</option>
+                        <option value="invigilator" th:selected="${user.getAccessLevel()==603}">Invigilator</option>
+                    </select>
+                </div>
+                <div class="form-element btn-group">
+                    <button id="updateBtn" type="submit"
+                            onclick="return confirm('Update Account?')" formaction="/user/update">Update</button>
+                    <button id="deleteBtn" type="submit"
+                            onclick="return confirm('Delete Account?')" formaction="/user/delete">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<script src="/js/userSettings.js"></script>
+</body>
+</html>

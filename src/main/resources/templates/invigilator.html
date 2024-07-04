@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="viewport-wrapper">
+        <h1 class="data-name" th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+        <h2 class="data-rank">Invigilator</h2>
+        <h3>Accounts</h3>
+        <details>
+            <summary class="list-element">Current</summary>
+            <div class="list-element">
+                <a class="list-element" th:text="${currentUser.getEmail()}"></a>
+            </div>
+            <div class="list-element">
+                <a href="user/logout" class="list-element">Log Out  ></a>
+            </div>
+        </details>
+    </div>
+</body>
+</html>
