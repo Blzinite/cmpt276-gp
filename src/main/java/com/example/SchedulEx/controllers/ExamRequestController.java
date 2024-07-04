@@ -17,7 +17,6 @@ public class ExamRequestController {
     private ExamRequestRepository examRequestRepository;
 
     //TODO: add mappings
-
     public String addExamRequest(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
         //TODO: validate user
         //TODO: call db

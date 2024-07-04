@@ -123,9 +123,11 @@ function UpdateCalendar()
     const rows = Math.ceil((daysInMonth - (7 - firstDay)) / 7) + 1;
     const tableBody = document.getElementById("monthTableBody");
     tableBody.innerHTML = "";
+    // Create row
     for(let row = 0; row < rows; row++)
     {
         const rowObj = document.createElement('tr');
+        // Create day
         for(let day = 0; day < 7; day++)
         {
             const dayObj = document.createElement('td');
@@ -136,7 +138,7 @@ function UpdateCalendar()
 
     // For each day, set the day number
     const days = document.querySelectorAll('tbody td');
-    for (var day of days)
+    for (let day of days)
     {
         currentDayNum++;
         if(currentDayNum < 1 || currentDayNum > daysInMonth)
@@ -146,6 +148,8 @@ function UpdateCalendar()
         else
         {
             day.textContent = currentDayNum.toString();
+            day.setAttribute("td:text", "${currentUser.getEmail()}");
+            day.addEventListener("click", function() {CreateExamRequest(day.textContent)});
         }
     }
 }
@@ -167,4 +171,18 @@ function LeapYear(year)
         return true;
     }
     return false;
+}
+
+// Create Exam Request Form
+// Function: Send date info to parent window when clicked
+function CreateExamRequest(dayNumInput)
+{
+    // let test = [[${currentUser.getEmail()}]];
+    // console.log(test);
+    window.parent.postMessage(dayNumInput + " " + currentMonthNum + " " + currentYearNum);
+}
+
+function Test()
+{
+    console.log("test");
 }

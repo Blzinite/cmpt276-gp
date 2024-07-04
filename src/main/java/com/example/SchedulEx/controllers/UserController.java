@@ -298,6 +298,7 @@ public class UserController {
             }
             case AccessLevel.PROFESSOR -> {
                 model.addAttribute("currentUser", curr);
+//                model.addAttribute("exams", curr.getExamList());
                 return "professor";
             }
             default -> {
@@ -305,5 +306,4 @@ public class UserController {
             }
         }
     }
-
 }

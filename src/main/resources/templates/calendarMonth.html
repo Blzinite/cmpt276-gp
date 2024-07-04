@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/style.css"  rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
     <title>Monthly Calendar View</title>
 </head>
 <body>
     <div class="viewport-wrapper">
         <div id="monthHeader" class="calendar-header">
-            <a class="left-arrow" id="prevMonth" onclick="PrevMonth()">
-                <img alt="prev" src="assets/Pointer.svg">
-            </a>
+
+            <form action="calendarMonth_prevMonth" method="get">
+                <button class="left-arrow" id="prevMonth">
+                    <img alt="prev" src="assets/Pointer.svg">
+                </button>
+            </form>
+
             <div class="calendar-header-list">
-                <h1 id="currentYear"></h1>
-                <h1 id="currentMonth"></h1>
+                <h1 id="currentYear" th:text="${year}"></h1>
+                <h1 id="currentMonth" th:text="${month}"></h1>
             </div>
-            <a class="right-arrow" id="nextMonth" onclick="NextMonth()">
-                <img alt="next" src="assets/Pointer.svg">
-            </a>
+
+            <form action="calendarMonth_nextMonth" method="get">
+                <Button class="right-arrow" id="nextMonth">
+                    <img alt="next" src="assets/Pointer.svg">
+                </Button>
+            </form>
+
         </div>
         <div class="table-wrapper">
             <table class="monthTable">
@@ -34,13 +42,12 @@
                 </tr>
             </thead>
             <tbody id = "monthTableBody">
-
             </tbody>
         </table>
         </div>
     </div>
 </body>
 <footer>
-    <script src="js/calendarMonth.js"></script>
+
 </footer>
 </html>
