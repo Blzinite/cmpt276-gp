@@ -67,8 +67,6 @@ public class CalendarController
         model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         model.addAttribute("dayMatrix", GetDayMatrix());
 
-        System.out.println("month: " + dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
-
         return "calendarMonth";
     }
 
@@ -77,11 +75,11 @@ public class CalendarController
         Calendar temp = (Calendar) calendar.clone();
         temp.set(Calendar.DAY_OF_MONTH, 1);
         int firstDay = temp.get(Calendar.DAY_OF_WEEK);
-        int daysInMonth = temp.getMaximum(Calendar.DAY_OF_MONTH);
+        int daysInMonth = temp.getActualMaximum(Calendar.DAY_OF_MONTH);
         int weeks = (int) Math.ceil((firstDay - 1 + daysInMonth) / 7f);
         int[][] days = new int[weeks][7];
 
-        int currentDayNum = -firstDay + 1;
+        int currentDayNum = -firstDay + 2;
         for (int week = 0; week < weeks; week++)
         {
             for (int day = 0; day < 7; day++)
@@ -89,10 +87,6 @@ public class CalendarController
                 days[week][day] = currentDayNum++;
             }
         }
-
-        System.out.println("first day " + firstDay);
-        System.out.println("days in month " + daysInMonth);
-        System.out.println("weeks in month " + weeks);
 
         return days;
     }
