@@ -42,6 +42,9 @@
                 </tr>
             </thead>
             <tbody id = "monthTableBody">
+                <tr th:each="week : ${dayMatrix}">
+                    <td th:each="day : ${week}" th:text="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? ${day} : ''"></td>
+                </tr>
             </tbody>
         </table>
         </div>

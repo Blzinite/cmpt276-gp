@@ -1,5 +1,6 @@
 package com.example.SchedulEx.controllers;
 
+import com.example.SchedulEx.models.ExamRepository;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.models.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,11 @@ import java.util.Map;
 @Controller
 public class CalendarController
 {
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ExamRepository examRepository;
+
     Calendar calendar = new GregorianCalendar();
     DateFormatSymbols dateSymbols = new DateFormatSymbols();
 
@@ -27,10 +33,13 @@ public class CalendarController
     {
         // User curr = (User) session.getAttribute("user");
         // model.addAttribute("currentUser", curr);
-        calendar.setTime(new Date());
 
+        // Get month, year, and day number for each table entry
+        calendar.setTime(new Date());
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
         model.addAttribute("year", calendar.get(Calendar.YEAR));
+        model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        model.addAttribute("dayMatrix", GetDayMatrix());
 
         return "calendarMonth";
     }
@@ -42,6 +51,8 @@ public class CalendarController
 
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
         model.addAttribute("year", calendar.get(Calendar.YEAR));
+        model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        model.addAttribute("dayMatrix", GetDayMatrix());
 
         return "calendarMonth";
     }
@@ -53,7 +64,33 @@ public class CalendarController
 
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
         model.addAttribute("year", calendar.get(Calendar.YEAR));
+        model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        model.addAttribute("dayMatrix", GetDayMatrix());
+
+        System.out.println("month: " + dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
+        System.out.println("days in month: +" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         return "calendarMonth";
+    }
+
+    private int[][] GetDayMatrix()
+    {
+        Calendar temp = (Calendar) calendar.clone();
+        temp.set(Calendar.DAY_OF_MONTH, 0);
+        int firstDay = temp.get(Calendar.DAY_OF_WEEK);
+        int daysInMonth = temp.getMaximum(Calendar.DAY_OF_MONTH);
+        int weeks = (int) Math.ceil((firstDay + daysInMonth) / 7f);
+        int[][] days = new int[weeks][7];
+
+        int currentDayNum = -firstDay + 1;
+        for (int week = 0; week < weeks; week++)
+        {
+            for (int day = 0; day < 7; day++)
+            {
+                days[week][day] = currentDayNum++;
+            }
+        }
+
+        return days;
     }
 }
