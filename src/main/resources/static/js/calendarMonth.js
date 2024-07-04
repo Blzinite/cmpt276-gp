@@ -2,17 +2,16 @@
 // currentMonthNum is 0 indexed, not 1 indexed
 var currentMonthNum = new Date().getMonth();
 var currentMonthDisplay = document.getElementById("currentMonth");
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var monthLengths = [31,0,31,30,31,30,31,31,30,31,30,31];
-
 var currentYearNum = new Date().getFullYear();
 var currentYearDisplay = document.getElementById("currentYear");
 
-var tableBody = document.getElementById("tableBody");
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var monthLengths = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 document.addEventListener("DOMContentLoaded", () => {Initialise();});
 
-// Fill with current month/year
+// Initialise Calendar
+// Function: Called by DOMContentLoaded listener to set the initial values when the page is loaded
 function Initialise()
 {
     currentMonthDisplay.textContent = months[currentMonthNum];
@@ -20,42 +19,66 @@ function Initialise()
     UpdateCalendar();
 }
 
-// Go to next month
+// Next Month
+// Function: Called by the next month button in calendarMonth.html (id = nextMonth).
+//           Determines next month, then updates the calendar to display it.
 function NextMonth()
 {
+    // Gets the number of the next month (0 indexed)
     currentMonthNum = (currentMonthNum + 1) % 12;
+
+    // If the new current month has rolled over to january of the next year, update the year as well.
     if(currentMonthNum == 0)
     {
         currentYearNum++;
         currentYearDisplay.textContent = currentYearNum;
     }
+
+    // Update the month display, and the calendar grid numbers/size.
     currentMonthDisplay.textContent = months[currentMonthNum];
     UpdateCalendar();
 }
 
-// Go to previous month
+// Previous Month
+// Function: Called by the previous month button in calendarMonth.html (id = prevMonth).
+//           Determines previous month, then updates the calendar to display it.
 function PrevMonth()
 {
+    // Gets the number of the previous month (0 indexed)
     currentMonthNum = mod((currentMonthNum - 1), 12);
+
+    // If the new current month has rolled over to december of the previous year, update the year as well.
     if(currentMonthNum == 11)
     {
         currentYearNum--;
         currentYearDisplay.textContent = currentYearNum;
     }
+
+    // Update the month display, and the calendar grid numbers/size.
     currentMonthDisplay.textContent = months[currentMonthNum];
     UpdateCalendar();
 }
 
-// Simple function to fix negative modulo behavior in PrevMonth()
+// Custom Modulo
+// Function: Modulo operator (%) has undesirable behavior when the left operand is negative. This avoids that.
 function mod(n, m) 
 {
     return ((n % m) + m) % m;
 }
 
-// Given month, day, year, calculate day of the week
+// Get day of the week
+// Function: Given the day number, the month number (0 indexed), and the year number, return the day name as a number where
+/*           0 = Sunday
+             1 = Monday
+             ...
+             5 = Friday
+             6 = Saturday
+ */
 function DayOfTheWeek(day, month, year) 
 {
-    // Convert months to be 1 indexed
+    // Convert month input to be 1 indexed
+    // Necessary because NextMonth and PrevMonth modulo behavior is more simple when month is 0 indexed.
+    // Additionally, easier to index months array when month number is stored with 0 index.
     month++;
 
     // If month is jan or feb, must set month num to 13/14 respectively
@@ -71,41 +94,48 @@ function DayOfTheWeek(day, month, year)
     let Y = year;
 
     let dayOfWeek = (q + Math.floor(13 * (m + 1) / 5) + Y + Math.floor(Y / 4) - Math.floor(Y / 100) + Math.floor(Y / 400)) % 7;
-    // days = ["sat", "sun", "mon", "tues", "wed", "thurs", "fri"];
-    // console.log(months[currentMonthNum] + " " + days[dayOfWeek]);
 
+    // The algorithm returns 0 = saturday
     // Convert from 0 = saturday to 0 = sunday
     dayOfWeek = mod(dayOfWeek - 1, 7);
 
     return dayOfWeek;
 }
 
-// Update calendar numbers for the correct month and year
+// Update the calendar display
+// Function: Determines which day of the week the current month starts on and how long the month is.
+//           Displays the correct number of weeks and correct number on each day.
 function UpdateCalendar()
 {
     // Determine which day of the week the month starts on
-    var firstDay = DayOfTheWeek(1, currentMonthNum, currentYearNum);
-    var currentDayNum = 0 - firstDay;
+    const firstDay = DayOfTheWeek(1, currentMonthNum, currentYearNum);
+    let currentDayNum = 0 - firstDay;
 
-    var daysInMonth = DaysInMonth(currentMonthNum);
+    // Determine how many days are in the month
+    let daysInMonth = monthLengths[currentMonthNum];
+    if (currentMonthNum === 1 && LeapYear(currentYearNum))
+    {
+        daysInMonth++;
+    }
 
     // How many weeks will need to be displayed? i.e. height of calendar in rows
-    var rows = Math.ceil((daysInMonth - (7 - firstDay)) / 7) + 1;
-    var tableBody = document.getElementById("monthTableBody");
+    // Create a new row for each
+    const rows = Math.ceil((daysInMonth - (7 - firstDay)) / 7) + 1;
+    const tableBody = document.getElementById("monthTableBody");
     tableBody.innerHTML = "";
     for(let row = 0; row < rows; row++)
     {
-        var rowObj = document.createElement('tr');
+        const rowObj = document.createElement('tr');
         for(let day = 0; day < 7; day++)
         {
-            var dayObj = document.createElement('td');
+            const dayObj = document.createElement('td');
             rowObj.appendChild(dayObj);
         }
         tableBody.appendChild(rowObj);
     }
 
-    // Set number of each day of the month
-    var days = document.querySelectorAll('tbody td');
+    // For each day, set the day number
+    const days = document.querySelectorAll('tbody td');
     for (var day of days)
     {
         currentDayNum++;
@@ -115,19 +145,20 @@ function UpdateCalendar()
         }
         else
         {
-            day.textContent = currentDayNum;
+            day.textContent = currentDayNum.toString();
         }
     }
 }
 
-// Is it a leap year
+// Is it a leap year?
+// Function: Returns true if input is a leap year, false otherwise.
 function LeapYear(year)
 {
-    if (year % 4 == 0)
+    if (year % 4 === 0)
     {
-        if (year % 100 == 0)
+        if (year % 100 === 0)
         {
-            if (year % 400 == 0)
+            if (year % 400 === 0)
             {
                 return true;
             }
@@ -136,24 +167,4 @@ function LeapYear(year)
         return true;
     }
     return false;
-}
-
-// Days in month
-function DaysInMonth(month)
-{
-    if(month == 1)
-    {
-        if (LeapYear(currentYearNum) == true)
-        {
-            return 29;
-        }
-        else
-        {
-            return 28;
-        }
-    }
-    else
-    {
-        return monthLengths[month];
-    }
 }
