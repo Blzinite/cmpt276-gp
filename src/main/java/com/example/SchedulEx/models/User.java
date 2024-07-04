@@ -30,9 +30,6 @@ public class User {
     private String exams;
     private boolean newUser;
 
-//    @ElementCollection
-//    private final List<String> examList = new ArrayList<>();
-
     public User() {
     }
 
