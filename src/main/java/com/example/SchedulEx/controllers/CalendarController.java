@@ -1,29 +1,22 @@
 package com.example.SchedulEx.controllers;
 
-import com.example.SchedulEx.models.ExamRepository;
-import com.example.SchedulEx.models.User;
-import com.example.SchedulEx.models.UserRepository;
+import com.example.SchedulEx.models.*;
+import com.example.SchedulEx.services.CourseService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class CalendarController
 {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ExamRepository examRepository;
+    CourseService courseService;
 
     Calendar calendar = new GregorianCalendar();
     DateFormatSymbols dateSymbols = new DateFormatSymbols();
@@ -31,9 +24,6 @@ public class CalendarController
     @GetMapping("calendarMonth")
     public String GetCalendarMonth(Model model, HttpSession session)
     {
-        // User curr = (User) session.getAttribute("user");
-        // model.addAttribute("currentUser", curr);
-
         // Get month, year, and day number for each table entry
         calendar.setTime(new Date());
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
@@ -66,6 +56,22 @@ public class CalendarController
         model.addAttribute("year", calendar.get(Calendar.YEAR));
         model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         model.addAttribute("dayMatrix", GetDayMatrix());
+
+        User currentUser = (User) session.getAttribute("user");
+        model.addAttribute("currentUser", currentUser);
+
+        if(currentUser == null)
+        {
+            System.out.println("user is NOT logged in");
+        }
+        else if(currentUser.getAccessLevel() == AccessLevel.PROFESSOR)
+        {
+            System.out.println("user is logged in as instructor");
+        }
+        else
+        {
+            System.out.println("user is NOT instructor");
+        }
 
         return "calendarMonth";
     }

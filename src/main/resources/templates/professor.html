@@ -23,11 +23,14 @@
         </details>
 
         <h3>Courses</h3>
-        <details>
+        <details th:attr="open=${isOpen}">
             <summary class="list-element">My Courses</summary>
-            <div class="list-element">
-
-            </div>
+            <div class="list-element" th:each="course : ${currentUser.GetCourses()}" th:text="${course.toString()}"></div>
+            <form method="POST" action="newCourse">Add New Course
+                <input type="text" placeholder="Department" name="department" required>
+                <input type="number" placeholder="Course Number" name="number" required>
+                <button type="submit">Submit</button>
+            </form>
         </details>
     </div>
 </body>

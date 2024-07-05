@@ -2,6 +2,7 @@ package com.example.SchedulEx.models;
 
 import com.example.SchedulEx.helpers.PasswordHelper;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +20,10 @@ public class User {
     private String firstName;
     private String lastName;
     private int accessLevel;
-    //this.exams will contain different data dependent on this.accessLevel
-    //Professors will have comma separated exam request ids, followed by comma separated exam ids
-    //The split will be denoted with a colon
-    //Eg "Req1,Req2,Req3:Ex1,Ex2,Ex3" where Reqn is a request and Exn is an exam
-    //Invigilators will have comma separated exam ids
-    //followed by a binary string representing whether an exam is accepted
-    //The split will be denoted with a colon
-    //Eg "Ex1,Ex2,Ex3:101" where Exn is an exam, and the user has accepted Ex1 and Ex3
-    private String exams;
     private boolean newUser;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "instructor")
+    private List<Course> courses = new ArrayList<>();
 
     public User() {
     }
@@ -40,18 +35,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.accessLevel = AccessLevel.parse(accessLevel);
-        this.exams = "";
-        this.newUser = true;
-    }
-
-    public User(String email, String password, String firstName, String lastName, String accessLevel, String exams) throws Exception {
-        this.email = email;
-        this.salt = PasswordHelper.generateSalt();
-        this.password = PasswordHelper.encryptPassword(password, this.salt);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.accessLevel = AccessLevel.parse(accessLevel);
-        this.exams = exams;
         this.newUser = true;
     }
 
@@ -109,14 +92,6 @@ public class User {
         this.accessLevel = AccessLevel.parse(accessLevel);
     }
 
-    public String getExams() {
-        return exams;
-    }
-
-    public void setExams(String exams) {
-        this.exams = exams;
-    }
-
     public boolean isNewUser() {
         return newUser;
     }
@@ -125,8 +100,14 @@ public class User {
         this.newUser = newUser;
     }
 
-//    public List<String> getExamList()
-//    {
-//        return new ArrayList<>(examList);
-//    }
+    public List<Course> GetCourses()
+    {
+        return new ArrayList<>(courses);
+    }
+
+    public void AddCourse(Course course)
+    {
+        course.SetInstructor(this);
+        this.courses.add(course);
+    }
 }

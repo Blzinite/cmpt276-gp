@@ -3,7 +3,7 @@ package com.example.SchedulEx.controllers;
 import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.helpers.PasswordHelper;
 import com.example.SchedulEx.models.User;
-import com.example.SchedulEx.models.UserRepository;
+import com.example.SchedulEx.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -298,7 +297,6 @@ public class UserController {
             }
             case AccessLevel.PROFESSOR -> {
                 model.addAttribute("currentUser", curr);
-//                model.addAttribute("exams", curr.getExamList());
                 return "professor";
             }
             default -> {

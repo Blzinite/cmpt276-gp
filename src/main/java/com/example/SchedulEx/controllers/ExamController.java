@@ -1,7 +1,6 @@
 package com.example.SchedulEx.controllers;
 
-import com.example.SchedulEx.models.Exam;
-import com.example.SchedulEx.models.ExamRepository;
+import com.example.SchedulEx.repositories.ExamRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
