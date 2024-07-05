@@ -4,6 +4,7 @@ import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.helpers.PasswordHelper;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.models.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,7 +208,6 @@ public class UserController {
         Optional<User> toFind = userRepo.findByEmail(email);
         if (session.getAttribute("user") != null) {
             session.removeAttribute("user");
-            session.invalidate();
         }
         if (toFind.isEmpty()) {
             //TODO: Error Handling (User Not Found)
