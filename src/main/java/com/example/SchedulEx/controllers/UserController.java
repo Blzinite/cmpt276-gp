@@ -206,7 +206,6 @@ public class UserController {
         Optional<User> toFind = userRepo.findByEmail(email);
         if (session.getAttribute("user") != null) {
             session.removeAttribute("user");
-            session.invalidate();
         }
         if (toFind.isEmpty()) {
             //TODO: Error Handling (User Not Found)
