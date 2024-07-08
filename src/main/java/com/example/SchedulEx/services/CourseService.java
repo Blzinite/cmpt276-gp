@@ -11,8 +11,7 @@ import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CourseService
@@ -84,6 +83,62 @@ public class CourseService
             }
             default -> {
                 return "login";
+            }
+        }
+    }
+
+    public void UpdateCourseInformation(Map<String, String> params, Model model, HttpSession session)
+    {
+        // Get info from form submission
+        int instructorID = -1;
+        int courseID = -1;
+        int enrollment = -1;
+        int duration = -1;
+
+        try
+        {
+            instructorID = Integer.parseInt(params.get("courseInstructorID"));
+            courseID = Integer.parseInt(params.get("courseID"));
+            enrollment = Integer.parseInt(params.get("enrollment"));
+            duration = Integer.parseInt(params.get("duration"));
+        }
+        catch (Exception e)
+        {
+            System.out.println("There was an error casting a param to its intended type");
+        }
+
+        // Construct new calendar
+        Calendar date = new GregorianCalendar();
+        int year = Integer.parseInt(params.get("examDate").substring(0, 4));
+        int month = Integer.parseInt(params.get("examDate").substring(5, 7)) - 1;
+        int day = Integer.parseInt(params.get("examDate").substring(8, 10));
+        date.set(year, month, day);
+
+        // Verify that the instructor who teaches the course is the one trying to update it
+        User user = (User) session.getAttribute("user");
+        if(user == null)
+        {
+            System.out.println("Error: There is no user");
+            return;
+        }
+
+        if(user.getUid() == instructorID)
+        {
+            System.out.println("Course instructor ID matches submission user ID");
+            System.out.println("Course ID: " + courseID);
+
+            Optional<Course> optionalCourse = courseRepository.findById(courseID);
+            if(optionalCourse.isPresent())
+            {
+                Course course = optionalCourse.get();
+
+                course.UpdateCourseInformation(enrollment, date, duration);
+                courseRepository.save(course);
+                user.SetCourses(courseRepository.findAll());
+            }
+            else
+            {
+                System.out.println("Course not found");
             }
         }
     }

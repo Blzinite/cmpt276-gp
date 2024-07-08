@@ -110,4 +110,9 @@ public class User {
         course.SetInstructor(this);
         this.courses.add(course);
     }
+
+    public void SetCourses(List<Course> courses)
+    {
+        this.courses = courses;
+    }
 }

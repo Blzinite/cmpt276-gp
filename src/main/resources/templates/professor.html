@@ -25,7 +25,36 @@
         <h3>Courses</h3>
         <details th:attr="open=${isOpen}">
             <summary class="list-element">My Courses</summary>
-            <div class="list-element" th:each="course : ${currentUser.GetCourses()}" th:text="${course.toString()}"></div>
+            <div class="course" th:each="course : ${currentUser.GetCourses()}" th:object="${course}">
+                <h3 th:text="${course.toString()}"></h3>
+                <form method="GET" action="submitExamRequest">
+                    <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
+                    <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
+                    <label>
+                        Enrollment:
+                        <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment}">
+                    </label>
+                    <br>
+                    <label>
+                        Exam Date:
+                        <input type="date" name="examDate" th:value="*{GetExamDate()}">
+                    </label>
+                    <br>
+                    <label>
+                        Start Time:
+                        <input type="time" name="startTime" th:value="*{GetStartTime()}">
+                    </label>
+                    <br>
+                    <label>
+                        Duration:
+                        <input type="number" name="duration" th:value="*{GetDuration()}">
+                    </label>
+                    <br>
+                    <button type="submit">Submit Request</button>
+                </form>
+            </div>
+
+            <br>
             <form method="POST" action="newCourse">Add New Course
                 <input type="text" placeholder="Department" name="department" required>
                 <input type="number" placeholder="Course Number" name="number" required>

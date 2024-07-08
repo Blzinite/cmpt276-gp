@@ -43,7 +43,8 @@
             </thead>
             <tbody id = "monthTableBody">
                 <tr th:each="week : ${dayMatrix}">
-                    <td th:each="day : ${week}" th:text="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? ${day} : ''"></td>
+                    <td th:each="day : ${week}" th:text="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? ${day} : ''"
+                    th:class="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? 'calendarEntry' : ''"></td>
                 </tr>
             </tbody>
         </table>
@@ -51,6 +52,6 @@
     </div>
 </body>
 <footer>
-
+    <script src="js/calendarMonth.js"></script>
 </footer>
 </html>
