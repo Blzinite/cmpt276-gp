@@ -169,7 +169,7 @@ public class UserController {
         }
         toEdit.setFirstName(params.get("firstname"));
         toEdit.setLastName(params.get("lastname"));
-        toEdit.setAccessLevel(params.get("accesslevel"));
+        toEdit.setAccessLevel(AccessLevel.parse(params.get("accesslevel")));
         userRepo.save(toEdit);
         response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:../action-panel";
@@ -279,24 +279,26 @@ public class UserController {
     }
 
     @GetMapping("action-panel")
-    public String getActionPanel(Model model, HttpSession session){
+    public String getActionPanel(Model model, HttpSession session)
+    {
         User curr = (User) session.getAttribute("user");
         if(curr == null){
             return "login";
         }
-        switch(curr.getAccessLevel()){
-            case AccessLevel.ADMIN -> {
+        switch(curr.getAccessLevel())
+        {
+            case ADMIN -> {
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepo.findAll());
                 return "admin";
             }
-            case AccessLevel.INVIGILATOR -> {
+            case INVIGILATOR -> {
                 model.addAttribute("currentUser", curr);
                 return "invigilator";
             }
-            case AccessLevel.PROFESSOR -> {
+            case INSTRUCTOR -> {
                 model.addAttribute("currentUser", curr);
-                return "professor";
+                return "instructor";
             }
             default -> {
                 return "login";

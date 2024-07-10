@@ -2,12 +2,10 @@ package com.example.SchedulEx.services;
 
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
-import com.example.SchedulEx.repositories.ExamRepository;
 import com.example.SchedulEx.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -27,16 +25,21 @@ public class CourseService
     }
 
     @Transactional
-    public void CreateNewCourse(Map<String, String> params, Model model, HttpSession session)
+    public void CreateNewCourse(Map<String, String> params, HttpSession session)
     {
-        User user = (User) session.getAttribute("user");
-        if (user == null)
-        {
-            System.exit(5);
-        }
+        // Get reference to instructor
+        User instructor = (User) session.getAttribute("user");
 
-        Course newCourse = new Course(params.get("department"), params.get("number"));
-        user.AddCourse(newCourse);
+        // Create new course
+        String department = params.get("department");
+        int number = Integer.parseInt(params.get("number"));
+        int enrollment = Integer.parseInt(params.get("enrollment"));
+
+        Course newCourse = new Course(department, number, enrollment, instructor);
+
+        // Add it to the user
+        instructor.AddCourse(newCourse);
+
         courseRepository.save(newCourse);
     }
 
@@ -49,9 +52,9 @@ public class CourseService
         {
             return null;
         }
-        else if(user.getAccessLevel() == AccessLevel.PROFESSOR)
+        else if(user.getAccessLevel() == AccessLevel.INSTRUCTOR)
         {
-            System.out.println("Called get user courses for a professor");
+            System.out.println("Called get user courses for an instructor");
 
             return user.GetCourses();
         }
@@ -68,22 +71,62 @@ public class CourseService
             return "login";
         }
         switch(curr.getAccessLevel()){
-            case AccessLevel.ADMIN -> {
+            case ADMIN -> {
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepository.findAll());
                 return "admin";
             }
-            case AccessLevel.INVIGILATOR -> {
+            case INVIGILATOR -> {
                 model.addAttribute("currentUser", curr);
                 return "invigilator";
             }
-            case AccessLevel.PROFESSOR -> {
+            case INSTRUCTOR -> {
                 model.addAttribute("currentUser", curr);
-                return "professor";
+                return "instructor";
             }
             default -> {
                 return "login";
             }
+        }
+    }
+
+    // Verifies user access level
+    // Function: If the user is not of the proper access level given as input, throws exception.
+    public boolean ConfirmUserAccessLevel(AccessLevel accessLevel, HttpSession session) throws IllegalArgumentException
+    {
+        User user = (User) session.getAttribute("user");
+        if (user == null)
+        {
+            return false;
+        }
+        else if (user.getAccessLevel() == accessLevel)
+        {
+            return true;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    // Delete course from repo
+    // make sure to remove all references between the user and course to be deleted
+    // then delete the course from course repo AND update user in user repo
+    // Or else things break.
+    @Transactional
+    public void DeleteCourse(int id, HttpSession session)
+    {
+        User user = (User) session.getAttribute("user");
+
+        Course course = null;
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+        if(optionalCourse.isPresent())
+        {
+            course = optionalCourse.get();
+        }
+        if (course != null)
+        {
+            user.RemoveCourse(course);
+            course.RemoveInstructor();
+            courseRepository.deleteById(course.GetCourseID());
+            userRepository.save(user);
         }
     }
 

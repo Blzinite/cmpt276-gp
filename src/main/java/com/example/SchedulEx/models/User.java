@@ -19,7 +19,7 @@ public class User {
     private byte[] salt;
     private String firstName;
     private String lastName;
-    private int accessLevel;
+    private String accessLevel;
     private boolean newUser;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "instructor")
@@ -28,13 +28,14 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password, String firstName, String lastName, String accessLevel) throws Exception {
+    public User(String email, String password, String firstName, String lastName, String accessLevel) throws Exception
+    {
         this.email = email;
         this.salt = PasswordHelper.generateSalt();
         this.password = PasswordHelper.encryptPassword(password, this.salt);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.accessLevel = AccessLevel.parse(accessLevel);
+        this.accessLevel = accessLevel;
         this.newUser = true;
     }
 
@@ -84,12 +85,14 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getAccessLevel() {
-        return accessLevel;
+    public AccessLevel getAccessLevel()
+    {
+        return AccessLevel.parse(accessLevel);
     }
 
-    public void setAccessLevel(String accessLevel) {
-        this.accessLevel = AccessLevel.parse(accessLevel);
+    public void setAccessLevel(AccessLevel accessLevel)
+    {
+        this.accessLevel = accessLevel.toString();
     }
 
     public boolean isNewUser() {
@@ -109,6 +112,11 @@ public class User {
     {
         course.SetInstructor(this);
         this.courses.add(course);
+    }
+
+    public void RemoveCourse(Course course)
+    {
+        System.out.println(this.courses.remove(course));
     }
 
     public void SetCourses(List<Course> courses)

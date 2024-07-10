@@ -10,7 +10,7 @@
 <body>
     <div class="viewport-wrapper">
         <h1 class="data-name" th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
-        <h2 class="data-rank">Professor</h2>
+        <h2 class="data-rank">Instructor</h2>
         <h3>Accounts</h3>
         <details>
             <summary class="list-element">Current</summary>
@@ -34,6 +34,7 @@
                         Enrollment:
                         <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment}">
                     </label>
+                    <span th:text="|Students Enrolled: *{GetEnrollment()}|"></span>
                     <br>
                     <label>
                         Exam Date:
@@ -52,15 +53,41 @@
                     <br>
                     <button type="submit">Submit Request</button>
                 </form>
+
+                <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
+                    <button type="submit">DELETE (DEBUG)</button>
+                </form>
+
             </div>
 
             <br>
-            <form method="POST" action="newCourse">Add New Course
-                <input type="text" placeholder="Department" name="department" required>
-                <input type="number" placeholder="Course Number" name="number" required>
-                <button type="submit">Submit</button>
+            <h3>Create New Course</h3>
+            <form method="POST" action="newCourse">
+                <label>
+                    Department:
+                    <input id="department" type="text" title="Enter a 2-4 digit department code" placeholder="E.g. CMPT" name="department" required pattern="[A-Z]{2,4}">
+                </label>
+
+                <br>
+                <label>
+                    Course Number:
+                    <input id="courseNumber" type="number" title="Enter the course number" placeholder="E.g. 135" name="number" required pattern="[0-9]{3}">
+                </label>
+
+                <br>
+                <label>
+                    Enrollment:
+                    <input id="enrollment" type="number" title="Enter the number of students enrolled in the course" placeholder="# of students" name="enrollment" required min="1" max="999">
+                </label>
+
+                <br>
+                <button id="newCourseButton" type="submit">Add Course</button>
             </form>
         </details>
     </div>
 </body>
+
+<footer>
+    <script src="js/instructor.js"></script>
+</footer>
 </html>

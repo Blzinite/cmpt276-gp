@@ -64,7 +64,7 @@ public class CalendarController
         {
             System.out.println("user is NOT logged in");
         }
-        else if(currentUser.getAccessLevel() == AccessLevel.PROFESSOR)
+        else if(currentUser.getAccessLevel() == AccessLevel.INSTRUCTOR)
         {
             System.out.println("user is logged in as instructor");
         }

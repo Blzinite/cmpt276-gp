@@ -3,7 +3,6 @@ package com.example.SchedulEx.models;
 import jakarta.persistence.*;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 @Entity
@@ -14,7 +13,7 @@ public class Course
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int courseID;
     private String courseDepartment;
-    private String courseNumber;
+    private int courseNumber;
     private int enrollment = 0;
     private Calendar examDateAndTime = new GregorianCalendar();
     private int duration = 0;
@@ -28,15 +27,12 @@ public class Course
 
     }
 
-    public Course(String department, String number)
+    public Course(String department, int number, int enrollment, User instructor)
     {
-        if(department.isEmpty() || number.isEmpty())
-        {
-            System.out.println("Department or number is empty");
-        }
-
+        this.enrollment = enrollment;
         this.courseDepartment = department;
         this.courseNumber = number;
+        this.instructor = instructor;
     }
 
     public void UpdateCourseInformation(int enrollment, Calendar examDate, int duration)
@@ -72,7 +68,7 @@ public class Course
     @Override
     public String toString()
     {
-        return courseDepartment.trim() + " " + courseNumber.trim();
+        return courseDepartment.trim() + " " + courseNumber;
     }
 
     public int GetEnrollment()
@@ -106,8 +102,24 @@ public class Course
         return instructor.getUid();
     }
 
+    public void RemoveInstructor()
+    {
+        instructor = null;
+    }
+
     public int GetCourseID()
     {
         return courseID;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        Course other = (Course) o;
+        if(this.courseID == other.courseID)
+        {
+            return true;
+        }
+        return false;
     }
 }
