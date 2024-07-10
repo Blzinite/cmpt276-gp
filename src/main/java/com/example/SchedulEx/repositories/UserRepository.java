@@ -1,5 +1,6 @@
-package com.example.SchedulEx.models;
+package com.example.SchedulEx.repositories;
 
+import com.example.SchedulEx.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

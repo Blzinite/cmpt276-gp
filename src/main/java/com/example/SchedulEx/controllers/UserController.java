@@ -3,8 +3,7 @@ package com.example.SchedulEx.controllers;
 import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.helpers.PasswordHelper;
 import com.example.SchedulEx.models.User;
-import com.example.SchedulEx.models.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.SchedulEx.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -171,7 +169,7 @@ public class UserController {
         }
         toEdit.setFirstName(params.get("firstname"));
         toEdit.setLastName(params.get("lastname"));
-        toEdit.setAccessLevel(params.get("accesslevel"));
+        toEdit.setAccessLevel(AccessLevel.parse(params.get("accesslevel")));
         userRepo.save(toEdit);
         response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:../action-panel";
@@ -281,29 +279,30 @@ public class UserController {
     }
 
     @GetMapping("action-panel")
-    public String getActionPanel(Model model, HttpSession session){
+    public String getActionPanel(Model model, HttpSession session)
+    {
         User curr = (User) session.getAttribute("user");
         if(curr == null){
             return "login";
         }
-        switch(curr.getAccessLevel()){
-            case AccessLevel.ADMIN -> {
+        switch(curr.getAccessLevel())
+        {
+            case ADMIN -> {
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepo.findAll());
                 return "admin";
             }
-            case AccessLevel.INVIGILATOR -> {
+            case INVIGILATOR -> {
                 model.addAttribute("currentUser", curr);
                 return "invigilator";
             }
-            case AccessLevel.PROFESSOR -> {
+            case INSTRUCTOR -> {
                 model.addAttribute("currentUser", curr);
-                return "professor";
+                return "instructor";
             }
             default -> {
                 return "login";
             }
         }
     }
-
 }

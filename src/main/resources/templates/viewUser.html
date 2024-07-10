@@ -44,7 +44,7 @@
                     </label>
                     <select class="list-element" id="accesslevel" name="accesslevel">
                         <option value="admin" th:selected="${user.getAccessLevel()==601}">Admin</option>
-                        <option value="professor" th:selected="${user.getAccessLevel()==602}">Professor</option>
+                        <option value="instructor" th:selected="${user.getAccessLevel()==602}">Instructor</option>
                         <option value="invigilator" th:selected="${user.getAccessLevel()==603}">Invigilator</option>
                     </select>
                 </div>
