@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="viewport-wrapper">
+        <h1 class="data-name" th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+        <h2 class="data-rank">Instructor</h2>
+        <h3>Accounts</h3>
+        <details>
+            <summary class="list-element">Current</summary>
+            <div class="list-element">
+                <a class="list-element" th:text="${currentUser.getEmail()}"></a>
+            </div>
+            <div class="list-element">
+                <a href="user/logout" class="list-element">Log Out  ></a>
+            </div>
+        </details>
+
+        <h3>Courses</h3>
+        <details th:attr="open=${isOpen}">
+            <summary class="list-element">My Courses</summary>
+            <div class="course" th:each="course : ${currentUser.GetCourses()}" th:object="${course}">
+                <h3 th:text="${course.toString()}"></h3>
+                <form method="GET" action="submitExamRequest">
+                    <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
+                    <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
+                    <label>
+                        Enrollment:
+                        <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment}">
+                    </label>
+                    <span th:text="|Students Enrolled: *{GetEnrollment()}|"></span>
+                    <br>
+                    <label>
+                        Exam Date:
+                        <input type="date" name="examDate" th:value="*{GetExamDate()}">
+                    </label>
+                    <br>
+                    <label>
+                        Start Time:
+                        <input type="time" name="startTime" th:value="*{GetStartTime()}">
+                    </label>
+                    <br>
+                    <label>
+                        Duration:
+                        <input type="number" name="duration" th:value="*{GetDuration()}">
+                    </label>
+                    <br>
+                    <button type="submit">Submit Request</button>
+                </form>
+
+                <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
+                    <button type="submit">DELETE (DEBUG)</button>
+                </form>
+
+            </div>
+
+            <br>
+            <h3>Create New Course</h3>
+            <form method="POST" action="newCourse">
+                <label>
+                    Department:
+                    <input id="department" type="text" title="Enter a 2-4 digit department code" placeholder="E.g. CMPT" name="department" required pattern="[A-Z]{2,4}">
+                </label>
+
+                <br>
+                <label>
+                    Course Number:
+                    <input id="courseNumber" type="number" title="Enter the course number" placeholder="E.g. 135" name="number" required pattern="[0-9]{3}">
+                </label>
+
+                <br>
+                <label>
+                    Enrollment:
+                    <input id="enrollment" type="number" title="Enter the number of students enrolled in the course" placeholder="# of students" name="enrollment" required min="1" max="999">
+                </label>
+
+                <br>
+                <button id="newCourseButton" type="submit">Add Course</button>
+            </form>
+        </details>
+    </div>
+</body>
+
+<footer>
+    <script src="js/instructor.js"></script>
+</footer>
+</html>
