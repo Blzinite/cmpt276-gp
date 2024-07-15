@@ -21,8 +21,14 @@ function getSunday() {
     return sunday;
 }
 
+function getSaturday() {
+    const d = new Date(currentSunday);
+    const saturday = new Date(d.setDate(d.getDate() + 6));
+    return saturday;
+}
+
 let currentSunday = getSunday();
-let currentWeek = 0;
+let currentSaturday = getSaturday();
 
 function showDays(){
     for (let i = 0; i < 7; i++){
@@ -44,14 +50,14 @@ function showMonth(){
 function lastWeek(){
     const i = currentSunday.getDate() - 7;
     currentSunday.setDate(i);
-    currentWeek--;
+    currentSaturday = getSaturday();
     update();
 }
 
 function nextWeek(){
     const i = currentSunday.getDate() + 7;
     currentSunday.setDate(i);
-    currentWeek++;
+    currentSaturday = getSaturday();
     update();
 }
 
@@ -77,12 +83,23 @@ function highlight(e){
     for (let i = 0; i < length; i++){
         let j = 0;
         j += i * 8;
-        x[time + weekOfDay + j + 1].style.backgroundColor = color;
-        x[time + weekOfDay + j + 1].style.border = "none";
+        if (e[0] > currentSunday && e[0] < currentSaturday) {
+            x[time + weekOfDay + j + 1].style.backgroundColor = color;
+            x[time + weekOfDay + j + 1].style.border = "none";
+        }
+        else{
+            x[time + weekOfDay + j + 1].style.backgroundColor = "";
+            x[time + weekOfDay + j + 1].style.border = "";
+        }
     }
     let name = e[2];
     let priority = e[3];
-    x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
+    if (e[0] > currentSunday && e[0] < currentSaturday) {
+        x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
+    }
+    else{
+        x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = "";
+    }
 }
 
 function getRandomColor() {
@@ -95,6 +112,11 @@ function getRandomColor() {
 }
 
 function update(){
+    document.getElementById("test1").innerHTML = currentSunday.getDate();
+    document.getElementById("test2").innerHTML = currentSunday.getMonth();
+    document.getElementById("test3").innerHTML = currentSaturday.getMonth();
+    document.getElementById("test4").innerHTML = currentSaturday.getDate();
+    document.getElementById("test5").innerHTML = exam[0];
     showDays();
     showMonth();
     highlight(exam);
