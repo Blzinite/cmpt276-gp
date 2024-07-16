@@ -76,6 +76,11 @@ public class CourseService
     }
 
     @Transactional
+    public List<Course> getAccepted(){
+        return courseRepository.findByRequestStatusBetween(RequestStatus.ACCEPTED_TIME_ONE, RequestStatus.ACCEPTED_TIME_THREE);
+    }
+
+    @Transactional
     public Optional<Course> GetCourse(String courseName){
         return courseRepository.findByCourseName(courseName);
     }
@@ -90,6 +95,7 @@ public class CourseService
             case ADMIN -> {
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepository.findAll());
+                model.addAttribute("pending", courseRepository.findByRequestStatus(RequestStatus.PENDING));
                 return "admin";
             }
             case INVIGILATOR -> {

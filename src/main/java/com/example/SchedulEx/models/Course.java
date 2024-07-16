@@ -45,6 +45,7 @@ public class Course
         this.dateThree = UnixHelper.parseDate(params.get("examDate-3"), params.get("startTime-3"));
         this.enrollment = Integer.parseInt(params.get("enrollment"));
         this.duration = Integer.parseInt(params.get("duration"));
+        this.requestStatus = RequestStatus.PENDING;
     }
 
     public void SetInstructor(User instructor)

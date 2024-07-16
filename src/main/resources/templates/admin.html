@@ -30,6 +30,13 @@
         <div class="list-element">
             <a href="/addUser.html">Add User  ></a>
         </div>
+        <h3>Exams</h3>
+        <details>
+            <summary class="list-element">Pending</summary>
+            <div class="list-element" th:each="course:${pending}">
+                <a class="list-element" th:href="|/admin/${course.getCourseName}|" th:text="${course.toString()}"></a>
+            </div>
+        </details>
     </div>
 </body>
 </html>

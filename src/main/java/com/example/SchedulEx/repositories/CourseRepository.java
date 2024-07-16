@@ -10,4 +10,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer>
 {
     Optional<Course> findByCourseName(String courseName);
     List<Course> findByCourseNameNot(String courseName);
+    List<Course> findByRequestStatus(int requestStatus);
+    List<Course> findByRequestStatusBetween(int first, int second);
 }
