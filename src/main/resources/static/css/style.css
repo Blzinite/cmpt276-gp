@@ -9,6 +9,7 @@ Palette
 
 html, body {
     margin-left: 0;
+    margin-right: 0;
     padding: 0;
     font: normal 100% Akshar, "Trebuchet MS", verdana, tahoma, arial, sans-serif;
 }
@@ -115,6 +116,10 @@ h1, h2, label {
     display: flex;
     align-items: center;
     justify-content:center;
+}
+
+.calendar-header-list {
+    margin: auto;
 }
 
 .calendar-header-list:first-child {

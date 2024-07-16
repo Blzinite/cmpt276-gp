@@ -23,45 +23,64 @@
         </details>
 
         <h3>Courses</h3>
-        <details th:attr="open=${isOpen}">
-            <summary class="list-element">My Courses</summary>
-            <div class="course" th:each="course : ${currentUser.GetCourses()}" th:object="${course}">
-                <h3 th:text="${course.toString()}"></h3>
-                <form method="GET" action="submitExamRequest">
-                    <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
-                    <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
-                    <label>
-                        Enrollment:
-                        <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment}">
-                    </label>
-                    <span th:text="|Students Enrolled: *{GetEnrollment()}|"></span>
-                    <br>
-                    <label>
-                        Exam Date:
-                        <input type="date" name="examDate" th:value="*{GetExamDate()}">
-                    </label>
-                    <br>
-                    <label>
-                        Start Time:
-                        <input type="time" name="startTime" th:value="*{GetStartTime()}">
-                    </label>
-                    <br>
-                    <label>
-                        Duration:
-                        <input type="number" name="duration" th:value="*{GetDuration()}">
-                    </label>
-                    <br>
-                    <button type="submit">Submit Request</button>
-                </form>
+        <details class="list-element" th:each="course : ${currentUser.GetCourses()}" th:object="${course}">
+            <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
+            <form method="POST" action="submitExamRequest">
+                <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
+                <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
+                <label>
+                    Enrollment:
+                    <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment}">
+                </label>
+                <span th:text="|Students Enrolled: *{GetEnrollment()}|"></span>
+                <br>
+                <label>
+                    Exam Date #1:
+                    <input th:id="${course.toString()}+'-date0'" type="date" name="examDate-1" th:value="*{GetExamDate()}">
+                </label>
+                <label>
+                    Start Time:
+                    <input th:id="${course.toString()}+'-time0'" type="time" name="startTime-1" th:value="*{GetStartTime()}">
+                </label>
+                <br>
+                <br>
+                <label>
+                    Exam Date #2:
+                    <input th:id="${course.toString()}+'-date1'" type="date" name="examDate-2" th:value="*{GetExamDate()}">
+                </label>
+                <br>
+                <label>
+                    Start Time:
+                    <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{GetStartTime()}">
+                </label>
+                <br>
+                <label>
+                    Exam Date #3:
+                    <input th:id="${course.toString()}+'-date2'" type="date" name="examDate-2" th:value="*{GetExamDate()}">
+                </label>
+                <br>
+                <label>
+                    Start Time:
+                    <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{GetStartTime()}">
+                </label>
+                <br>
+                <label>
+                    Duration:
+                    <input class="duration-input" type="number" name="duration" th:value="*{GetDuration()}">
+                </label>
+                <br>
+                <button type="submit">Submit Request</button>
+            </form>
 
-                <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
-                    <button type="submit">DELETE (DEBUG)</button>
-                </form>
+            <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
+                <button type="submit">DELETE (DEBUG)</button>
+            </form>
 
-            </div>
+        </details>
 
-            <br>
-            <h3>Create New Course</h3>
+        <br>
+        <details class="list-element">
+            <summary>Create New Course</summary>
             <form method="POST" action="newCourse">
                 <label>
                     Department:

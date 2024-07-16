@@ -33,3 +33,34 @@ function ConfirmAddCourse(event)
         return false;
     }
 }
+
+// Fetch all the details element.
+const details = document.querySelectorAll("details");
+let active = null;
+const index = window.parent;
+
+for (let dur of document.getElementsByClassName("duration-input")) {
+    dur.addEventListener('input', function() {
+        passDuration(dur.id);
+    })
+}
+
+// Add the onclick listeners.
+details.forEach((detail) => {
+  detail.addEventListener("toggle", () => {
+    if (detail.open) {
+        setTargetDetail(detail);
+        active = detail.getElementsByTagName("summary")[0].id;
+        index.setClassName(active);
+    }
+  });
+});
+
+// Close all the details that are not targetDetail.
+function setTargetDetail(targetDetail) {
+  details.forEach((detail) => {
+    if (detail !== targetDetail) {
+      detail.open = false;
+    }
+  });
+}
