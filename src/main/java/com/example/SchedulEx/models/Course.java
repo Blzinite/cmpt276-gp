@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Entity
@@ -84,15 +85,25 @@ public class Course
 
     public JSONObject getJSON(){
         JSONObject obj = new JSONObject();
-        obj.put("courseName", this.courseName);
-        obj.put("enrollment", this.enrollment);
-        obj.put("duration", this.duration);
-        JSONArray arr = new JSONArray();
-        arr.add(UnixHelper.parseMoment(this.dateOne));
-        arr.add(UnixHelper.parseMoment(this.dateTwo));
-        arr.add(UnixHelper.parseMoment(this.dateThree));
-        obj.put("dates", arr);
+        obj.put("userExamName", this.courseName);
+        obj.put("userExamDur", this.duration);
+        JSONArray arr = this.getDates();
+        obj.put("userExams", arr);
         return obj;
+    }
+
+    private JSONArray getDates(){
+        JSONArray out = new JSONArray();
+        Long[] dates = {this.dateOne, this.dateTwo, this.dateThree};
+        for(Long date : dates){
+            JSONObject tmp = new JSONObject();
+            tmp.put("name", this.courseName);
+            tmp.put("date", UnixHelper.parseDate(date));
+            tmp.put("start", UnixHelper.parseTime(date));
+            tmp.put("duration", this.duration);
+            out.add(tmp);
+        }
+        return out;
     }
 
     @Override
