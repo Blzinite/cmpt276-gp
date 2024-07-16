@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 @Entity
