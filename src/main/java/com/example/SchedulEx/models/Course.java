@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @Entity
@@ -16,9 +17,9 @@ public class Course
     private int courseID;
     private String courseName;
     private int enrollment = 0;
-    private Long dateOne;
-    private Long dateTwo;
-    private Long dateThree;
+    private Long dateOne = 0L;
+    private Long dateTwo = 0L;
+    private Long dateThree = 0L;
     private int requestStatus;
     private int duration = 0;
 
@@ -82,17 +83,42 @@ public class Course
         return courseID;
     }
 
-    public JSONObject getJSON(){
-        JSONObject obj = new JSONObject();
-        obj.put("courseName", this.courseName);
-        obj.put("enrollment", this.enrollment);
-        obj.put("duration", this.duration);
-        JSONArray arr = new JSONArray();
-        arr.add(UnixHelper.parseMoment(this.dateOne));
-        arr.add(UnixHelper.parseMoment(this.dateTwo));
-        arr.add(UnixHelper.parseMoment(this.dateThree));
-        obj.put("dates", arr);
-        return obj;
+    public String getExamDate(int which){
+        return switch (which){
+            case 1 -> UnixHelper.parseDate(dateOne);
+            case 2 -> UnixHelper.parseDate(dateTwo);
+            case 3 -> UnixHelper.parseDate(dateThree);
+            default -> "Invalid Selection";
+        };
+    }
+
+    public String getStartTime(int which){
+        return switch (which){
+            case 1 -> UnixHelper.parseTime(dateOne);
+            case 2 -> UnixHelper.parseTime(dateTwo);
+            case 3 -> UnixHelper.parseTime(dateThree);
+            default -> "Invalid Selection";
+        };
+    }
+
+    public JSONArray getDates(){
+        JSONArray out = new JSONArray();
+        Long[] dates = {this.dateOne, this.dateTwo, this.dateThree};
+        for(Long date : dates){
+            JSONObject tmp = new JSONObject();
+            tmp.put("name", this.toString());
+            tmp.put("date", UnixHelper.parseDate(date));
+            tmp.put("start", UnixHelper.parseTime(date));
+            tmp.put("duration", this.duration);
+            out.add(tmp);
+        }
+        return out;
+    }
+
+    @Override
+    public String toString(){
+        String[] tmp = this.courseName.split("-");
+        return tmp[0] + " " + tmp[1];
     }
 
     @Override
