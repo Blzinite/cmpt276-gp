@@ -93,8 +93,6 @@ public class CourseController {
     public String UpdateCourseInformation(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
         courseService.UpdateCourseInformation(params, model, session);
-        //model.addAttribute("isOpen", true);
-
         return courseService.GetActionPanel(model, session);
     }
 }
