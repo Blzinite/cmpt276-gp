@@ -10,22 +10,18 @@
     <div class="viewport-wrapper">
         <div id="monthHeader" class="calendar-header">
 
-            <form action="calendarMonth_prevMonth" method="get">
-                <button class="left-arrow" id="prevMonth">
-                    <img alt="prev" src="assets/Pointer.svg">
-                </button>
-            </form>
+            <a href="calendarMonth_prevMonth" class="left-arrow" id="prevMonth">
+                <img alt="prev" src="assets/Pointer.svg">
+            </a>
 
             <div class="calendar-header-list">
                 <h1 id="currentYear" th:text="${year}"></h1>
                 <h1 id="currentMonth" th:text="${month}"></h1>
             </div>
 
-            <form action="calendarMonth_nextMonth" method="get">
-                <Button class="right-arrow" id="nextMonth">
-                    <img alt="next" src="assets/Pointer.svg">
-                </Button>
-            </form>
+            <a href="calendarMonth_nextMonth" class="right-arrow" id="nextMonth">
+                <img alt="next" src="assets/Pointer.svg">
+            </a>
 
         </div>
         <div class="table-wrapper">

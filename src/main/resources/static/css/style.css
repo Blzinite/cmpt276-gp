@@ -118,6 +118,10 @@ h1, h2, label {
     justify-content:center;
 }
 
+.calendar-header-list {
+    margin: auto;
+}
+
 .calendar-header-list:first-child {
     text-decoration: underline;
 }
