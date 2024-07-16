@@ -98,6 +98,7 @@ public class CourseService
             }
             case INSTRUCTOR -> {
                 model.addAttribute("currentUser", curr);
+                model.addAttribute("courses", courseRepository.findByInstructor(curr));
                 return "instructor";
             }
             default -> {
