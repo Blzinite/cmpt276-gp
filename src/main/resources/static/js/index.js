@@ -4,7 +4,7 @@ const actionPanelFrame = window.frames["actionPanel"];
 var localData;
 
 function fetchLocalData() {
-    var testdata = '{"userExams":[{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-13","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-14","start":"12:00","duration":3}],"OtherExams":[{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3}]}';
+    var testdata = '{"userExams":[{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3}],"OtherExams":[{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3}]}';
     localData = JSON.parse(testdata);
 }
 
