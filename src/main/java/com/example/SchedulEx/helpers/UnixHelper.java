@@ -8,10 +8,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+//Helper functions for parsing Unix timestamps
 public class UnixHelper {
     public static Long parseDate(String date, String time) {
         LocalDateTime out = LocalDateTime.parse(date + "T" + time);
-        return out.toInstant(ZoneOffset.UTC).toEpochMilli();
+        return out.toInstant(ZoneOffset.UTC).toEpochMilli() / 1000;
     }
     public static Map<String, String> parseMomentMap(Long moment){
         Map<String, String> map = new HashMap<>();

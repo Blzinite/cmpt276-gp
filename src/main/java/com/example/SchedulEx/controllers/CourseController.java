@@ -42,8 +42,11 @@ public class CourseController {
     @PostMapping("newCourse")
     public String NewCourse(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
-        // TODO: check if user logged in...
-        // Bug. return get action panel should return to login if they are not logged in, but I got an error. Not sure how to reproduce.
+        //verify user is logged in
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return "redirect:/action-panel";
+        }
 
         // Verify user access level
         try

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomStringUtils;
 
-
+//helper functions for creating, hashing, salting, and verifying passwords
 public class PasswordHelper {
 
     private static final int ITER_COUNT = 65536;
