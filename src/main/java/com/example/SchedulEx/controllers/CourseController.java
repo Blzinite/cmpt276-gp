@@ -6,6 +6,8 @@ import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.services.CourseService;
 import jakarta.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +28,13 @@ public class CourseController {
         if (course == null) {
             return "Course not found";
         }
-        return course.getJSON().toJSONString();
+        JSONArray dates = course.getDates();
+        JSONObject tmp = new JSONObject();
+        tmp.put("userExamName", course.toString());
+        tmp.put("userExamDur", course.GetDuration());
+        tmp.put("userExams", dates);
+        tmp.put("otherExams", courseService.getAllExcept(courseName));
+        return tmp.toJSONString();
     }
 
     // Add New Course as Instructor

@@ -5,6 +5,7 @@ import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -22,6 +23,16 @@ public class CourseService
     {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
+    }
+
+    @Transactional
+    public JSONArray getAllExcept(String name){
+        List<Course> all = courseRepository.findByCourseNameNot(name);
+        JSONArray tmp = new JSONArray();
+        for(Course course : all){
+            tmp.addAll(course.getDates());
+        }
+        return tmp;
     }
 
     @Transactional
