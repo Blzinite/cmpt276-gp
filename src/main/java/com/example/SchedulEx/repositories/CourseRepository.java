@@ -1,6 +1,7 @@
 package com.example.SchedulEx.repositories;
 
 import com.example.SchedulEx.models.Course;
+import com.example.SchedulEx.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer>
     List<Course> findByCourseNameNot(String courseName);
     List<Course> findByRequestStatus(int requestStatus);
     List<Course> findByRequestStatusBetween(int first, int second);
+    List<Course> findByInstructor(User instructor);
 }
