@@ -189,7 +189,6 @@ public class CourseService
 
                 course.updateCourse(params);
                 courseRepository.save(course);
-                user.SetCourses(courseRepository.findAll());
             }
             else
             {
