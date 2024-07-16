@@ -36,24 +36,25 @@ function ConfirmAddCourse(event)
 
 // Fetch all the details element.
 const details = document.querySelectorAll("details");
-let active = null;
 const index = window.parent;
 
-for (let dur of document.getElementsByClassName("duration-input")) {
+for (let dur of document.getElementsByTagName("input")) {
     dur.addEventListener('input', function() {
-        passDuration(dur.id);
+        updateLocalData();
     })
 }
 
 // Add the onclick listeners.
 details.forEach((detail) => {
-  detail.addEventListener("toggle", () => {
-    if (detail.open) {
-        setTargetDetail(detail);
-        active = detail.getElementsByTagName("summary")[0].id;
-        index.setClassName(active);
+    if (detail.className === "list-element") {
+        detail.addEventListener("toggle", () => {
+            if (detail.open) {
+                setTargetDetail(detail);
+                let active = detail.getElementsByTagName("summary")[0].id;
+                index.getData("/course-info/"+active.replace(" ", "-"));
+            }
+        });
     }
-  });
 });
 
 // Close all the details that are not targetDetail.
@@ -63,4 +64,23 @@ function setTargetDetail(targetDetail) {
       detail.open = false;
     }
   });
+}
+
+function updateDates(dates) {
+    for (let i = 0; i < dates.length; i++) {
+        document.getElementById(dates[i].name+"-date"+i).value = dates[i].date;
+        document.getElementById(dates[i].name+"-time"+i).value = dates[i].duration;
+    }
+}
+
+function updateLocalData() {
+    let dates = index.localData.userExams;
+    for (let i = 0; i < dates.length; i++) {
+        dates[i].date = document.getElementById(dates[i].name+"-date"+i).value;
+        let dur = document.getElementById(dates[i].name+"-time"+i);
+        if (dur != null) {
+            dates[i].duration = dur.value;
+        }
+    }
+    index.highlightUserDates();
 }

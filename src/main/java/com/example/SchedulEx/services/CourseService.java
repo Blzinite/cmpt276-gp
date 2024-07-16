@@ -172,9 +172,6 @@ public class CourseService
             System.out.println("There was an error casting a param to its intended type");
         }
 
-        // Construct new calendar
-
-
         // Verify that the instructor who teaches the course is the one trying to update it
         User user = (User) session.getAttribute("user");
         if(user == null)
@@ -185,9 +182,6 @@ public class CourseService
 
         if(user.getUid() == instructorID)
         {
-            System.out.println("Course instructor ID matches submission user ID");
-            System.out.println("Course ID: " + courseID);
-
             Optional<Course> optionalCourse = courseRepository.findById(courseID);
             if(optionalCourse.isPresent())
             {
@@ -195,7 +189,6 @@ public class CourseService
 
                 course.updateCourse(params);
                 courseRepository.save(course);
-                user.SetCourses(courseRepository.findAll());
             }
             else
             {

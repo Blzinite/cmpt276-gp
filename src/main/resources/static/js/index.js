@@ -3,6 +3,20 @@ const actionPanelFrame = window.frames["actionPanel"];
 
 var localData;
 
+async function getData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    localData = await response.json();
+    highlightUserDates();
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 function fetchLocalData() {
     var testdata = '{"userExams":[{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3}],"OtherExams":[{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3}]}';
     localData = JSON.parse(testdata);
@@ -38,19 +52,20 @@ function monthCalendarCall(date) {
                 "duration" : removed.duration
             }
             console.log(tmpObj);
-            localData.userExams.unshift(tmpObj)
+            localData.userExams.unshift(tmpObj);
         } else {
             const tmpObj = {
-                "name" : localData.userExams[0].name,
+                "name" : localData.userExamName,
                 "date" : date,
                 "start" : "12:00",
-                "duration" : localData.userExams[0].duration
+                "duration" : localData.userExamDur
             }
-            localData.userExams.unshift(tmpObj)
+            localData.userExams.unshift(tmpObj);
         }
     }
     console.log(dates);
     highlightUserDates();
+    actionPanelFrame.updateDates(localData.userExams);
 }
 
 // Create New Exam
@@ -75,3 +90,6 @@ function highlightUserDates() {
     }
 }
 
+function getDates() {
+    return localData.userExams;
+}
