@@ -4,6 +4,7 @@ import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.helpers.PasswordHelper;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.repositories.UserRepository;
+import com.example.SchedulEx.services.CourseService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private CourseService courseService;
 
     //TODO: resolve mappings
     //TODO: better error handling
@@ -277,28 +280,6 @@ public class UserController {
     @GetMapping("action-panel")
     public String getActionPanel(Model model, HttpSession session)
     {
-        User curr = (User) session.getAttribute("user");
-        if(curr == null){
-            return "login";
-        }
-        switch(curr.getAccessLevel())
-        {
-            case ADMIN -> {
-                model.addAttribute("currentUser", curr);
-                model.addAttribute("users", userRepo.findAll());
-                return "admin";
-            }
-            case INVIGILATOR -> {
-                model.addAttribute("currentUser", curr);
-                return "invigilator";
-            }
-            case INSTRUCTOR -> {
-                model.addAttribute("currentUser", curr);
-                return "instructor";
-            }
-            default -> {
-                return "login";
-            }
-        }
+        return courseService.GetActionPanel(model, session);
     }
 }

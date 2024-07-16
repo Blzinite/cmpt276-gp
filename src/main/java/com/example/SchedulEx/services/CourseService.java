@@ -181,9 +181,11 @@ public class CourseService
             if(optionalCourse.isPresent())
             {
                 Course course = optionalCourse.get();
-
+                user.RemoveCourse(course);
                 course.updateCourse(params);
                 courseRepository.save(course);
+                user.AddCourse(course);
+                userRepository.save(user);
             }
             else
             {
