@@ -35,7 +35,7 @@ public class CourseService
         int number = Integer.parseInt(params.get("number"));
         int enrollment = Integer.parseInt(params.get("enrollment"));
 
-        Course newCourse = new Course(department, number, enrollment, instructor);
+        Course newCourse = new Course(department + "-" + number, enrollment, instructor);
 
         // Add it to the user
         instructor.AddCourse(newCourse);
@@ -62,6 +62,11 @@ public class CourseService
         {
             return null;
         }
+    }
+
+    @Transactional
+    public Optional<Course> GetCourse(String courseName){
+        return courseRepository.findByCourseName(courseName);
     }
 
     public String GetActionPanel(Model model, HttpSession session)
@@ -151,11 +156,7 @@ public class CourseService
         }
 
         // Construct new calendar
-        Calendar date = new GregorianCalendar();
-        int year = Integer.parseInt(params.get("examDate").substring(0, 4));
-        int month = Integer.parseInt(params.get("examDate").substring(5, 7)) - 1;
-        int day = Integer.parseInt(params.get("examDate").substring(8, 10));
-        date.set(year, month, day);
+
 
         // Verify that the instructor who teaches the course is the one trying to update it
         User user = (User) session.getAttribute("user");
@@ -175,7 +176,7 @@ public class CourseService
             {
                 Course course = optionalCourse.get();
 
-                course.UpdateCourseInformation(enrollment, date, duration);
+                course.updateCourse(params);
                 courseRepository.save(course);
                 user.SetCourses(courseRepository.findAll());
             }
