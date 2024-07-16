@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +18,16 @@ import java.util.Map;
 public class CourseController {
     @Autowired
     private CourseService courseService;
+
+    @RequestMapping(value="course-info/{courseName}", method=RequestMethod.GET)
+    @ResponseBody
+    public String courseInfo(@PathVariable("courseName") String courseName) {
+        Course course = courseService.GetCourse(courseName).orElse(null);
+        if (course == null) {
+            return "Course not found";
+        }
+        return course.getJSON().toJSONString();
+    }
 
     // Add New Course as Instructor
     // Function: Allows users logged in as instructor to create a new course by providing course name, number, and enrollment
@@ -71,7 +78,7 @@ public class CourseController {
         return courseService.GetActionPanel(model, session);
     }
 
-    @GetMapping("submitExamRequest")
+    @PostMapping("submitExamRequest")
     public String UpdateCourseInformation(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
         courseService.UpdateCourseInformation(params, model, session);

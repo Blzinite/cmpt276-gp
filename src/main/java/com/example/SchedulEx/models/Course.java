@@ -1,9 +1,11 @@
 package com.example.SchedulEx.models;
 
+import com.example.SchedulEx.helpers.UnixHelper;
 import jakarta.persistence.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Map;
 
 @Entity
 @Table(name="Courses")
@@ -12,10 +14,12 @@ public class Course
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int courseID;
-    private String courseDepartment;
-    private int courseNumber;
+    private String courseName;
     private int enrollment = 0;
-    private Calendar examDateAndTime = new GregorianCalendar();
+    private Long dateOne;
+    private Long dateTwo;
+    private Long dateThree;
+    private int requestStatus;
     private int duration = 0;
 
     @ManyToOne
@@ -27,37 +31,20 @@ public class Course
 
     }
 
-    public Course(String department, int number, int enrollment, User instructor)
+    public Course(String name, int enrollment, User instructor)
     {
         this.enrollment = enrollment;
-        this.courseDepartment = department;
-        this.courseNumber = number;
+        this.courseName = name;
         this.instructor = instructor;
+        this.requestStatus = -1;
     }
 
-    public void UpdateCourseInformation(int enrollment, Calendar examDate, int duration)
-    {
-
-
-        if(enrollment > 0 && enrollment <= 999)
-        {
-            this.enrollment = enrollment;
-        }
-        else
-        {
-            this.enrollment = 0;
-        }
-
-        this.examDateAndTime = examDate;
-
-        if(duration > 0 && duration <= 999)
-        {
-            this.duration = duration;
-        }
-        else
-        {
-            this.duration = 0;
-        }
+    public void updateCourse(Map<String,String> params){
+        this.dateOne = UnixHelper.parseDate(params.get("examDate-1"), params.get("startTime-1"));
+        this.dateTwo = UnixHelper.parseDate(params.get("examDate-2"), params.get("startTime-2"));
+        this.dateThree = UnixHelper.parseDate(params.get("examDate-3"), params.get("startTime-3"));
+        this.enrollment = Integer.parseInt(params.get("enrollment"));
+        this.duration = Integer.parseInt(params.get("duration"));
     }
 
     public void SetInstructor(User instructor)
@@ -65,30 +52,9 @@ public class Course
         this.instructor = instructor;
     }
 
-    @Override
-    public String toString()
-    {
-        return courseDepartment.trim() + " " + courseNumber;
-    }
-
     public int GetEnrollment()
     {
         return enrollment;
-    }
-
-    public String GetExamDate()
-    {
-        String year = String.format("%04d", examDateAndTime.get(Calendar.YEAR));
-        String month = String.format("%02d", examDateAndTime.get(Calendar.MONTH) + 1);
-        String day = String.format("%02d", examDateAndTime.get(Calendar.DAY_OF_MONTH));
-        return year + "-" + month + "-" + day;
-    }
-
-    public String GetStartTime()
-    {
-        int hour = examDateAndTime.get(Calendar.HOUR_OF_DAY);
-        int minute = examDateAndTime.get(Calendar.MINUTE);
-        return String.format("%02d:%02d", hour, minute);
     }
 
     public int GetDuration()
@@ -102,6 +68,10 @@ public class Course
         return instructor.getUid();
     }
 
+    public String getCourseName(){
+        return courseName;
+    }
+
     public void RemoveInstructor()
     {
         instructor = null;
@@ -110,6 +80,19 @@ public class Course
     public int GetCourseID()
     {
         return courseID;
+    }
+
+    public JSONObject getJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("courseName", this.courseName);
+        obj.put("enrollment", this.enrollment);
+        obj.put("duration", this.duration);
+        JSONArray arr = new JSONArray();
+        arr.add(UnixHelper.parseMoment(this.dateOne));
+        arr.add(UnixHelper.parseMoment(this.dateTwo));
+        arr.add(UnixHelper.parseMoment(this.dateThree));
+        obj.put("dates", arr);
+        return obj;
     }
 
     @Override

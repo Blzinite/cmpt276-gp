@@ -43,9 +43,9 @@
                         <h2>Select Account Type</h2>
                     </label>
                     <select class="list-element" id="accesslevel" name="accesslevel">
-                        <option value="admin" th:selected="${user.getAccessLevel()==601}">Admin</option>
-                        <option value="instructor" th:selected="${user.getAccessLevel()==602}">Instructor</option>
-                        <option value="invigilator" th:selected="${user.getAccessLevel()==603}">Invigilator</option>
+                        <option value="admin" th:selected="${user.getAccessLevel().toString()=='admin'}">Admin</option>
+                        <option value="instructor" th:selected="${user.getAccessLevel().toString()=='instructor'}">Instructor</option>
+                        <option value="invigilator" th:selected="${user.getAccessLevel().toString()=='invigilator'}">Invigilator</option>
                     </select>
                 </div>
                 <div class="form-element btn-group">
