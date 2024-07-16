@@ -65,13 +65,66 @@ h1, h2, label {
     border-radius: 20px;
 }
 
+.input-wrapper {
+    border: solid 2px #4D869C;
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+}
+
+.input-wrapper input {
+    border: 0;
+    background: none;
+    width: 100%;
+}
+
 .form-wrapper {
-    width: 96vw;
-    height: 96vh;
+    width: 86vw;
+    height: 86vh;
+    padding: 20px;
     margin: auto;
     background: #EEF7FF;
     border-radius: 20px;
     overflow: hidden;
+}
+
+.time-wrapper {
+    border: solid 2px #4D869C;
+    border-radius: 5px;
+    width: 90%;
+    padding: 0 2px 0 2px;
+    display: block;
+    margin: auto;
+}
+
+.time-wrapper input {
+    width: 98%;
+    text-align: center;
+    border: 0;
+    background: none;
+}
+
+.date-wrapper {
+    border: solid 2px #4D869C;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0 2px 0 2px;
+}
+
+.date-wrapper input {
+    width: 98%;
+    background: none;
+    border: 0;
+    font-size: 16pt;
+}
+
+.button-sumbit {
+    margin: 5px 0 5px 0;
+    border: 0;
+    background: #4D869C;
+    border-radius: 5px;
+    font-size: 26px;
+    color: white;
 }
 
 .calendar-wrapper {

@@ -93,3 +93,8 @@ function highlightUserDates() {
 function getDates() {
     return localData.userExams;
 }
+
+function switchToWeek(date) {
+    document.getElementById("calendar-panel").src = "/calendarWeek.html";
+    calendarFrame.setCurrentSunday(new Date(date));
+}

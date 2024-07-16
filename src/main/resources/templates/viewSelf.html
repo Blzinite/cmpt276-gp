@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<div class="userSettings-wrapper">
-    <a href="/action-panel">  Back  <  </a>
-    <h1 class="data-name" th:text="${user.getEmail()}"></h1>
     <div class="form-wrapper" style="overflow: visible">
+        <a href="/action-panel">  Back  <  </a>
+        <h1 class="data-name" th:text="${user.getEmail()}"></h1>
         <form method="post">
             <div class="form-element">
                 <input type="hidden" th:value="${user.getEmail()}" id="email" name="email">
@@ -46,7 +45,6 @@
             </div>
         </form>
     </div>
-</div>
 <script src="/js/userSettings.js"></script>
 </body>
 </html>
