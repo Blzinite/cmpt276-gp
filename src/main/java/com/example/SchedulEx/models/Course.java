@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.Arrays;
 import java.util.Map;
 
 @Entity
@@ -125,10 +124,6 @@ public class Course
     public boolean equals(Object o)
     {
         Course other = (Course) o;
-        if(this.courseID == other.courseID)
-        {
-            return true;
-        }
-        return false;
+        return this.courseID == other.courseID;
     }
 }
