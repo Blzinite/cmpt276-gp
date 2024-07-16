@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SchedulEx</title>
     <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="viewport-wrapper">
@@ -15,7 +15,7 @@
         <details>
             <summary class="list-element">Current</summary>
             <div class="list-element">
-                <a class="list-element" th:text="${currentUser.getEmail()}"></a>
+                <a class="list-element" href="/user/self" th:text="${currentUser.getEmail()}"></a>
             </div>
             <div class="list-element">
                 <a href="user/logout" class="list-element">Log Out  ></a>
@@ -24,7 +24,7 @@
         <details>
             <summary class="list-element">Registered</summary>
             <div class="list-element" th:each="user:${users}">
-                <a class="list-element" th:text="${user.email}"></a>
+                <a class="list-element" th:href="|/user/${user.getUid()}|" th:text="${user.email}"></a>
             </div>
         </details>
         <div class="list-element">

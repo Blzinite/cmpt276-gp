@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="viewport-wrapper">
+        <h1 class="data-name" th:text="|${currentUser.getFirstName()} ${currentUser.getLastName()}|"></h1>
+        <h2 class="data-rank">Instructor</h2>
+        <h3>Accounts</h3>
+        <details>
+            <summary class="list-element">Current</summary>
+            <div class="list-element">
+                <a class="list-element" href="/user/self" th:text="${currentUser.getEmail()}"></a>
+            </div>
+            <div class="list-element">
+                <a href="user/logout" class="list-element">Log Out  ></a>
+            </div>
+        </details>
+
+        <h3>Courses</h3>
+        <details class="list-element" th:each="course : ${courses}" th:object="${course}">
+            <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
+            <form method="POST" action="submitExamRequest">
+                <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
+                <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
+                <label class="input-wrapper">
+                    <span>Enrollment:</span>
+                    <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment()}">
+                </label>
+                <label class="input-wrapper">
+                    <span>Duration:</span>
+                    <input class="duration-input" type="number" name="duration" th:value="*{GetDuration()}">
+                    <span>Hours</span>
+                </label>
+                <div style="padding-left: 10px;">Time Slots:</div>
+                <details>
+                    <summary class="date-wrapper">
+                        <label>
+                            Exam Date #1:
+                            <input th:id="${course.toString()}+'-date0'" type="date" name="examDate-1" th:value="*{getExamDate(1)}">
+                        </label>
+                    </summary>
+                        <label class="time-wrapper">
+                            Start Time:
+                            <input th:id="${course.toString()}+'-time0'" type="time" name="startTime-1" th:value="*{getStartTime(1)}">
+                        </label>
+                </details>
+                <details>
+                    <summary class="date-wrapper">
+                        <label>
+                            Exam Date #2:
+                            <input th:id="${course.toString()}+'-date1'" type="date" name="examDate-2" th:value="*{getExamDate(2)}">
+                        </label>
+                    </summary>
+                    <label class="time-wrapper">
+                        Start Time:
+                        <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{getStartTime(2)}">
+                    </label>
+                </details>
+                <details>
+                    <summary class="date-wrapper">
+                        <label>
+                            Exam Date #3:
+                            <input th:id="${course.toString()}+'-date2'" type="date" name="examDate-3" th:value="*{getExamDate(3)}">
+                        </label>
+                    </summary>
+                        <label class="time-wrapper">
+                            Start Time:
+                            <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-3" th:value="*{getStartTime(3)}">
+                        </label>
+                </details>
+                <button class="button-sumbit" type="submit">SUBMIT</button>
+            </form>
+            <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
+                <button class="button-sumbit" type="submit">DELETE</button>
+            </form>
+        </details>
+        <br>
+        <details class="list-element">
+            <summary>Create New Course</summary>
+            <form method="POST" action="newCourse">
+                <label>
+                    Department:
+                    <input id="department" type="text" title="Enter a 2-4 digit department code" placeholder="E.g. CMPT" name="department" required pattern="[A-Z]{2,4}">
+                </label>
+
+                <br>
+                <label>
+                    Course Number:
+                    <input id="courseNumber" type="number" title="Enter the course number" placeholder="E.g. 135" name="number" required pattern="[0-9]{3}">
+                </label>
+
+                <br>
+                <label>
+                    Enrollment:
+                    <input id="enrollment" type="number" title="Enter the number of students enrolled in the course" placeholder="# of students" name="enrollment" required min="1" max="999">
+                </label>
+
+                <br>
+                <button id="newCourseButton" type="submit">Add Course</button>
+            </form>
+        </details>
+    </div>
+</body>
+
+<footer>
+    <script src="/js/instructor.js"></script>
+</footer>
+</html>

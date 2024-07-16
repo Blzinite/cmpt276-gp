@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <title>Monthly Calendar View</title>
+</head>
+<body>
+    <div class="viewport-wrapper">
+        <div id="monthHeader" class="calendar-header">
+
+            <a href="calendarMonth_prevMonth" class="left-arrow" id="prevMonth">
+                <img alt="prev" src="assets/Pointer.svg">
+            </a>
+
+            <div class="calendar-header-list">
+                <h1 id="currentYear" th:text="${year}"></h1>
+                <h1 id="currentMonth" th:text="${month}"></h1>
+            </div>
+
+            <a href="calendarMonth_nextMonth" class="right-arrow" id="nextMonth">
+                <img alt="next" src="assets/Pointer.svg">
+            </a>
+
+        </div>
+        <div class="table-wrapper">
+            <table class="monthTable">
+            <thead>
+                <tr>
+                    <th scope="col">Sunday</th>
+                    <th scope="col">Monday</th>
+                    <th scope="col">Tuesday</th>
+                    <th scope="col">Wednesday</th>
+                    <th scope="col">Thursday</th>
+                    <th scope="col">Friday</th>
+                    <th scope="col">Saturday</th>
+                </tr>
+            </thead>
+            <tbody id = "monthTableBody">
+                <tr th:each="week : ${dayMatrix}">
+                    <td th:each="day : ${week}" th:text="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? ${day} : ''"
+                    th:class="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? 'calendarEntry' : ''"></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</body>
+<footer>
+    <script src="js/calendarMonth.js"></script>
+</footer>
+</html>

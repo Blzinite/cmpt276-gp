@@ -1,159 +1,47 @@
-// Initial setup
-// currentMonthNum is 0 indexed, not 1 indexed
-var currentMonthNum = new Date().getMonth();
-var currentMonthDisplay = document.getElementById("currentMonth");
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var monthLengths = [31,0,31,30,31,30,31,31,30,31,30,31];
+const month = document.getElementById("currentMonth").textContent;
+const year = document.getElementById("currentYear").textContent;
+const index = window.parent;
 
-var currentYearNum = new Date().getFullYear();
-var currentYearDisplay = document.getElementById("currentYear");
+const monthDict = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"]
 
-var tableBody = document.getElementById("tableBody");
+// Add event listeners to each td element
+const calendarEntries = document.getElementsByClassName("calendarEntry");
 
-document.addEventListener("DOMContentLoaded", () => {Initialise();});
-
-// Fill with current month/year
-function Initialise()
-{
-    currentMonthDisplay.textContent = months[currentMonthNum];
-    currentYearDisplay.textContent = currentYearNum;
-    UpdateCalendar();
+for (let entry of calendarEntries) {
+    entry.addEventListener('click', function()
+    {
+        let day = entry.textContent;
+        let date = year+"-"+String(monthDict.indexOf(month)+1).padStart(2, "0")+"-"+String(day).padStart(2, "0");
+        index.monthCalendarCall(date);
+    })
 }
 
-// Go to next month
-function NextMonth()
-{
-    currentMonthNum = (currentMonthNum + 1) % 12;
-    if(currentMonthNum == 0)
-    {
-        currentYearNum++;
-        currentYearDisplay.textContent = currentYearNum;
-    }
-    currentMonthDisplay.textContent = months[currentMonthNum];
-    UpdateCalendar();
-}
-
-// Go to previous month
-function PrevMonth()
-{
-    currentMonthNum = mod((currentMonthNum - 1), 12);
-    if(currentMonthNum == 11)
-    {
-        currentYearNum--;
-        currentYearDisplay.textContent = currentYearNum;
-    }
-    currentMonthDisplay.textContent = months[currentMonthNum];
-    UpdateCalendar();
-}
-
-// Simple function to fix negative modulo behavior in PrevMonth()
-function mod(n, m) 
-{
-    return ((n % m) + m) % m;
-}
-
-// Given month, day, year, calculate day of the week
-function DayOfTheWeek(day, month, year) 
-{
-    // Convert months to be 1 indexed
-    month++;
-
-    // If month is jan or feb, must set month num to 13/14 respectively
-    if (month < 3) 
-    {
-        month += 12;
-        year -= 1;
-    }
-
-    // https://en.wikipedia.org/wiki/Zeller%27s_congruence#:~:text=Zeller's%20congruence%20is%20an%20algorithm,day%20and%20the%20calendar%20date.
-    let q = day;
-    let m = month;
-    let Y = year;
-
-    let dayOfWeek = (q + Math.floor(13 * (m + 1) / 5) + Y + Math.floor(Y / 4) - Math.floor(Y / 100) + Math.floor(Y / 400)) % 7;
-    // days = ["sat", "sun", "mon", "tues", "wed", "thurs", "fri"];
-    // console.log(months[currentMonthNum] + " " + days[dayOfWeek]);
-
-    // Convert from 0 = saturday to 0 = sunday
-    dayOfWeek = mod(dayOfWeek - 1, 7);
-
-    return dayOfWeek;
-}
-
-// Update calendar numbers for the correct month and year
-function UpdateCalendar()
-{
-    // Determine which day of the week the month starts on
-    var firstDay = DayOfTheWeek(1, currentMonthNum, currentYearNum);
-    var currentDayNum = 0 - firstDay;
-
-    var daysInMonth = DaysInMonth(currentMonthNum);
-
-    // How many weeks will need to be displayed? i.e. height of calendar in rows
-    var rows = Math.ceil((daysInMonth - (7 - firstDay)) / 7) + 1;
-    var tableBody = document.getElementById("monthTableBody");
-    tableBody.innerHTML = "";
-    for(let row = 0; row < rows; row++)
-    {
-        var rowObj = document.createElement('tr');
-        for(let day = 0; day < 7; day++)
-        {
-            var dayObj = document.createElement('td');
-            rowObj.appendChild(dayObj);
-        }
-        tableBody.appendChild(rowObj);
-    }
-
-    // Set number of each day of the month
-    var days = document.querySelectorAll('tbody td');
-    for (var day of days)
-    {
-        currentDayNum++;
-        if(currentDayNum < 1 || currentDayNum > daysInMonth)
-        {
-            day.textContent = "";
-        }
-        else
-        {
-            day.textContent = currentDayNum;
-        }
+function highlight(examinfo) {
+    if (examinfo[0].getMonth()===monthDict.indexOf(month)) {
+        let colors = ["#7AB2B2", "#8aff73", "#fdff73", "#ff7373"]
+        calendarEntries[examinfo[0].getDate()-1].style.backgroundColor = colors[examinfo[3]];
+        // let ex_info = document.createElement("p");
+        // ex_info.innerText = examinfo[2];
+        // let ex_info = document.createElement("details");
+        // let ex_summary = document.createElement("summary");
+        // ex_summary.innerText = examinfo[2];
+        // ex_info.appendChild(ex_summary);
+        //
+        // let ex_item = document.createElement("p");
+        // ex_item.innerText = examinfo[0].getHours() + ":" + examinfo[0].getMinutes();
+        // ex_info.appendChild(ex_item);
+        //
+        // ex_item = document.createElement("p");
+        // ex_item.innerText = "Duration: " + examinfo[1];
+        // ex_info.appendChild(ex_item);
+        //
+        // calendarEntries[examinfo[0].getDate()-1].appendChild(ex_info);
     }
 }
 
-// Is it a leap year
-function LeapYear(year)
-{
-    if (year % 4 == 0)
-    {
-        if (year % 100 == 0)
-        {
-            if (year % 400 == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-        return true;
-    }
-    return false;
-}
-
-// Days in month
-function DaysInMonth(month)
-{
-    if(month == 1)
-    {
-        if (LeapYear(currentYearNum) == true)
-        {
-            return 29;
-        }
-        else
-        {
-            return 28;
-        }
-    }
-    else
-    {
-        return monthLengths[month];
+function removeHighlights() {
+    for (let i = 0; i < calendarEntries.length; i++) {
+        calendarEntries[i].style.backgroundColor = "";
     }
 }

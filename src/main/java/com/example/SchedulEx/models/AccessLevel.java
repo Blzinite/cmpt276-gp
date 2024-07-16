@@ -1,16 +1,28 @@
 package com.example.SchedulEx.models;
 
-public class AccessLevel {
-    public static final int ADMIN = 601;
-    public static final int PROFESSOR = 602;
-    public static final int INVIGILATOR = 603;
+public enum AccessLevel
+{
+    ADMIN,
+    INSTRUCTOR,
+    INVIGILATOR;
 
-    public static int parse(String accessLevel) {
+    public static AccessLevel parse(String accessLevel) {
         return switch (accessLevel.toLowerCase()) {
-            case "admin" -> ADMIN;
-            case "professor" -> PROFESSOR;
-            case "invigilator" -> INVIGILATOR;
-            default -> -999;
+            case "admin" -> AccessLevel.ADMIN;
+            case "instructor" -> AccessLevel.INSTRUCTOR;
+            case "invigilator" -> AccessLevel.INVIGILATOR;
+            default -> throw new IllegalStateException("Unexpected value: " + accessLevel.toLowerCase());
+        };
+    }
+
+    @Override
+    public String toString()
+    {
+        return switch (this)
+        {
+            case ADMIN -> "admin";
+            case INSTRUCTOR -> "instructor";
+            case INVIGILATOR -> "invigilator";
         };
     }
 }
