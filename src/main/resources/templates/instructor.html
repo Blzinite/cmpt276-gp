@@ -28,17 +28,18 @@
             <form method="POST" action="submitExamRequest">
                 <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
                 <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
-                <label class="input-wrapper">
+                <label class="input-wrapper" style="border-radius: 5px 5px 0 0;">
                     <span>Enrollment:</span>
                     <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment()}">
+                    <span>Students</span>
                 </label>
-                <label class="input-wrapper">
+                <label class="input-wrapper" style="border-radius: 0 0 5px 5px; border-top: 1px;">
                     <span>Duration:</span>
                     <input class="duration-input" type="number" name="duration" th:value="*{GetDuration()}">
                     <span>Hours</span>
                 </label>
                 <div style="padding-left: 10px;">Time Slots:</div>
-                <details>
+                <details class="date-dropdown">
                     <summary class="date-wrapper">
                         <label>
                             Exam Date #1:
@@ -50,7 +51,7 @@
                             <input th:id="${course.toString()}+'-time0'" type="time" name="startTime-1" th:value="*{getStartTime(1)}">
                         </label>
                 </details>
-                <details>
+                <details class="date-dropdown">
                     <summary class="date-wrapper">
                         <label>
                             Exam Date #2:
@@ -62,7 +63,7 @@
                         <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{getStartTime(2)}">
                     </label>
                 </details>
-                <details>
+                <details class="date-dropdown">
                     <summary class="date-wrapper">
                         <label>
                             Exam Date #3:

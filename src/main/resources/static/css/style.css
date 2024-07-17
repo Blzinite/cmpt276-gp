@@ -70,6 +70,7 @@ h1, h2, label {
     border-radius: 5px;
     width: 100%;
     display: flex;
+    padding: 2px;
 }
 
 .input-wrapper input {
@@ -90,11 +91,12 @@ h1, h2, label {
 
 .time-wrapper {
     border: solid 2px #4D869C;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     width: 90%;
     padding: 0 2px 0 2px;
     display: block;
     margin: auto;
+    border-top: 0;
 }
 
 .time-wrapper input {
@@ -109,6 +111,7 @@ h1, h2, label {
     border-radius: 5px;
     width: 100%;
     padding: 0 2px 0 2px;
+    margin: 2px;
 }
 
 .date-wrapper input {

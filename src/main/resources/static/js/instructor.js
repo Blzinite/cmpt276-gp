@@ -52,6 +52,17 @@ details.forEach((detail) => {
                 setTargetDetail(detail);
                 let active = detail.getElementsByTagName("summary")[0].id;
                 index.getData("/course-info/"+active.replace(" ", "-"));
+            } else {
+                index.clearData();
+            }
+        });
+    } else if (detail.className === "date-dropdown") {
+        detail.addEventListener("toggle", () => {
+            if (detail.open) {
+                let active = detail.getElementsByTagName("summary")[0];
+                active = active.getElementsByTagName("input")[0];
+                index.switchToWeek(active.value);
+                console.log(active.value)
             }
         });
     }

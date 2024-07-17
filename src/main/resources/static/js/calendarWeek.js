@@ -1,52 +1,53 @@
-let exam1 = creatExam();
-exam1[0].setFullYear(2024);
-exam1[0].setMonth(8 - 1);
-exam1[0].setDate(28);
-exam1[0].setHours(10);
-exam1[0].setMinutes(30);
-exam1[1] = 3.5;
-exam1[2] = "CMPT 276";
-exam1[3] = 1;
-
-let exam2 = creatExam();
-exam2[0].setFullYear(2024);
-exam2[0].setMonth(8 - 1);
-exam2[0].setDate(28);
-exam2[0].setHours(8);
-exam2[0].setMinutes(0);
-exam2[1] = 3;
-exam2[2] = "CMPT 276";
-exam2[3] = 2;
-
-let exam3 = creatExam();
-exam3[0].setFullYear(2024);
-exam3[0].setMonth(7 - 1);
-exam3[0].setDate(28);
-exam3[0].setHours(16);
-exam3[0].setMinutes(0);
-exam3[1] = 3;
-exam3[2] = "CMPT 276";
-exam3[3] = 3;
-
-let exam4 = creatExam();
-exam4[0].setFullYear(2024);
-exam4[0].setMonth(7 - 1);
-exam4[0].setDate(26);
-exam4[0].setHours(8);
-exam4[0].setMinutes(0);
-exam4[1] = 4;
-exam4[2] = "CMPT 307";
-exam4[3] = 1;
-
-let exam5 = creatExam();
-exam5[0].setFullYear(2024);
-exam5[0].setMonth(7 - 1);
-exam5[0].setDate(26);
-exam5[0].setHours(13);
-exam5[0].setMinutes(30);
-exam5[1] = 4;
-exam5[2] = "CMPT 110";
-exam5[3] = 1;
+// let exam1 = creatExam();
+// exam1[0].setFullYear(2024);
+// exam1[0].setMonth(8 - 1);
+// exam1[0].setDate(28);
+// exam1[0].setHours(10);
+// exam1[0].setMinutes(30);
+// exam1[1] = 3.5;
+// exam1[2] = "CMPT 276";
+// exam1[3] = 1;
+//
+// let exam2 = creatExam();
+// exam2[0].setFullYear(2024);
+// exam2[0].setMonth(8 - 1);
+// exam2[0].setDate(28);
+// exam2[0].setHours(8);
+// exam2[0].setMinutes(0);
+// exam2[1] = 3;
+// exam2[2] = "CMPT 276";
+// exam2[3] = 2;
+//
+// let exam3 = creatExam();
+// exam3[0].setFullYear(2024);
+// exam3[0].setMonth(7 - 1);
+// exam3[0].setDate(28);
+// exam3[0].setHours(16);
+// exam3[0].setMinutes(0);
+// exam3[1] = 3;
+// exam3[2] = "CMPT 276";
+// exam3[3] = 3;
+//
+// let exam4 = creatExam();
+// exam4[0].setFullYear(2024);
+// exam4[0].setMonth(7 - 1);
+// exam4[0].setDate(26);
+// exam4[0].setHours(8);
+// exam4[0].setMinutes(0);
+// exam4[1] = 4;
+// exam4[2] = "CMPT 307";
+// exam4[3] = 1;
+//
+// let exam5 = creatExam();
+// exam5[0].setFullYear(2024);
+// exam5[0].setMonth(7 - 1);
+// exam5[0].setDate(26);
+// exam5[0].setHours(13);
+// exam5[0].setMinutes(30);
+// exam5[1] = 4;
+// exam5[2] = "CMPT 110";
+// exam5[3] = 1;
+const index = window.parent;
 
 function leapYear(y){
     return (
@@ -80,7 +81,7 @@ function getNextSunday() {
     return nSunday;
 }
 
-var currentSunday = getSunday(exam1[0]);
+var currentSunday = getSunday(index.getActiveDate());
 var nextSunday = getNextSunday();
 
 function showDays(){
@@ -165,18 +166,11 @@ function highlight(e){
     for (let i = 0; i < length; i++){
         let j = 0;
         j += i * 8;
+        console.log(time + weekOfDay + j + 1);
         x[time + weekOfDay + j + 1].style.backgroundColor = color;
         x[time + weekOfDay + j + 1].style.border = "none";
     }
     x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
-}
-
-function removeHighlights() {
-    let tableData = document.getElementsByTagName("td");
-    for (let i = 0; i < tableData.length; i++) {
-        tableData[i].style.backgroundColor = "";
-        x[time + weekOfDay + j + 1].style.border = "";
-    }
 }
 
 function removeHighlight(e){
@@ -194,6 +188,14 @@ function removeHighlight(e){
         x[time + weekOfDay + j + 1].style.border = "";
     }
     x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = "";
+}
+
+function removeHighlights(){
+    let x = document.getElementsByTagName("td");
+    for (let i = 0; i < x.length; i++){
+        x[i].style.backgroundColor = "";
+        x[i].style.border = "";
+    }
 }
 
 // function getRandomColor() {
@@ -215,11 +217,24 @@ function highlightExam(e){
 }
 
 function showExam(){
-    highlightExam(exam1);
-    highlightExam(exam2);
-    highlightExam(exam3);
-    highlightExam(exam4);
-    highlightExam(exam5);
+    let dates = index.getDates();
+    for (let i = 0; i < dates.length; i++) {
+        console.log(dates[i]);
+        const day = dates[i].date.split("-");
+        const time = dates[i].start.split(":");
+        const examinfo = [
+            new Date(day[0],day[1]-1,day[2],time[0],time[1]),
+            dates[i].duration,
+            dates[i].name,
+            i+1
+        ];
+        highlightExam(examinfo);
+    }
+    // highlightExam(exam1);
+    // highlightExam(exam2);
+    // highlightExam(exam3);
+    // highlightExam(exam4);
+    // highlightExam(exam5);
 }
 
 function setCurrentSunday(date) {
@@ -229,7 +244,7 @@ function setCurrentSunday(date) {
 function update(){
     showDays();
     showMonth();
-    // showExam();
+    showExam();
 }
 
 update();

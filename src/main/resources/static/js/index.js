@@ -17,9 +17,9 @@ async function getData(url) {
   }
 }
 
-function fetchLocalData() {
-    var testdata = '{"userExams":[{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3}],"OtherExams":[{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3}]}';
-    localData = JSON.parse(testdata);
+function clearData() {
+    localData = null;
+    switchToMonth();
 }
 
 function addTime(time) {
@@ -94,7 +94,17 @@ function getDates() {
     return localData.userExams;
 }
 
+var activeDate;
+
 function switchToWeek(date) {
     document.getElementById("calendar-panel").src = "/calendarWeek.html";
-    calendarFrame.setCurrentSunday(new Date(date));
+    activeDate = date;
+}
+
+function switchToMonth() {
+    document.getElementById("calendar-panel").src = "/calendarMonth";
+}
+
+function getActiveDate() {
+    return new Date(activeDate);
 }
