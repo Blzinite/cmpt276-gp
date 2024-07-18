@@ -156,39 +156,41 @@ const colors = ["#7AB2B2", "#8aff73", "#fdff73", "#ff7373"];
 // }
 
 function highlight(e){
-    let x = document.getElementsByTagName("td");
-    let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
-    let length = (e[1] * 2);
-    let weekOfDay = e[0].getDay();    
-    let name = e[2];
-    let priority = e[3];
-    let color = colors[priority];
-    for (let i = 0; i < length; i++){
-        let j = 0;
-        j += i * 8;
-        console.log(time + weekOfDay + j + 1);
-        x[time + weekOfDay + j + 1].style.backgroundColor = color;
-        x[time + weekOfDay + j + 1].style.border = "none";
+    if (e[0] > currentSunday && e[0] < nextSunday) {
+        let x = document.getElementsByTagName("td");
+        let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
+        let length = (e[1] * 2);
+        let weekOfDay = e[0].getDay();    
+        let name = e[2];
+        let priority = e[3];
+        let color = colors[priority];
+        for (let i = 0; i < length; i++){
+            let j = 0;
+            j += i * 8;
+            console.log(time + weekOfDay + j + 1);
+            x[time + weekOfDay + j + 1].style.backgroundColor = color;
+            x[time + weekOfDay + j + 1].style.border = "none";
+        }
+        x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
     }
-    x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
 }
 
-function removeHighlight(e){
-    let x = document.getElementsByTagName("td");
-    let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
-    let length = (e[1] * 2);
-    let weekOfDay = e[0].getDay();    
-    let name = e[2];
-    let priority = e[3];
-    let color = colors[priority];
-    for (let i = 0; i < length; i++){
-        let j = 0;
-        j += i * 8;
-        x[time + weekOfDay + j + 1].style.backgroundColor = "";
-        x[time + weekOfDay + j + 1].style.border = "";
-    }
-    x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = "";
-}
+// function removeHighlight(e){
+//     let x = document.getElementsByTagName("td");
+//     let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
+//     let length = (e[1] * 2);
+//     let weekOfDay = e[0].getDay();    
+//     let name = e[2];
+//     let priority = e[3];
+//     let color = colors[priority];
+//     for (let i = 0; i < length; i++){
+//         let j = 0;
+//         j += i * 8;
+//         x[time + weekOfDay + j + 1].style.backgroundColor = "";
+//         x[time + weekOfDay + j + 1].style.border = "";
+//     }
+//     x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = "";
+// }
 
 function removeHighlights(){
     let x = document.getElementsByTagName("td");
@@ -207,14 +209,14 @@ function removeHighlights(){
 //     return color;
 // }
 
-function highlightExam(e){
-    if (e[0] > currentSunday && e[0] < nextSunday) {
-        highlight(e);
-    }
-    else {
-        removeHighlight(e);
-    }
-}
+// function highlightExam(e){
+//     if (e[0] > currentSunday && e[0] < nextSunday) {
+//         highlight(e);
+//     }
+//     else {
+//         removeHighlight(e);
+//     }
+// }
 
 function showExam(){
     let dates = index.getDates();
@@ -228,7 +230,7 @@ function showExam(){
             dates[i].name,
             i+1
         ];
-        highlightExam(examinfo);
+        highlight(examinfo);
     }
     // highlightExam(exam1);
     // highlightExam(exam2);
