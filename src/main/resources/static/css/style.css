@@ -127,6 +127,32 @@ h1, h2, label {
     color: white;
 }
 
+.button-accept{
+    margin: 5px 0 5px 0;
+    border: 0;
+    background: #4D869C;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+}
+
+.button-reject{
+    margin: 5px 0 5px 0;
+    border: 0;
+    background: #C41E3A;
+    border-radius: 5px;
+    font-size: 24px;
+    color: white;
+}
+
+.button-accept:hover{
+    background: #7AB2B2;
+}
+
+.button-reject:hover{
+    background: darkred;
+}
+
 .calendar-wrapper {
     width: 58vw;
     height: 94vh;
