@@ -123,4 +123,9 @@ public class User {
     {
         this.courses = courses;
     }
+
+    @Override
+    public String toString(){
+        return this.firstName + " " + this.lastName + " (" + this.email + ")";
+    }
 }

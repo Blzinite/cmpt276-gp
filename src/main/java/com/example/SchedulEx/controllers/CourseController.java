@@ -103,6 +103,11 @@ public class CourseController {
         if (courseObj == null) {
             return courseService.GetActionPanel(model, session);
         }
+        User instructor = courseService.getInstructor(courseObj).orElse(null);
+        if (instructor == null) {
+            return courseService.GetActionPanel(model, session);
+        }
+        model.addAttribute("instructor", instructor);
         model.addAttribute("course", courseObj);
         return "viewCourse";
     }

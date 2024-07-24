@@ -83,6 +83,11 @@ public class CourseService
         return courseRepository.findByCourseName(courseName);
     }
 
+    @Transactional
+    public Optional<User> getInstructor(Course course){
+        return userRepository.findById(course.GetInstructorID());
+    }
+
     public String GetActionPanel(Model model, HttpSession session)
     {
         User curr = (User) session.getAttribute("user");
