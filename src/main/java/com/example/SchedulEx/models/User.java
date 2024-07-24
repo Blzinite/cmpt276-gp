@@ -116,7 +116,7 @@ public class User {
 
     public void RemoveCourse(Course course)
     {
-        System.out.println(this.courses.remove(course));
+        this.courses.remove(course);
     }
 
     public void SetCourses(List<Course> courses)

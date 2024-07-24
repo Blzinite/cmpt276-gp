@@ -80,8 +80,8 @@ function getNextSunday() {
     return nSunday;
 }
 
-let currentSunday = getSunday(exam1[0]);
-let nextSunday = getNextSunday();
+var currentSunday = getSunday(exam1[0]);
+var nextSunday = getNextSunday();
 
 function showDays(){
     for (let i = 0; i < 7; i++){
@@ -171,6 +171,14 @@ function highlight(e){
     x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
 }
 
+function removeHighlights() {
+    let tableData = document.getElementsByTagName("td");
+    for (let i = 0; i < tableData.length; i++) {
+        tableData[i].style.backgroundColor = "";
+        x[time + weekOfDay + j + 1].style.border = "";
+    }
+}
+
 function removeHighlight(e){
     let x = document.getElementsByTagName("td");
     let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
@@ -214,12 +222,14 @@ function showExam(){
     highlightExam(exam5);
 }
 
-
+function setCurrentSunday(date) {
+    currentSunday = getSunday(date);
+}
 
 function update(){
     showDays();
     showMonth();
-    showExam();
+    // showExam();
 }
 
 update();

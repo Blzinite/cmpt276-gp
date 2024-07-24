@@ -15,7 +15,7 @@
         <details>
             <summary class="list-element">Current</summary>
             <div class="list-element">
-                <a class="list-element" th:text="${currentUser.getEmail()}"></a>
+                <a class="list-element" href="/user/self" th:text="${currentUser.getEmail()}"></a>
             </div>
             <div class="list-element">
                 <a href="user/logout" class="list-element">Log Out  ></a>
@@ -28,63 +28,58 @@
             <form method="POST" action="submitExamRequest">
                 <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
                 <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
-                <label>
-                    Enrollment:
-                    <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment}">
+                <label class="input-wrapper">
+                    <span>Enrollment:</span>
+                    <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment()}">
                 </label>
-                <span th:text="|Students Enrolled: *{GetEnrollment()}|"></span>
-                <br>
+                <label class="input-wrapper">
+                    <span>Duration:</span>
+                    <input class="duration-input" type="number" name="duration" th:value="*{GetDuration()}">
+                    <span>Hours</span>
+                </label>
+                <div style="padding-left: 10px;">Time Slots:</div>
                 <details>
-                    <summary>
+                    <summary class="date-wrapper">
                         <label>
                             Exam Date #1:
                             <input th:id="${course.toString()}+'-date0'" type="date" name="examDate-1" th:value="*{getExamDate(1)}">
                         </label>
                     </summary>
-                        <label>
+                        <label class="time-wrapper">
                             Start Time:
                             <input th:id="${course.toString()}+'-time0'" type="time" name="startTime-1" th:value="*{getStartTime(1)}">
                         </label>
                 </details>
                 <details>
-                    <summary>
+                    <summary class="date-wrapper">
                         <label>
                             Exam Date #2:
                             <input th:id="${course.toString()}+'-date1'" type="date" name="examDate-2" th:value="*{getExamDate(2)}">
                         </label>
                     </summary>
-                    <label>
+                    <label class="time-wrapper">
                         Start Time:
                         <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{getStartTime(2)}">
                     </label>
                 </details>
                 <details>
-                    <summary>
+                    <summary class="date-wrapper">
                         <label>
                             Exam Date #3:
                             <input th:id="${course.toString()}+'-date2'" type="date" name="examDate-3" th:value="*{getExamDate(3)}">
                         </label>
                     </summary>
-                        <label>
+                        <label class="time-wrapper">
                             Start Time:
                             <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-3" th:value="*{getStartTime(3)}">
                         </label>
                 </details>
-                <br>
-                <label>
-                    Duration:
-                    <input class="duration-input" type="number" name="duration" th:value="*{GetDuration()}">
-                </label>
-                <br>
-                <button type="submit">Submit Request</button>
+                <button class="button-sumbit" type="submit">SUBMIT</button>
             </form>
-
             <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
-                <button type="submit">DELETE (DEBUG)</button>
+                <button class="button-sumbit" type="submit">DELETE</button>
             </form>
-
         </details>
-
         <br>
         <details class="list-element">
             <summary>Create New Course</summary>
