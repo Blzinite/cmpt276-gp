@@ -14,4 +14,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer>
     List<Course> findByRequestStatus(int requestStatus);
     List<Course> findByRequestStatusBetween(int first, int second);
     List<Course> findByInstructor(User instructor);
+    List<Course> findByDateOneBetweenOrDateTwoBetweenOrDateThreeBetween(Long dateOne, Long dateOne2, Long dateTwo, Long dateTwo2, Long dateThree, Long dateThree2);
 }

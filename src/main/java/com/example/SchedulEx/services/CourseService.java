@@ -80,6 +80,27 @@ public class CourseService
     }
 
     @Transactional
+    public List<Course> getOverlaps(Course course){
+        if(!RequestStatus.isAccepted(course.getRequestStatus())){
+            return null;
+        }
+        return switch (course.getRequestStatus()){
+            case RequestStatus.ACCEPTED_TIME_ONE -> getExamsBetween(course.getDate(1),
+                    course.getDate(1) + course.GetDuration()); //TODO: wtf is duration, hours seconds minutes microseconds picoseconds milliseconds years days months weeks
+            case RequestStatus.ACCEPTED_TIME_TWO -> getExamsBetween(course.getDate(2),
+                    course.getDate(2) + course.GetDuration()); //TODO: multiply duration by dome modifier
+            case RequestStatus.ACCEPTED_TIME_THREE, RequestStatus.ACCEPTED_CUSTOM_TIME ->
+                    getExamsBetween(course.getDate(3),
+                    course.getDate(3) + course.GetDuration());
+            default -> null;
+        };
+    }
+
+    private List<Course> getExamsBetween(Long lower, Long upper){
+        return courseRepository.findByDateOneBetweenOrDateTwoBetweenOrDateThreeBetween(lower, upper, lower, upper, lower, upper);
+    }
+
+    @Transactional
     public Optional<Course> GetCourse(String courseName){
         return courseRepository.findByCourseName(courseName);
     }

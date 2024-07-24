@@ -94,6 +94,15 @@ public class Course
         this.dateThree = newTime;
     }
 
+    public Long getDate(int which){
+        return switch (which){
+            case 1 -> this.dateOne;
+            case 2 -> this.dateTwo;
+            case 3 -> this.dateThree;
+            default -> -999L;
+        };
+    }
+
     public String getExamDate(int which){
         return switch (which){
             case 1 -> UnixHelper.parseDate(dateOne);
