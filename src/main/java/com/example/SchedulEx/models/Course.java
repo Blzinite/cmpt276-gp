@@ -48,6 +48,14 @@ public class Course
         this.requestStatus = RequestStatus.PENDING;
     }
 
+    public void setRequestStatus(int status){
+        this.requestStatus = status;
+    }
+
+    public int getRequestStatus(){
+        return this.requestStatus;
+    }
+
     public void SetInstructor(User instructor)
     {
         this.instructor = instructor;
@@ -65,7 +73,6 @@ public class Course
 
     public int GetInstructorID()
     {
-        System.out.println(instructor.getUid());
         return instructor.getUid();
     }
 
