@@ -47,5 +47,9 @@
                 </label>
             </details>
         </form>
+        <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
+            <input type="hidden" value="705">
+            <button type="submit">REJECT</button>
+        </form>
     </div>
 </body>
