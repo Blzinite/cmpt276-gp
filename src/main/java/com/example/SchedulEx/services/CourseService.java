@@ -79,6 +79,11 @@ public class CourseService
         return courseRepository.findByRequestStatusBetween(RequestStatus.ACCEPTED_TIME_ONE, RequestStatus.ACCEPTED_CUSTOM_TIME);
     }
 
+
+    //precondition: 'course' must be accepted
+    //returns all courses in db with times overlapping the accepted course.dateX
+    //some data parsing required as this includes every course, not just accepted courses
+    //can change if required
     @Transactional
     public List<Course> getOverlaps(Course course){
         if(!RequestStatus.isAccepted(course.getRequestStatus())){
