@@ -84,6 +84,7 @@ public class CourseService
     //returns all courses in db with times overlapping the accepted course.dateX
     //some data parsing required as this includes every course, not just accepted courses
     //can change if required
+    //maybe could wrap getAccepted() and parse those, would work, possible time issue?
     @Transactional
     public List<Course> getOverlaps(Course course){
         if(!RequestStatus.isAccepted(course.getRequestStatus())){
