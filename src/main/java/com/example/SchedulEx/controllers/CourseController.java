@@ -4,7 +4,6 @@ import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.models.Course;
 import com.example.SchedulEx.models.RequestStatus;
 import com.example.SchedulEx.models.User;
-import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.services.CourseService;
 import jakarta.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,7 +23,7 @@ public class CourseController {
     @RequestMapping(value="course-info/{courseName}", method=RequestMethod.GET)
     @ResponseBody
     public String courseInfo(@PathVariable("courseName") String courseName) {
-        Course course = courseService.GetCourse(courseName).orElse(null);
+        Course course = courseService.getCourse(courseName).orElse(null);
         if (course == null) {
             return "Course not found";
         }
@@ -99,7 +97,7 @@ public class CourseController {
         if(user.getAccessLevel() != AccessLevel.ADMIN){
             return courseService.GetActionPanel(model, session);
         }
-        Course courseObj = courseService.GetCourse(course).orElse(null);
+        Course courseObj = courseService.getCourse(course).orElse(null);
         if (courseObj == null) {
             return courseService.GetActionPanel(model, session);
         }
@@ -121,7 +119,7 @@ public class CourseController {
         if(user.getAccessLevel() != AccessLevel.ADMIN){
             return courseService.GetActionPanel(model, session);
         }
-        Course courseObj = courseService.GetCourse(course).orElse(null);
+        Course courseObj = courseService.getCourse(course).orElse(null);
         if (courseObj == null) {
             return courseService.GetActionPanel(model, session);
         }

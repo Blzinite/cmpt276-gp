@@ -106,7 +106,7 @@ public class CourseService
     }
 
     @Transactional
-    public Optional<Course> GetCourse(String courseName){
+    public Optional<Course> getCourse(String courseName){
         return courseRepository.findByCourseName(courseName);
     }
 
