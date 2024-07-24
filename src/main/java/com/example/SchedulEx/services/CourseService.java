@@ -94,7 +94,7 @@ public class CourseService
             case RequestStatus.ACCEPTED_TIME_ONE -> getExamsBetween(course.getDate(1),
                     course.getDate(1) + course.GetDuration()); //TODO: wtf is duration, hours seconds minutes microseconds picoseconds milliseconds years days months weeks
             case RequestStatus.ACCEPTED_TIME_TWO -> getExamsBetween(course.getDate(2),
-                    course.getDate(2) + course.GetDuration()); //TODO: multiply duration by dome modifier
+                    course.getDate(2) + course.GetDuration()); //TODO: multiply duration by some modifier
             case RequestStatus.ACCEPTED_TIME_THREE, RequestStatus.ACCEPTED_CUSTOM_TIME ->
                     getExamsBetween(course.getDate(3),
                     course.getDate(3) + course.GetDuration());
