@@ -65,8 +65,6 @@ public class CourseService
         }
         else if(user.getAccessLevel() == AccessLevel.INSTRUCTOR)
         {
-            System.out.println("Called get user courses for an instructor");
-
             return user.GetCourses();
         }
         else
@@ -138,12 +136,7 @@ public class CourseService
     {
         User user = (User) session.getAttribute("user");
 
-        Course course = null;
-        Optional<Course> optionalCourse = courseRepository.findById(id);
-        if(optionalCourse.isPresent())
-        {
-            course = optionalCourse.get();
-        }
+        Course course = courseRepository.findById(id).orElse(null);
         if (course != null)
         {
             user.RemoveCourse(course);

@@ -2,6 +2,7 @@ package com.example.SchedulEx.controllers;
 
 import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.models.Course;
+import com.example.SchedulEx.models.RequestStatus;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.services.CourseService;
@@ -86,6 +87,44 @@ public class CourseController {
         courseService.DeleteCourse(id, session);
         model.addAttribute("isOpen", true);
 
+        return courseService.GetActionPanel(model, session);
+    }
+
+    @GetMapping("admin/{course}")
+    public String getCourseInfo(@PathVariable("course") String course, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return courseService.GetActionPanel(model, session);
+        }
+        if(user.getAccessLevel() != AccessLevel.ADMIN){
+            return courseService.GetActionPanel(model, session);
+        }
+        Course courseObj = courseService.GetCourse(course).orElse(null);
+        if (courseObj == null) {
+            return courseService.GetActionPanel(model, session);
+        }
+        model.addAttribute("course", courseObj);
+        return "viewCourse";
+    }
+
+    @PostMapping("updateStatus/{course}")
+    public String updateCourseStatus(@PathVariable("course") String course, @RequestParam Map<String, String> params, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return courseService.GetActionPanel(model, session);
+        }
+        if(user.getAccessLevel() != AccessLevel.ADMIN){
+            return courseService.GetActionPanel(model, session);
+        }
+        Course courseObj = courseService.GetCourse(course).orElse(null);
+        if (courseObj == null) {
+            return courseService.GetActionPanel(model, session);
+        }
+        int newStatus = Integer.parseInt(params.get("status"));
+        if(newStatus == RequestStatus.ACCEPTED_CUSTOM_TIME){
+            //TODO: update time three
+        }
+        //TODO: update course status
         return courseService.GetActionPanel(model, session);
     }
 

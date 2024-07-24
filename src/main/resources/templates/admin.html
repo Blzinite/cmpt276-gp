@@ -34,7 +34,7 @@
         <details>
             <summary class="list-element">Pending</summary>
             <div class="list-element" th:each="course:${pending}">
-                <a class="list-element" th:href="|/admin/${course.getCourseName}|" th:text="${course.toString()}"></a>
+                <a class="list-element" th:href="|/admin/${course.getCourseName()}|" th:text="${course.toString()}"></a>
             </div>
         </details>
     </div>
