@@ -76,7 +76,7 @@ public class CourseService
 
     @Transactional
     public List<Course> getAccepted(){
-        return courseRepository.findByRequestStatusBetween(RequestStatus.ACCEPTED_TIME_ONE, RequestStatus.ACCEPTED_TIME_THREE);
+        return courseRepository.findByRequestStatusBetween(RequestStatus.ACCEPTED_TIME_ONE, RequestStatus.ACCEPTED_CUSTOM_TIME);
     }
 
     @Transactional
