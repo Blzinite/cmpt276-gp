@@ -127,9 +127,12 @@ public class CourseController {
         }
         int newStatus = Integer.parseInt(params.get("status"));
         if(newStatus == RequestStatus.ACCEPTED_CUSTOM_TIME){
-            //TODO: update time three
+            courseObj = courseService.updateCustomTime(courseObj, params.get("dateOverride"), params.get("timeOverride"));
         }
-        //TODO: update course status
+        if(courseObj == null){
+            return courseService.GetActionPanel(model, session);
+        }
+        courseService.updateRequestStatus(courseObj, newStatus);
         return courseService.GetActionPanel(model, session);
     }
 

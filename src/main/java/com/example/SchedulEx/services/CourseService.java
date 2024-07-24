@@ -1,5 +1,6 @@
 package com.example.SchedulEx.services;
 
+import com.example.SchedulEx.helpers.UnixHelper;
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.repositories.UserRepository;
@@ -196,5 +197,30 @@ public class CourseService
                 System.out.println("Course not found");
             }
         }
+    }
+
+    public Course updateCustomTime(Course courseObj, String dateOverride, String timeOverride) {
+        User instructor = userRepository.findById(courseObj.GetInstructorID()).orElse(null);
+        if(instructor == null){
+            return null;
+        }
+        instructor.RemoveCourse(courseObj);
+        courseObj.setCustomTime(UnixHelper.parseDate(dateOverride, timeOverride));
+        courseRepository.save(courseObj);
+        instructor.AddCourse(courseObj);
+        userRepository.save(instructor);
+        return courseObj;
+    }
+
+    public void updateRequestStatus(Course courseObj, int newStatus) {
+        User instructor = userRepository.findById(courseObj.GetInstructorID()).orElse(null);
+        if(instructor == null){
+            return;
+        }
+        instructor.RemoveCourse(courseObj);
+        courseObj.setRequestStatus(newStatus);
+        courseRepository.save(courseObj);
+        instructor.AddCourse(courseObj);
+        userRepository.save(instructor);
     }
 }

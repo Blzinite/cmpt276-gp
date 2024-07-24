@@ -90,6 +90,10 @@ public class Course
         return courseID;
     }
 
+    public void setCustomTime(Long newTime){
+        this.dateThree = newTime;
+    }
+
     public String getExamDate(int which){
         return switch (which){
             case 1 -> UnixHelper.parseDate(dateOne);
