@@ -18,67 +18,165 @@
                 <a class="list-element" href="/user/self" th:text="${currentUser.getEmail()}"></a>
             </div>
             <div class="list-element">
-                <a href="user/logout" class="list-element">Log Out  ></a>
+                <a href="/user/logout" class="list-element">Log Out  ></a>
             </div>
         </details>
 
         <h3>Courses</h3>
         <details class="list-element" th:each="course : ${courses}" th:object="${course}">
             <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
-            <form method="POST" action="submitExamRequest">
-                <input type="number" th:value="*{getInstructorID()}" name="courseInstructorID" hidden="hidden">
-                <input type="number" th:value="*{getCourseID()}" name="courseID" hidden="hidden">
-                <label class="input-wrapper">
-                    <span>Enrollment:</span>
-                    <input type="number" name="enrollment" min="0" max="999" th:value="*{getEnrollment()}">
-                </label>
-                <label class="input-wrapper">
-                    <span>Duration:</span>
-                    <input class="duration-input" type="number" name="duration" th:value="*{getDuration()}">
-                    <span>Hours</span>
-                </label>
-                <div style="padding-left: 10px;">Time Slots:</div>
-                <details>
-                    <summary class="date-wrapper">
-                        <label>
-                            Exam Date #1:
-                            <input th:id="${course.toString()}+'-date0'" type="date" name="examDate-1" th:value="*{getExamDate(1)}">
+            <th:block th:switch="${course.getRequestStatus()}">
+                <div th:case="-1">
+                    <!-- Unsubmitted -->
+                    <form method="POST" action="submitExamRequest">
+                        <input type="number" th:value="*{getInstructorID()}" name="courseInstructorID" hidden="hidden">
+                        <input type="number" th:value="*{getCourseID()}" name="courseID" hidden="hidden">
+                        <label class="input-wrapper">
+                            <span>Enrollment:</span>
+                            <input type="number" name="enrollment" min="0" max="999" th:value="*{getEnrollment()}">
                         </label>
-                    </summary>
-                        <label class="time-wrapper">
-                            Start Time:
-                            <input th:id="${course.toString()}+'-time0'" type="time" name="startTime-1" th:value="*{getStartTime(1)}">
+                        <label class="input-wrapper">
+                            <span>Duration:</span>
+                            <input class="duration-input" type="number" name="duration" th:value="*{getDuration()}">
+                            <span>Hours</span>
                         </label>
-                </details>
-                <details>
-                    <summary class="date-wrapper">
-                        <label>
-                            Exam Date #2:
-                            <input th:id="${course.toString()}+'-date1'" type="date" name="examDate-2" th:value="*{getExamDate(2)}">
-                        </label>
-                    </summary>
-                    <label class="time-wrapper">
-                        Start Time:
-                        <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{getStartTime(2)}">
-                    </label>
-                </details>
-                <details>
-                    <summary class="date-wrapper">
-                        <label>
-                            Exam Date #3:
-                            <input th:id="${course.toString()}+'-date2'" type="date" name="examDate-3" th:value="*{getExamDate(3)}">
-                        </label>
-                    </summary>
-                        <label class="time-wrapper">
-                            Start Time:
-                            <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-3" th:value="*{getStartTime(3)}">
-                        </label>
-                </details>
-                <button class="button-sumbit" type="submit">SUBMIT</button>
-            </form>
-            <form method="POST" th:action="'deleteCourse' + ${course.getCourseID()}">
-                <button class="button-sumbit" type="submit">DELETE</button>
-            </form>
+                        <div style="padding-left: 10px;">Time Slots:</div>
+                        <details>
+                            <summary class="date-wrapper">
+                                <label>
+                                    Exam Date #1:
+                                    <input th:id="${course.toString()}+'-date0'" type="date" name="examDate-1" th:value="*{getExamDate(1)}">
+                                </label>
+                            </summary>
+                                <label class="time-wrapper">
+                                    Start Time:
+                                    <input th:id="${course.toString()}+'-time0'" type="time" name="startTime-1" th:value="*{getStartTime(1)}">
+                                </label>
+                        </details>
+                        <details>
+                            <summary class="date-wrapper">
+                                <label>
+                                    Exam Date #2:
+                                    <input th:id="${course.toString()}+'-date1'" type="date" name="examDate-2" th:value="*{getExamDate(2)}">
+                                </label>
+                            </summary>
+                            <label class="time-wrapper">
+                                Start Time:
+                                <input th:id="${course.toString()}+'-time1'" type="time" name="startTime-2" th:value="*{getStartTime(2)}">
+                            </label>
+                        </details>
+                        <details>
+                            <summary class="date-wrapper">
+                                <label>
+                                    Exam Date #3:
+                                    <input th:id="${course.toString()}+'-date2'" type="date" name="examDate-3" th:value="*{getExamDate(3)}">
+                                </label>
+                            </summary>
+                                <label class="time-wrapper">
+                                    Start Time:
+                                    <input th:id="${course.toString()}+'-time2'" type="time" name="startTime-3" th:value="*{getStartTime(3)}">
+                                </label>
+                        </details>
+                        <button class="button-sumbit" type="submit">SUBMIT</button>
+                    </form>
+                    <form method="POST" th:action="'deleteCourse' + ${course.getCourseID()}">
+                        <button class="button-reject" type="submit">DELETE</button>
+                    </form>
+                </div>
+                <div th:case="700">
+                    <!-- pending -->
+                    <h3>Status: PENDING</h3>
+                    <p th:text="|Enrollment: ${course.getEnrollment()}|"></p>
+                    <p th:text="|Duration: ${course.getDuration()}|"></p>
+                    <p th:text="|Date 1: ${course.getExamDate(1)} at ${course.getStartTime(1)}|"></p>
+                    <p th:text="|Date 2: ${course.getExamDate(2)} at ${course.getStartTime(2)}|"></p>
+                    <p th:text="|Date 3: ${course.getExamDate(3)} at ${course.getStartTime(3)}|"></p>
+                    <form>
+                        <div class="form-element btn-group">
+                            <button class="updateBtn" th:formaction="|updateRequest/${course.getCourseName()}|"
+                                    formmethod="get">Edit Request</button>
+                            <button class="deleteBtn" onclick="return confirm('Delete Course')"
+                                    th:formaction="'deleteCourse' + ${course.getCourseID()}"
+                                    formmethod="post">Delete Request</button>
+                        </div>
+                    </form>
+                </div>
+                <div th:case="701">
+                    <!-- accepted time one -->
+                    <h3>Status: ACCEPTED</h3>
+                    <p th:text="|Enrollment: ${course.getEnrollment()}|"></p>
+                    <p th:text="|Duration: ${course.getDuration()}|"></p>
+                    <p th:text="|Date: ${course.getExamDate(1)} at ${course.getStartTime(1)}|"></p>
+                    <form>
+                        <div class="form-element btn-group">
+                            <button class="updateBtn" th:formaction="|updateRequest/${course.getCourseName()}|"
+                                    formmethod="get">Edit Request</button>
+                            <button class="deleteBtn" onclick="return confirm('Delete Course')"
+                                    th:formaction="'deleteCourse' + ${course.getCourseID()}"
+                                    formmethod="post">Delete Request</button>
+                        </div>
+                    </form>
+                </div>
+                <div th:case="702">
+                    <!-- accepted time two -->
+                    <h3>Status: ACCEPTED</h3>
+                    <p th:text="|Enrollment: ${course.getEnrollment()}|"></p>
+                    <p th:text="|Duration: ${course.getDuration()}|"></p>
+                    <p th:text="|Date: ${course.getExamDate(2)} at ${course.getStartTime(2)}|"></p>
+                    <form>
+                        <div class="form-element btn-group">
+                            <button class="updateBtn" th:formaction="|updateRequest/${course.getCourseName()}|"
+                                    formmethod="get">Edit Request</button>
+                            <button class="deleteBtn" onclick="return confirm('Delete Course')"
+                                    th:formaction="'deleteCourse' + ${course.getCourseID()}"
+                                    formmethod="post">Delete Request</button>
+                        </div>
+                    </form>
+                </div>
+                <div th:case="703">
+                    <!-- accepted time three -->
+                    <h3>Status: ACCEPTED</h3>
+                    <p th:text="|Enrollment: ${course.getEnrollment()}|"></p>
+                    <p th:text="|Duration: ${course.getDuration()}|"></p>
+                    <p th:text="|Date: ${course.getExamDate(3)} at ${course.getStartTime(3)}|"></p>
+                    <form>
+                        <div class="form-element btn-group">
+                            <button class="updateBtn" th:formaction="|updateRequest/${course.getCourseName()}|"
+                                    formmethod="get">Edit Request</button>
+                            <button class="deleteBtn" onclick="return confirm('Delete Course')"
+                                    th:formaction="'deleteCourse' + ${course.getCourseID()}"
+                                    formmethod="post">Delete Request</button>
+                        </div>
+                    </form>
+                </div>
+                <div th:case="704">
+                    <!-- accepted custom time -->
+                    <h3>Status: ACCEPTED</h3>
+                    <p th:text="|Enrollment: ${course.getEnrollment()}|"></p>
+                    <p th:text="|Duration: ${course.getDuration()}|"></p>
+                    <p th:text="|Date: ${course.getExamDate(3)} at ${course.getStartTime(3)}|"></p>
+                    <form>
+                        <div class="form-element btn-group">
+                            <button class="updateBtn" th:formaction="|updateRequest/${course.getCourseName()}|"
+                                    formmethod="get">Edit Request</button>
+                            <button class="deleteBtn" onclick="return confirm('Delete Course')"
+                                    th:formaction="'deleteCourse' + ${course.getCourseID()}"
+                                    formmethod="post">Delete Request</button>
+                        </div>
+                    </form>
+                </div>
+                <div th:case="705">
+                    <!-- rejected -->
+                    <h3>Status: REJECTED</h3>
+                    <div class="form-element btn-group">
+                        <button class="updateBtn" th:formaction="|updateRequest/${course.getCourseName()}|"
+                                formmethod="get">Edit Request</button>
+                        <button class="deleteBtn" onclick="return confirm('Delete Course')"
+                                th:formaction="'deleteCourse' + ${course.getCourseID()}"
+                                formmethod="post">Delete Request</button>
+                    </div>
+                </div>
+            </th:block>
         </details>
         <br>
         <details class="list-element">

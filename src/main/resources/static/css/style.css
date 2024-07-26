@@ -294,6 +294,24 @@ select.list-element {
     background-color: #7AB2B2;
 }
 
+.btn-group button.deleteBtn{
+    background: #C41E3A;
+    color: white
+}
+
+.btn-group button.deleteBtn:hover{
+    background: darkred;
+}
+
+.btn-group button.updateBtn{
+    background: #4D869C;
+    color: white
+}
+
+.btn-group button.updateBtn:hover{
+    background: #7AB2B2;
+}
+
 #deleteBtn {
     background: #C41E3A;
     color: white

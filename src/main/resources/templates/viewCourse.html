@@ -57,7 +57,7 @@
         <h3>Reject Request</h3>
         <div class="form-element">
             <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
-                <input type="hidden" value="705">
+                <input type="hidden" name="status" value="705">
                 <button class="button-reject" type="submit">REJECT</button>
             </form>
         </div>

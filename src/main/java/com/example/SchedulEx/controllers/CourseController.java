@@ -134,6 +134,16 @@ public class CourseController {
         return courseService.getActionPanel(model, session);
     }
 
+    @GetMapping("updateRequest/{course}")
+    public String updateRequest(@PathVariable("course") String course, Model model, HttpSession session){
+        Course courseObj = courseService.getCourse(course).orElse(null);
+        if(courseObj == null){
+            return courseService.getActionPanel(model, session);
+        }
+        model.addAttribute("course", courseObj);
+        return "editCourse";
+    }
+
     @PostMapping("submitExamRequest")
     public String updateCourseInformation(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
