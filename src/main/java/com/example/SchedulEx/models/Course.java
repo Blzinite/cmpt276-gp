@@ -56,22 +56,22 @@ public class Course
         return this.requestStatus;
     }
 
-    public void SetInstructor(User instructor)
+    public void setInstructor(User instructor)
     {
         this.instructor = instructor;
     }
 
-    public int GetEnrollment()
+    public int getEnrollment()
     {
         return enrollment;
     }
 
-    public int GetDuration()
+    public int getDuration()
     {
         return duration;
     }
 
-    public int GetInstructorID()
+    public int getInstructorID()
     {
         return instructor.getUid();
     }
@@ -80,12 +80,12 @@ public class Course
         return courseName;
     }
 
-    public void RemoveInstructor()
+    public void removeInstructor()
     {
         instructor = null;
     }
 
-    public int GetCourseID()
+    public int getCourseID()
     {
         return courseID;
     }

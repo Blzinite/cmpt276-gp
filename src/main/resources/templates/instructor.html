@@ -26,15 +26,15 @@
         <details class="list-element" th:each="course : ${courses}" th:object="${course}">
             <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
             <form method="POST" action="submitExamRequest">
-                <input type="number" th:value="*{GetInstructorID()}" name="courseInstructorID" hidden="hidden">
-                <input type="number" th:value="*{GetCourseID()}" name="courseID" hidden="hidden">
+                <input type="number" th:value="*{getInstructorID()}" name="courseInstructorID" hidden="hidden">
+                <input type="number" th:value="*{getCourseID()}" name="courseID" hidden="hidden">
                 <label class="input-wrapper">
                     <span>Enrollment:</span>
-                    <input type="number" name="enrollment" min="0" max="999" th:value="*{GetEnrollment()}">
+                    <input type="number" name="enrollment" min="0" max="999" th:value="*{getEnrollment()}">
                 </label>
                 <label class="input-wrapper">
                     <span>Duration:</span>
-                    <input class="duration-input" type="number" name="duration" th:value="*{GetDuration()}">
+                    <input class="duration-input" type="number" name="duration" th:value="*{getDuration()}">
                     <span>Hours</span>
                 </label>
                 <div style="padding-left: 10px;">Time Slots:</div>
@@ -76,7 +76,7 @@
                 </details>
                 <button class="button-sumbit" type="submit">SUBMIT</button>
             </form>
-            <form method="POST" th:action="'deleteCourse' + ${course.GetCourseID()}">
+            <form method="POST" th:action="'deleteCourse' + ${course.getCourseID()}">
                 <button class="button-sumbit" type="submit">DELETE</button>
             </form>
         </details>
