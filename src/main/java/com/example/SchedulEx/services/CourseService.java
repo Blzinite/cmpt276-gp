@@ -4,6 +4,7 @@ import com.example.SchedulEx.helpers.UnixHelper;
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.repositories.UserRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.json.simple.JSONArray;
@@ -80,26 +81,34 @@ public class CourseService
     }
 
 
-    //precondition: 'course' must be accepted
-    //returns all courses in db with times overlapping the accepted course.dateX
-    //some data parsing required as this includes every course, not just accepted courses
-    //can change if required
-    //maybe could wrap getAccepted() and parse those, would work, possible time issue?
+    //precondition: 'course' must be not null
+    //returns all accepted courses in db with times overlapping any course.dateX
     @Transactional
-    public List<Course> getOverlaps(Course course){
-        if(!RequestStatus.isAccepted(course.getRequestStatus())){
+    public Map<Integer, List<String>> getOverlaps(Course course){
+        if(course == null){
             return null;
         }
-        return switch (course.getRequestStatus()){
-            case RequestStatus.ACCEPTED_TIME_ONE -> getExamsBetween(course.getDate(1),
-                    course.getDate(1) + course.GetDuration()); //TODO: wtf is duration, hours seconds minutes microseconds picoseconds milliseconds years days months weeks
-            case RequestStatus.ACCEPTED_TIME_TWO -> getExamsBetween(course.getDate(2),
-                    course.getDate(2) + course.GetDuration()); //TODO: multiply duration by some modifier
-            case RequestStatus.ACCEPTED_TIME_THREE, RequestStatus.ACCEPTED_CUSTOM_TIME ->
-                    getExamsBetween(course.getDate(3),
-                    course.getDate(3) + course.GetDuration());
-            default -> null;
-        };
+        List<Course> otherCourses = getAccepted();
+        otherCourses.remove(course);
+        Map<Integer, List<String>> overlaps = new HashMap<>();
+        List<String> overlapOne = new ArrayList<>();
+        List<String> overlapTwo = new ArrayList<>();
+        List<String> overlapThree = new ArrayList<>();
+        for(Course otherCourse : otherCourses){
+            if(course.overlaps(otherCourse, 1)){
+                overlapOne.add(otherCourse.getCourseName());
+            }
+            if(course.overlaps(otherCourse, 2)){
+                overlapTwo.add(otherCourse.getCourseName());
+            }
+            if(course.overlaps(otherCourse, 3)){
+                overlapThree.add(otherCourse.getCourseName());
+            }
+        }
+        overlaps.put(1,overlapOne);
+        overlaps.put(2,overlapTwo);
+        overlaps.put(3,overlapThree);
+        return overlaps;
     }
 
     private List<Course> getExamsBetween(Long lower, Long upper){

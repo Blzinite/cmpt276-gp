@@ -30,7 +30,7 @@ public class CourseController {
         JSONArray dates = course.getDates();
         JSONObject tmp = new JSONObject();
         tmp.put("userExamName", course.toString());
-        tmp.put("userExamDur", course.GetDuration());
+        tmp.put("userExamDur", course.getDuration());
         tmp.put("userExams", dates);
         tmp.put("otherExams", courseService.getAllExcept(courseName));
         return tmp.toJSONString();

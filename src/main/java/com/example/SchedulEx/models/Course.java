@@ -61,12 +61,12 @@ public class Course
         this.instructor = instructor;
     }
 
-    public int GetEnrollment()
+    public int getEnrollment()
     {
         return enrollment;
     }
 
-    public int GetDuration()
+    public int getDuration()
     {
         return duration;
     }
@@ -98,7 +98,7 @@ public class Course
         return switch (which){
             case 1 -> this.dateOne;
             case 2 -> this.dateTwo;
-            case 3 -> this.dateThree;
+            case 3, 4 -> this.dateThree;
             default -> -999L;
         };
     }
@@ -133,6 +133,15 @@ public class Course
             out.add(tmp);
         }
         return out;
+    }
+
+    //other must be an accepted course
+    public boolean overlaps(Course other, int which){
+        Long thisStart = this.getDate(which);
+        Long thisEnd = thisStart + (this.duration * 60 * 60 * 1000L);
+        Long otherStart = other.getDate(other.getRequestStatus()-700); //this is jank, do not just pass any course for 'other'
+        Long otherEnd = otherStart + (other.getDuration() * 60 * 60 * 1000L);
+        return (thisEnd >= otherStart && thisStart <= otherEnd);
     }
 
     @Override
