@@ -83,6 +83,10 @@ public class CourseService
 
     //precondition: 'course' must be not null
     //returns all accepted courses in db with times overlapping any course.dateX
+    //return map form will be
+    // {1; list of course names overlapping with course.dateOne,
+    // 2; list of course names overlapping with course.dateTwo,
+    // 3; list of course names overlapping with course.dateThree}
     @Transactional
     public Map<Integer, List<String>> getOverlaps(Course course){
         if(course == null){
