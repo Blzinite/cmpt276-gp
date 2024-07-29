@@ -39,7 +39,7 @@ public class CourseController {
     // Add New Course as Instructor
     // Function: Allows users logged in as instructor to create a new course by providing course name, number, and enrollment
     @PostMapping("newCourse")
-    public String NewCourse(@RequestParam Map<String, String> params, Model model, HttpSession session)
+    public String newCourse(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
         //verify user is logged in
         User user = (User) session.getAttribute("user");
@@ -50,60 +50,60 @@ public class CourseController {
         // Verify user access level
         try
         {
-            courseService.ConfirmUserAccessLevel(AccessLevel.INSTRUCTOR, session);
+            courseService.confirmUserAccessLevel(AccessLevel.INSTRUCTOR, session);
         }
         catch (IllegalStateException e)
         {
             System.err.println(e.getMessage());
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
 
         // Create new course
-        courseService.CreateNewCourse(params, session);
+        courseService.createNewCourse(params, session);
         model.addAttribute("isOpen", true);
 
-        return courseService.GetActionPanel(model, session);
+        return courseService.getActionPanel(model, session);
     }
 
     // Delete course as instructor
     // Function: Removes a selected course from the database and refreshes action panel
     @PostMapping("deleteCourse{id}")
-    public String DeleteCourse(@PathVariable("id") int id, Model model, HttpSession session)
+    public String deleteCourse(@PathVariable("id") int id, Model model, HttpSession session)
     {
         // Verify user access level
         try
         {
-            courseService.ConfirmUserAccessLevel(AccessLevel.INSTRUCTOR, session);
+            courseService.confirmUserAccessLevel(AccessLevel.INSTRUCTOR, session);
         }
         catch (IllegalStateException e)
         {
             System.err.println(e.getMessage());
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
 
         // Delete the course
-        courseService.DeleteCourse(id, session);
+        courseService.deleteCourse(id, session);
         model.addAttribute("isOpen", true);
 
-        return courseService.GetActionPanel(model, session);
+        return courseService.getActionPanel(model, session);
     }
 
     @GetMapping("admin/{course}")
     public String getCourseInfo(@PathVariable("course") String course, Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
         if(user==null){
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         if(user.getAccessLevel() != AccessLevel.ADMIN){
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         Course courseObj = courseService.getCourse(course).orElse(null);
         if (courseObj == null) {
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         User instructor = courseService.getInstructor(courseObj).orElse(null);
         if (instructor == null) {
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         model.addAttribute("instructor", instructor);
         model.addAttribute("course", courseObj);
@@ -114,30 +114,30 @@ public class CourseController {
     public String updateCourseStatus(@PathVariable("course") String course, @RequestParam Map<String, String> params, Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
         if(user==null){
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         if(user.getAccessLevel() != AccessLevel.ADMIN){
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         Course courseObj = courseService.getCourse(course).orElse(null);
         if (courseObj == null) {
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         int newStatus = Integer.parseInt(params.get("status"));
         if(newStatus == RequestStatus.ACCEPTED_CUSTOM_TIME){
             courseObj = courseService.updateCustomTime(courseObj, params.get("dateOverride"), params.get("timeOverride"));
         }
         if(courseObj == null){
-            return courseService.GetActionPanel(model, session);
+            return courseService.getActionPanel(model, session);
         }
         courseService.updateRequestStatus(courseObj, newStatus);
-        return courseService.GetActionPanel(model, session);
+        return courseService.getActionPanel(model, session);
     }
 
     @PostMapping("submitExamRequest")
-    public String UpdateCourseInformation(@RequestParam Map<String, String> params, Model model, HttpSession session)
+    public String updateCourseInformation(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
-        courseService.UpdateCourseInformation(params, model, session);
-        return courseService.GetActionPanel(model, session);
+        courseService.updateCourseInformation(params, model, session);
+        return courseService.getActionPanel(model, session);
     }
 }

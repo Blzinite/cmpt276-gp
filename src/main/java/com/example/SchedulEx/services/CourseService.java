@@ -4,7 +4,6 @@ import com.example.SchedulEx.helpers.UnixHelper;
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.repositories.UserRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.json.simple.JSONArray;
@@ -38,7 +37,7 @@ public class CourseService
     }
 
     @Transactional
-    public void CreateNewCourse(Map<String, String> params, HttpSession session)
+    public void createNewCourse(Map<String, String> params, HttpSession session)
     {
         // Get reference to instructor
         User instructor = (User) session.getAttribute("user");
@@ -51,13 +50,13 @@ public class CourseService
         Course newCourse = new Course(department + "-" + number, enrollment, instructor);
 
         // Add it to the user
-        instructor.AddCourse(newCourse);
+        instructor.addCourse(newCourse);
 
         courseRepository.save(newCourse);
     }
 
     @Transactional
-    public List<Course> GetUserCourses(Model model, HttpSession session)
+    public List<Course> getUserCourses(Model model, HttpSession session)
     {
         User user = (User) session.getAttribute("user");
 
@@ -67,7 +66,7 @@ public class CourseService
         }
         else if(user.getAccessLevel() == AccessLevel.INSTRUCTOR)
         {
-            return user.GetCourses();
+            return user.getCourses();
         }
         else
         {
@@ -126,10 +125,10 @@ public class CourseService
 
     @Transactional
     public Optional<User> getInstructor(Course course){
-        return userRepository.findById(course.GetInstructorID());
+        return userRepository.findById(course.getInstructorID());
     }
 
-    public String GetActionPanel(Model model, HttpSession session)
+    public String getActionPanel(Model model, HttpSession session)
     {
         User curr = (User) session.getAttribute("user");
         if(curr == null){
@@ -159,7 +158,7 @@ public class CourseService
 
     // Verifies user access level
     // Function: If the user is not of the proper access level given as input, throws exception.
-    public boolean ConfirmUserAccessLevel(AccessLevel accessLevel, HttpSession session) throws IllegalArgumentException
+    public boolean confirmUserAccessLevel(AccessLevel accessLevel, HttpSession session) throws IllegalArgumentException
     {
         User user = (User) session.getAttribute("user");
         if (user == null)
@@ -178,21 +177,21 @@ public class CourseService
     // then delete the course from course repo AND update user in user repo
     // Or else things break.
     @Transactional
-    public void DeleteCourse(int id, HttpSession session)
+    public void deleteCourse(int id, HttpSession session)
     {
         User user = (User) session.getAttribute("user");
 
         Course course = courseRepository.findById(id).orElse(null);
         if (course != null)
         {
-            user.RemoveCourse(course);
-            course.RemoveInstructor();
-            courseRepository.deleteById(course.GetCourseID());
+            user.removeCourse(course);
+            course.removeInstructor();
+            courseRepository.deleteById(course.getCourseID());
             userRepository.save(user);
         }
     }
 
-    public void UpdateCourseInformation(Map<String, String> params, Model model, HttpSession session)
+    public void updateCourseInformation(Map<String, String> params, Model model, HttpSession session)
     {
         // Get info from form submission
         int instructorID = -1;
@@ -226,10 +225,10 @@ public class CourseService
             if(optionalCourse.isPresent())
             {
                 Course course = optionalCourse.get();
-                user.RemoveCourse(course);
+                user.removeCourse(course);
                 course.updateCourse(params);
                 courseRepository.save(course);
-                user.AddCourse(course);
+                user.addCourse(course);
                 userRepository.save(user);
             }
             else
@@ -240,27 +239,27 @@ public class CourseService
     }
 
     public Course updateCustomTime(Course courseObj, String dateOverride, String timeOverride) {
-        User instructor = userRepository.findById(courseObj.GetInstructorID()).orElse(null);
+        User instructor = userRepository.findById(courseObj.getInstructorID()).orElse(null);
         if(instructor == null){
             return null;
         }
-        instructor.RemoveCourse(courseObj);
+        instructor.removeCourse(courseObj);
         courseObj.setCustomTime(UnixHelper.parseDate(dateOverride, timeOverride));
         courseRepository.save(courseObj);
-        instructor.AddCourse(courseObj);
+        instructor.addCourse(courseObj);
         userRepository.save(instructor);
         return courseObj;
     }
 
     public void updateRequestStatus(Course courseObj, int newStatus) {
-        User instructor = userRepository.findById(courseObj.GetInstructorID()).orElse(null);
+        User instructor = userRepository.findById(courseObj.getInstructorID()).orElse(null);
         if(instructor == null){
             return;
         }
-        instructor.RemoveCourse(courseObj);
+        instructor.removeCourse(courseObj);
         courseObj.setRequestStatus(newStatus);
         courseRepository.save(courseObj);
-        instructor.AddCourse(courseObj);
+        instructor.addCourse(courseObj);
         userRepository.save(instructor);
     }
 }

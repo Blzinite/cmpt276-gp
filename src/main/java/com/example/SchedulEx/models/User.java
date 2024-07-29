@@ -2,7 +2,6 @@ package com.example.SchedulEx.models;
 
 import com.example.SchedulEx.helpers.PasswordHelper;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,23 +102,23 @@ public class User {
         this.newUser = newUser;
     }
 
-    public List<Course> GetCourses()
+    public List<Course> getCourses()
     {
         return new ArrayList<>(courses);
     }
 
-    public void AddCourse(Course course)
+    public void addCourse(Course course)
     {
-        course.SetInstructor(this);
+        course.setInstructor(this);
         this.courses.add(course);
     }
 
-    public void RemoveCourse(Course course)
+    public void removeCourse(Course course)
     {
         this.courses.remove(course);
     }
 
-    public void SetCourses(List<Course> courses)
+    public void setCourses(List<Course> courses)
     {
         this.courses = courses;
     }
