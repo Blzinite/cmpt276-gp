@@ -18,18 +18,42 @@
                 <input type="hidden" value="701" name="status">
                 <span th:text="|${course.getExamDate(1)} at ${course.getStartTime(1)}|"></span>
                 <button class="button-accept" type="submit">ACCEPT</button>
+                <th:block th:if="${overlaps1 != null}">
+                    <details>
+                        <summary class="list-element">Warning - Time conflicts with other courses</summary>
+                        <div class="list-element" th:each="overlap:${overlaps1}">
+                            <p th:text="${overlap}"></p>
+                        </div>
+                    </details>
+                </th:block>
                 <br>
             </form>
             <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
                 <input type="hidden" value="702" name="status">
                 <span th:text="|${course.getExamDate(2)} at ${course.getStartTime(2)}|"></span>
                 <button class="button-accept" type="submit">ACCEPT</button>
+                <th:block th:if="${overlaps2 != null}">
+                    <details>
+                        <summary class="list-element">Warning - Time conflicts with other courses</summary>
+                        <div class="list-element" th:each="overlap:${overlaps2}">
+                            <p th:text="${overlap}"></p>
+                        </div>
+                    </details>
+                </th:block>
                 <br>
             </form>
             <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
                 <input type="hidden" value="703" name="status">
                 <span th:text="|${course.getExamDate(3)} at ${course.getStartTime(3)}|"></span>
                 <button class="button-accept" type="submit">ACCEPT</button>
+                <th:block th:if="${overlaps3 != null}">
+                    <details>
+                        <summary class="list-element">Warning - Time conflicts with other courses</summary>
+                        <div class="list-element" th:each="overlap:${overlaps3}">
+                            <p th:text="${overlap}"></p>
+                        </div>
+                    </details>
+                </th:block>
                 <br>
             </form>
         </div>

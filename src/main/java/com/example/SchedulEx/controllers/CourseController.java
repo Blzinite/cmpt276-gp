@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -104,6 +105,18 @@ public class CourseController {
         User instructor = courseService.getInstructor(courseObj).orElse(null);
         if (instructor == null) {
             return courseService.getActionPanel(model, session);
+        }
+        Map<Integer, List<String>> overlaps = courseService.getOverlaps(courseObj);
+        if(!overlaps.isEmpty()){
+            if(!overlaps.get(1).isEmpty()){
+                model.addAttribute("overlaps1", overlaps.get(1));
+            }
+            if(!overlaps.get(2).isEmpty()){
+                model.addAttribute("overlaps2", overlaps.get(2));
+            }
+            if(!overlaps.get(3).isEmpty()){
+                model.addAttribute("overlaps3", overlaps.get(3));
+            }
         }
         model.addAttribute("instructor", instructor);
         model.addAttribute("course", courseObj);

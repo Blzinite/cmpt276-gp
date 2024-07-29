@@ -114,9 +114,6 @@ public class CourseService
         return overlaps;
     }
 
-    private List<Course> getExamsBetween(Long lower, Long upper){
-        return courseRepository.findByDateOneBetweenOrDateTwoBetweenOrDateThreeBetween(lower, upper, lower, upper, lower, upper);
-    }
 
     @Transactional
     public Optional<Course> getCourse(String courseName){
