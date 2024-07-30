@@ -1,10 +1,12 @@
 package com.example.SchedulEx.controllers;
 
+import com.example.SchedulEx.helpers.EmailHelper;
 import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.models.Course;
 import com.example.SchedulEx.models.RequestStatus;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.services.CourseService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -136,6 +139,10 @@ public class CourseController {
         if (courseObj == null) {
             return courseService.getActionPanel(model, session);
         }
+        User instructor = courseService.getInstructor(courseObj).orElse(null);
+        if (instructor == null) {
+            return courseService.getActionPanel(model, session);
+        }
         int newStatus = Integer.parseInt(params.get("status"));
         if(newStatus == RequestStatus.ACCEPTED_CUSTOM_TIME){
             courseObj = courseService.updateCustomTime(courseObj, params.get("dateOverride"), params.get("timeOverride"));
@@ -144,6 +151,23 @@ public class CourseController {
             return courseService.getActionPanel(model, session);
         }
         courseService.updateRequestStatus(courseObj, newStatus);
+        if(RequestStatus.isAccepted(newStatus)){
+            try {
+                EmailHelper.sendEmail(instructor.getEmail(), "Exam Request Accepted",
+                        String.format(EmailHelper.EXAM_ACCEPTED_EMAIL, courseObj.toString(),
+                                courseObj.getExamDate(courseObj.getRequestStatus()-700),
+                                courseObj.getStartTime(courseObj.getRequestStatus()-700)) + EmailHelper.EMAIL_SIGN_OFF);
+            } catch (MessagingException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else if(newStatus == RequestStatus.REJECTED){
+            try {
+                EmailHelper.sendEmail(instructor.getEmail(), "Exam Request Rejected",
+                        String.format(EmailHelper.EXAM_REJECTED_EMAIL, courseObj.toString(), params.get("reason")) + EmailHelper.EMAIL_SIGN_OFF);
+            } catch (MessagingException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return courseService.getActionPanel(model, session);
     }
 

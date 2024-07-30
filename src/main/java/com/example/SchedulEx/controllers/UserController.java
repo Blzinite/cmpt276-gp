@@ -1,10 +1,12 @@
 package com.example.SchedulEx.controllers;
 
+import com.example.SchedulEx.helpers.EmailHelper;
 import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.helpers.PasswordHelper;
 import com.example.SchedulEx.models.User;
 import com.example.SchedulEx.repositories.UserRepository;
 import com.example.SchedulEx.services.CourseService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -75,13 +78,22 @@ public class UserController {
         //only admin can add users
         User toAdd;
         //TODO: only one user per email
+        if(userRepo.findByEmail(params.get("email")).isPresent()){
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            return "redirect:../action-panel";
+        }
         //TODO: Email new users with random password
-        //String pwd = PasswordHelper.generatePassword();
+        String pwd = PasswordHelper.generatePassword();
         try {
-            toAdd = new User(params.get("email"), params.get("password"), params.get("firstname"),
+            toAdd = new User(params.get("email"), pwd, params.get("firstname"),
                     params.get("lastname"), params.get("accesslevel"));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
+        try {
+            EmailHelper.sendEmail(params.get("email"), "Welcome to SchedulEx", String.format(EmailHelper.NEW_USER_EMAIL, pwd) + EmailHelper.EMAIL_SIGN_OFF);
+        } catch (MessagingException | IOException e) {
             throw new RuntimeException(e);
         }
         userRepo.save(toAdd);
