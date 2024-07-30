@@ -107,7 +107,6 @@ public class UserControllerTests {
         params.put("email", "test@test.com");
         params.put("firstname", "NewFirst");
         params.put("lastname", "NewLast");
-        // We're not setting a new password in this test
 
         String result = userController.updateSelf(params, model, session, response);
 
@@ -120,12 +119,10 @@ public class UserControllerTests {
 
     @Test
     public void testLoginUser() throws Exception {
-        // Create a user with a constructor that sets up all necessary fields
         User user = new User("test@test.com", "hashedPassword", "Test", "User", "REGULAR");
         user.setNewUser(true); // Set the user as a new user
         when(userRepo.findByEmail("test@test.com")).thenReturn(Optional.of(user));
         
-        // Mock the static method of PasswordHelper
         try (MockedStatic<PasswordHelper> mockedPasswordHelper = mockStatic(PasswordHelper.class)) {
             mockedPasswordHelper.when(() -> PasswordHelper.verifyPassword(anyString(), anyString(), any()))
                                 .thenReturn(true);
@@ -144,12 +141,10 @@ public class UserControllerTests {
 
     @Test
     public void testLoginReturningUser() throws Exception {
-        // Create a user with a constructor that sets up all necessary fields
         User user = new User("test@test.com", "hashedPassword", "Test", "User", "REGULAR");
         user.setNewUser(false); // Set the user as a returning user
         when(userRepo.findByEmail("test@test.com")).thenReturn(Optional.of(user));
         
-        // Mock the static method of PasswordHelper
         try (MockedStatic<PasswordHelper> mockedPasswordHelper = mockStatic(PasswordHelper.class)) {
             mockedPasswordHelper.when(() -> PasswordHelper.verifyPassword(anyString(), anyString(), any()))
                                 .thenReturn(true);
