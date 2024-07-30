@@ -24,7 +24,6 @@ public class CourseControllerTests {
         controller = new CourseController();
         courseService = mock(CourseService.class);
         
-        // Use reflection to set the private courseService field
         Field courseServiceField = CourseController.class.getDeclaredField("courseService");
         courseServiceField.setAccessible(true);
         courseServiceField.set(controller, courseService);
@@ -57,9 +56,7 @@ public class CourseControllerTests {
     when(session.getAttribute("user")).thenReturn(user);
     Map<String, String> params = Map.of("department", "TEST", "number", "101", "enrollment", "30");
 
-    // Mock the confirmUserAccessLevel method
     when(courseService.confirmUserAccessLevel(AccessLevel.INSTRUCTOR, session)).thenReturn(true);
-    // Mock the getActionPanel method
     when(courseService.getActionPanel(model, session)).thenReturn("redirect:/action-panel");
 
     String result = controller.newCourse(params, model, session);
@@ -79,9 +76,7 @@ public class CourseControllerTests {
         user.setAccessLevel(AccessLevel.INSTRUCTOR);
         when(session.getAttribute("user")).thenReturn(user);
 
-        // Mock the confirmUserAccessLevel method
         when(courseService.confirmUserAccessLevel(AccessLevel.INSTRUCTOR, session)).thenReturn(true);
-        // Mock the getActionPanel method
         when(courseService.getActionPanel(model, session)).thenReturn("redirect:/action-panel");
 
         String result = controller.deleteCourse(1, model, session);
