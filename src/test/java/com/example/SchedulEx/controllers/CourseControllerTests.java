@@ -49,24 +49,24 @@ public class CourseControllerTests {
     
     @Test
     public void testNewCourse() {
-    Model model = mock(Model.class);
-    HttpSession session = mock(HttpSession.class);
-    User user = new User();
-    user.setAccessLevel(AccessLevel.INSTRUCTOR);
-    when(session.getAttribute("user")).thenReturn(user);
-    Map<String, String> params = Map.of("department", "TEST", "number", "101", "enrollment", "30");
-
-    when(courseService.confirmUserAccessLevel(AccessLevel.INSTRUCTOR, session)).thenReturn(true);
-    when(courseService.getActionPanel(model, session)).thenReturn("redirect:/action-panel");
-
-    String result = controller.newCourse(params, model, session);
-
-    System.out.println("New course result: " + result);
-    assertNotNull(result);
-    assertEquals("redirect:/action-panel", result);
-    verify(courseService).createNewCourse(params, session);
-    verify(courseService).getActionPanel(model, session);
-}
+        Model model = mock(Model.class);
+        HttpSession session = mock(HttpSession.class);
+        User user = new User();
+        user.setAccessLevel(AccessLevel.INSTRUCTOR);
+        when(session.getAttribute("user")).thenReturn(user);
+        Map<String, String> params = Map.of("department", "TEST", "number", "101", "enrollment", "30");
+    
+        when(courseService.confirmUserAccessLevel(AccessLevel.INSTRUCTOR, session)).thenReturn(true);
+        when(courseService.getActionPanel(model, session)).thenReturn("redirect:/action-panel");
+    
+        String result = controller.newCourse(params, model, session);
+    
+        System.out.println("New course result: " + result);
+        assertNotNull(result);
+        assertEquals("redirect:/action-panel", result);
+        verify(courseService).createNewCourse(params, session);
+        verify(courseService).getActionPanel(model, session);
+    }
     
     @Test
     public void testDeleteCourse() {
