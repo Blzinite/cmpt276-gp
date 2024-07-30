@@ -86,14 +86,25 @@ function highlight(e){
         let name = e[2];
         let priority = e[3];
         let color = colors[priority];
+        let success = false;
         for (let i = 0; i < length; i++){
             let j = 0;
             j += i * 8;
-            console.log(time + weekOfDay + j + 1);
-            x[time + weekOfDay + j + 1].style.backgroundColor = color;
-            x[time + weekOfDay + j + 1].style.border = "none";
+            try {
+                x[time + weekOfDay + j + 1].style.backgroundColor = color;
+                x[time + weekOfDay + j + 1].style.border = "none";
+            } catch (e) {
+                console.log("Unmapped Time: "+e[0]);
+                success = true;
+            }
         }
-        x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
+        try {
+            x[time + ((Math.ceil(length/2) - 1) * 8) + weekOfDay + 1].innerHTML = name + "(" + priority + ")";
+        } catch (e) {
+            console.log("Unable to place name")
+            success = true;
+        }
+        index.unlistWarning(success);
     }
 }
 
@@ -103,11 +114,24 @@ function examBorder(e){
         let time = (e[0].getHours() + e[0].getMinutes()/60  - 8) * 16;
         let length = (e[1] * 2);
         let weekOfDay = e[0].getDay();
-        let color = getRandomColor();
-        x[time + weekOfDay + 1].style.borderTop = "5px solid";
-        x[time + weekOfDay + 1].style.borderTopColor = color;
-        x[time + weekOfDay + ((length - 1)*8) + 1].style.borderBottom = "5px solid";
-        x[time + weekOfDay + ((length - 1)*8) + 1].style.borderBottomColor = color;
+        let priority = e[3];
+        let color = colors[priority];
+        let success = false;
+        try {
+            x[time + weekOfDay + 1].style.borderTop = "5px solid";
+            x[time + weekOfDay + 1].style.borderTopColor = color;
+        } catch (e) {
+            console.log("TOP BORDER BREACHING LIMITS")
+            success = true;
+        }
+        try {
+            x[time + weekOfDay + ((length - 1)*8) + 1].style.borderBottom = "5px solid";
+            x[time + weekOfDay + ((length - 1)*8) + 1].style.borderBottomColor = color;
+        } catch (e) {
+            console.log("BOT BORDER BREACHING LIMITS")
+            success = true;
+        }
+        index.unlistWarning(success);
     }
 }
 
@@ -115,10 +139,10 @@ function removeHighlights(){
     let x = document.getElementsByTagName("td");
     for (let i = 0; i < 22*8; i += 8){
         for (let j = 1; j < 8; j++){
-            let x = i + j;
-            x[x].style.backgroundColor = "";
-            x[x].style.border = "";
-            x[x].innerHTML = "";
+            let k = i + j;
+            x[k].style.backgroundColor = "";
+            x[k].style.border = "";
+            x[k].innerHTML = "";
         }
     }
 }

@@ -76,6 +76,18 @@ function CreateNewExam(dates) {
 
 function highlightUserDates() {
     calendarFrame.removeHighlights();
+    for (let i = 0; i < localData.otherExams.length; i++) {
+        console.log(localData.otherExams[i]);
+        const day = localData.otherExams[i].date.split("-");
+        const time = localData.otherExams[i].start.split(":");
+        const examinfo = [
+            new Date(day[0],day[1]-1,day[2],time[0],time[1]),
+            localData.otherExams[i].duration,
+            localData.otherExams[i].name,
+            0
+        ];
+        calendarFrame.highlight(examinfo);
+    }
     for (let i = 0; i < localData.userExams.length; i++) {
         console.log(localData.userExams[i]);
         const day = localData.userExams[i].date.split("-");
@@ -107,4 +119,8 @@ function switchToMonth() {
 
 function getActiveDate() {
     return new Date(activeDate);
+}
+
+function unlistWarning(active) {
+    actionPanelFrame.showUnlist(active, localData.userExamName);
 }
