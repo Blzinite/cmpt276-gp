@@ -92,7 +92,11 @@ function highlight(e){
             j += i * 8;
             try {
                 x[time + weekOfDay + j + 1].style.backgroundColor = color;
-                x[time + weekOfDay + j + 1].style.border = "none";
+                if (x[time + weekOfDay + j + 1].style.borderTopColor===""
+                || x[time + weekOfDay + j + 1].style.borderBottomColor==="") {
+                    x[time + weekOfDay + j + 1].style.border = "none";
+                }
+
             } catch (e) {
                 console.log("Unmapped Time: "+e[0]);
                 success = true;
@@ -105,6 +109,7 @@ function highlight(e){
             success = true;
         }
         index.unlistWarning(success);
+        examBorder(e)
     }
 }
 
@@ -192,6 +197,7 @@ function update(){
 }
 
 update();
+index.highlightUserDates()
 
 // function highlight(e){
 //     let x = document.getElementsByTagName("td");
