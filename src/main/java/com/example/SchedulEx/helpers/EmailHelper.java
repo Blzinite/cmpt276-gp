@@ -22,6 +22,7 @@ import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.Properties;
 import com.google.api.services.gmail.model.Message;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
@@ -41,7 +43,6 @@ import org.apache.commons.codec.binary.Base64;
 public class EmailHelper {
     private static final String SENDER_ADDRESS = "noreply.schedulex@gmail.com";
     private static final String APPLICATION_NAME = "SchedulEx";
-    private static final String CREDENTIALS_PATH = "/credentials.json";
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
@@ -49,12 +50,11 @@ public class EmailHelper {
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
         // Load client secrets.
-        InputStream in = EmailHelper.class.getResourceAsStream(CREDENTIALS_PATH);
-        if (in == null) {
-            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_PATH);
-        }
+        Dotenv dotenv = Dotenv.load();
+        InputStream stream = new ByteArrayInputStream(dotenv.get("OAUTH").getBytes(StandardCharsets.UTF_8));
+
         GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(stream));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
