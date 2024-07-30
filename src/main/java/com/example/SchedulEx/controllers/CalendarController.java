@@ -22,40 +22,40 @@ public class CalendarController
     DateFormatSymbols dateSymbols = new DateFormatSymbols();
 
     @GetMapping("calendarMonth")
-    public String GetCalendarMonth(Model model, HttpSession session)
+    public String getCalendarMonth(Model model, HttpSession session)
     {
         // Get month, year, and day number for each table entry
         calendar.setTime(new Date());
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
         model.addAttribute("year", calendar.get(Calendar.YEAR));
         model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        model.addAttribute("dayMatrix", GetDayMatrix());
+        model.addAttribute("dayMatrix", getDayMatrix());
 
         return "calendarMonth";
     }
 
     @GetMapping("calendarMonth_prevMonth")
-    public String PrevMonth(@RequestParam Map<String, String> params, Model model, HttpSession session)
+    public String prevMonth(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
         calendar.add(Calendar.MONTH, -1);
 
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
         model.addAttribute("year", calendar.get(Calendar.YEAR));
         model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        model.addAttribute("dayMatrix", GetDayMatrix());
+        model.addAttribute("dayMatrix", getDayMatrix());
 
         return "calendarMonth";
     }
 
     @GetMapping("calendarMonth_nextMonth")
-    public String UpdateCalendar(@RequestParam Map<String, String> params, Model model, HttpSession session)
+    public String updateCalendar(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
         calendar.add(Calendar.MONTH, 1);
 
         model.addAttribute("month", dateSymbols.getMonths()[calendar.get(Calendar.MONTH)]);
         model.addAttribute("year", calendar.get(Calendar.YEAR));
         model.addAttribute("daysInMonth", calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        model.addAttribute("dayMatrix", GetDayMatrix());
+        model.addAttribute("dayMatrix", getDayMatrix());
 
         User currentUser = (User) session.getAttribute("user");
         model.addAttribute("currentUser", currentUser);
@@ -76,7 +76,7 @@ public class CalendarController
         return "calendarMonth";
     }
 
-    private int[][] GetDayMatrix()
+    private int[][] getDayMatrix()
     {
         Calendar temp = (Calendar) calendar.clone();
         temp.set(Calendar.DAY_OF_MONTH, 1);

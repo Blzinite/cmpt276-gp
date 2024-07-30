@@ -45,26 +45,34 @@ public class Course
         this.dateThree = UnixHelper.parseDate(params.get("examDate-3"), params.get("startTime-3"));
         this.enrollment = Integer.parseInt(params.get("enrollment"));
         this.duration = Integer.parseInt(params.get("duration"));
+        this.requestStatus = RequestStatus.PENDING;
     }
 
-    public void SetInstructor(User instructor)
+    public void setRequestStatus(int status){
+        this.requestStatus = status;
+    }
+
+    public int getRequestStatus(){
+        return this.requestStatus;
+    }
+
+    public void setInstructor(User instructor)
     {
         this.instructor = instructor;
     }
 
-    public int GetEnrollment()
+    public int getEnrollment()
     {
         return enrollment;
     }
 
-    public int GetDuration()
+    public int getDuration()
     {
         return duration;
     }
 
-    public int GetInstructorID()
+    public int getInstructorID()
     {
-        System.out.println(instructor.getUid());
         return instructor.getUid();
     }
 
@@ -72,14 +80,27 @@ public class Course
         return courseName;
     }
 
-    public void RemoveInstructor()
+    public void removeInstructor()
     {
         instructor = null;
     }
 
-    public int GetCourseID()
+    public int getCourseID()
     {
         return courseID;
+    }
+
+    public void setCustomTime(Long newTime){
+        this.dateThree = newTime;
+    }
+
+    public Long getDate(int which){
+        return switch (which){
+            case 1 -> this.dateOne;
+            case 2 -> this.dateTwo;
+            case 3, 4 -> this.dateThree;
+            default -> -999L;
+        };
     }
 
     public String getExamDate(int which){
@@ -112,6 +133,15 @@ public class Course
             out.add(tmp);
         }
         return out;
+    }
+
+    //other must be an accepted course
+    public boolean overlaps(Course other, int which){
+        Long thisStart = this.getDate(which);
+        Long thisEnd = thisStart + (this.duration * 60 * 60 * 1000L);
+        Long otherStart = other.getDate(other.getRequestStatus()-700); //this is jank, do not just pass any course for 'other'
+        Long otherEnd = otherStart + (other.getDuration() * 60 * 60 * 1000L);
+        return (thisEnd >= otherStart && thisStart <= otherEnd);
     }
 
     @Override

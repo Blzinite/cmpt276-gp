@@ -278,8 +278,7 @@ public class UserController {
     }
 
     @GetMapping("action-panel")
-    public String getActionPanel(Model model, HttpSession session)
-    {
-        return courseService.GetActionPanel(model, session);
+    public String getActionPanel(Model model, HttpSession session) {
+        return courseService.getActionPanel(model, session);
     }
 }

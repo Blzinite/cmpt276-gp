@@ -1,5 +1,6 @@
 package com.example.SchedulEx.services;
 
+import com.example.SchedulEx.helpers.UnixHelper;
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
 import com.example.SchedulEx.repositories.UserRepository;
@@ -36,7 +37,7 @@ public class CourseService
     }
 
     @Transactional
-    public void CreateNewCourse(Map<String, String> params, HttpSession session)
+    public void createNewCourse(Map<String, String> params, HttpSession session)
     {
         // Get reference to instructor
         User instructor = (User) session.getAttribute("user");
@@ -49,13 +50,13 @@ public class CourseService
         Course newCourse = new Course(department + "-" + number, enrollment, instructor);
 
         // Add it to the user
-        instructor.AddCourse(newCourse);
+        instructor.addCourse(newCourse);
 
         courseRepository.save(newCourse);
     }
 
     @Transactional
-    public List<Course> GetUserCourses(Model model, HttpSession session)
+    public List<Course> getUserCourses(Model model, HttpSession session)
     {
         User user = (User) session.getAttribute("user");
 
@@ -65,9 +66,7 @@ public class CourseService
         }
         else if(user.getAccessLevel() == AccessLevel.INSTRUCTOR)
         {
-            System.out.println("Called get user courses for an instructor");
-
-            return user.GetCourses();
+            return user.getCourses();
         }
         else
         {
@@ -76,11 +75,57 @@ public class CourseService
     }
 
     @Transactional
-    public Optional<Course> GetCourse(String courseName){
+    public List<Course> getAccepted(){
+        return courseRepository.findByRequestStatusBetween(RequestStatus.ACCEPTED_TIME_ONE, RequestStatus.ACCEPTED_CUSTOM_TIME);
+    }
+
+
+    //precondition: 'course' must be not null
+    //returns all accepted courses in db with times overlapping any course.dateX
+    //return map form will be
+    // {1; list of course names overlapping with course.dateOne,
+    // 2; list of course names overlapping with course.dateTwo,
+    // 3; list of course names overlapping with course.dateThree}
+    @Transactional
+    public Map<Integer, List<String>> getOverlaps(Course course){
+        if(course == null){
+            return null;
+        }
+        List<Course> otherCourses = getAccepted();
+        otherCourses.remove(course);
+        Map<Integer, List<String>> overlaps = new HashMap<>();
+        List<String> overlapOne = new ArrayList<>();
+        List<String> overlapTwo = new ArrayList<>();
+        List<String> overlapThree = new ArrayList<>();
+        for(Course otherCourse : otherCourses){
+            if(course.overlaps(otherCourse, 1)){
+                overlapOne.add(otherCourse.getCourseName());
+            }
+            if(course.overlaps(otherCourse, 2)){
+                overlapTwo.add(otherCourse.getCourseName());
+            }
+            if(course.overlaps(otherCourse, 3)){
+                overlapThree.add(otherCourse.getCourseName());
+            }
+        }
+        overlaps.put(1,overlapOne);
+        overlaps.put(2,overlapTwo);
+        overlaps.put(3,overlapThree);
+        return overlaps;
+    }
+
+
+    @Transactional
+    public Optional<Course> getCourse(String courseName){
         return courseRepository.findByCourseName(courseName);
     }
 
-    public String GetActionPanel(Model model, HttpSession session)
+    @Transactional
+    public Optional<User> getInstructor(Course course){
+        return userRepository.findById(course.getInstructorID());
+    }
+
+    public String getActionPanel(Model model, HttpSession session)
     {
         User curr = (User) session.getAttribute("user");
         if(curr == null){
@@ -90,6 +135,7 @@ public class CourseService
             case ADMIN -> {
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepository.findAll());
+                model.addAttribute("pending", courseRepository.findByRequestStatus(RequestStatus.PENDING));
                 return "admin";
             }
             case INVIGILATOR -> {
@@ -109,7 +155,7 @@ public class CourseService
 
     // Verifies user access level
     // Function: If the user is not of the proper access level given as input, throws exception.
-    public boolean ConfirmUserAccessLevel(AccessLevel accessLevel, HttpSession session) throws IllegalArgumentException
+    public boolean confirmUserAccessLevel(AccessLevel accessLevel, HttpSession session) throws IllegalArgumentException
     {
         User user = (User) session.getAttribute("user");
         if (user == null)
@@ -128,26 +174,21 @@ public class CourseService
     // then delete the course from course repo AND update user in user repo
     // Or else things break.
     @Transactional
-    public void DeleteCourse(int id, HttpSession session)
+    public void deleteCourse(int id, HttpSession session)
     {
         User user = (User) session.getAttribute("user");
 
-        Course course = null;
-        Optional<Course> optionalCourse = courseRepository.findById(id);
-        if(optionalCourse.isPresent())
-        {
-            course = optionalCourse.get();
-        }
+        Course course = courseRepository.findById(id).orElse(null);
         if (course != null)
         {
-            user.RemoveCourse(course);
-            course.RemoveInstructor();
-            courseRepository.deleteById(course.GetCourseID());
+            user.removeCourse(course);
+            course.removeInstructor();
+            courseRepository.deleteById(course.getCourseID());
             userRepository.save(user);
         }
     }
 
-    public void UpdateCourseInformation(Map<String, String> params, Model model, HttpSession session)
+    public void updateCourseInformation(Map<String, String> params, Model model, HttpSession session)
     {
         // Get info from form submission
         int instructorID = -1;
@@ -181,10 +222,10 @@ public class CourseService
             if(optionalCourse.isPresent())
             {
                 Course course = optionalCourse.get();
-                user.RemoveCourse(course);
+                user.removeCourse(course);
                 course.updateCourse(params);
                 courseRepository.save(course);
-                user.AddCourse(course);
+                user.addCourse(course);
                 userRepository.save(user);
             }
             else
@@ -192,5 +233,30 @@ public class CourseService
                 System.out.println("Course not found");
             }
         }
+    }
+
+    public Course updateCustomTime(Course courseObj, String dateOverride, String timeOverride) {
+        User instructor = userRepository.findById(courseObj.getInstructorID()).orElse(null);
+        if(instructor == null){
+            return null;
+        }
+        instructor.removeCourse(courseObj);
+        courseObj.setCustomTime(UnixHelper.parseDate(dateOverride, timeOverride));
+        courseRepository.save(courseObj);
+        instructor.addCourse(courseObj);
+        userRepository.save(instructor);
+        return courseObj;
+    }
+
+    public void updateRequestStatus(Course courseObj, int newStatus) {
+        User instructor = userRepository.findById(courseObj.getInstructorID()).orElse(null);
+        if(instructor == null){
+            return;
+        }
+        instructor.removeCourse(courseObj);
+        courseObj.setRequestStatus(newStatus);
+        courseRepository.save(courseObj);
+        instructor.addCourse(courseObj);
+        userRepository.save(instructor);
     }
 }
