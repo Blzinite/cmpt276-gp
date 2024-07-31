@@ -16,6 +16,7 @@ public class InvigilatorData {
     @OneToOne
     private User invigilator;
     private String courseIds; //CSV string course IDs
+    private String unavailableDates; //CSV dates formatted as unix timestamps
 
     public InvigilatorData() {this.courseIds = "";}
     public InvigilatorData(User invigilator){
@@ -47,5 +48,22 @@ public class InvigilatorData {
         List<String> tmpList = new ArrayList<>(Arrays.stream(tmp).toList());
         tmpList.remove(courseId.toString());
         this.courseIds = StringUtils.join(tmpList.toArray(), ",");
+    }
+    public List<Long> getUnavailableDates() {
+        String[] tmp = unavailableDates.split(",");
+        List<Long> unavailableDateList = new ArrayList<>();
+        for(String str : tmp){
+            unavailableDateList.add(Long.parseLong(str));
+        }
+        return unavailableDateList;
+    }
+    public void addUnavailableDate(long unavailableDate) {
+        this.unavailableDates = this.unavailableDates + "," + unavailableDate;
+    }
+    public void removeUnavailableDate(Long unavailableDate) {
+        String[] tmp = this.unavailableDates.split(",");
+        List<String> tmpList = new ArrayList<>(Arrays.stream(tmp).toList());
+        tmpList.remove(unavailableDate.toString());
+        this.unavailableDates = StringUtils.join(tmpList.toArray(), ",");
     }
 }
