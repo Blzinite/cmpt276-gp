@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Table(name="InvigilatorCourses")
-public class InvigilatorCourses {
+@Table(name="InvigilatorData")
+public class InvigilatorData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,8 +17,8 @@ public class InvigilatorCourses {
     private User invigilator;
     private String courseIds; //CSV string course IDs
 
-    public InvigilatorCourses() {this.courseIds = "";}
-    public InvigilatorCourses(User invigilator){
+    public InvigilatorData() {this.courseIds = "";}
+    public InvigilatorData(User invigilator){
         this.invigilator = invigilator;
         this.courseIds = "";
     }
