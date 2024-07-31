@@ -113,6 +113,12 @@ public class User {
         this.courses.add(course);
     }
 
+    public void addInvigCourse(Course course) {
+        this.courses.add(course);
+        System.out.println("ADDED COURSE");
+        System.out.println(this.courses);
+    }
+
     public void removeCourse(Course course)
     {
         this.courses.remove(course);

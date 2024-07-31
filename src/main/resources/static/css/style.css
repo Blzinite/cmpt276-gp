@@ -86,7 +86,7 @@ h1, h2, label {
     margin: auto;
     background: #EEF7FF;
     border-radius: 20px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .time-wrapper {
@@ -126,7 +126,8 @@ h1, h2, label {
 }
 
 .button-sumbit {
-    margin: 5px 0 5px 0;
+    display: block;
+    margin: auto;
     border: 0;
     background: #4D869C;
     border-radius: 5px;
@@ -135,7 +136,8 @@ h1, h2, label {
 }
 
 .button-accept{
-    margin: 5px 0 5px 0;
+    display: block;
+    margin: auto;
     border: 0;
     background: #4D869C;
     border-radius: 5px;
@@ -144,7 +146,8 @@ h1, h2, label {
 }
 
 .button-reject{
-    margin: 5px 0 5px 0;
+    display: block;
+    margin: auto;
     border: 0;
     background: #C41E3A;
     border-radius: 5px;
@@ -356,7 +359,15 @@ select.list-element {
 }
 
 .timeslot {
-    padding: 2px 6px;
+    display: block;
+    margin: 2px;
+    padding: 4px 6px;
     border: solid 2px #4D869C;
     border-radius: 6px;
+}
+
+select.timeslot {
+    display: block;
+    width: 80vw;
+    margin: auto;
 }

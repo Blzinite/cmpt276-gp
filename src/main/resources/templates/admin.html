@@ -40,7 +40,7 @@
         <details>
             <summary class="list-element">Approved</summary>
             <div class="list-element" th:each="course:${approved}">
-                <a class="list-element" th:href="|/admin/${course.getCourseName()}|" th:text="${course.getApprovedCourse()}"></a>
+                <a class="list-element" th:href="|/approved/${course.getCourseName()}|" th:text="${course.getApprovedCourse()}"></a>
             </div>
         </details>
     </div>
