@@ -2,7 +2,9 @@ package com.example.SchedulEx.controllers;
 
 import com.example.SchedulEx.models.AccessLevel;
 import com.example.SchedulEx.helpers.PasswordHelper;
+import com.example.SchedulEx.models.InvigilatorData;
 import com.example.SchedulEx.models.User;
+import com.example.SchedulEx.repositories.InvigilatorDataRepository;
 import com.example.SchedulEx.repositories.UserRepository;
 import com.example.SchedulEx.services.CourseService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +24,8 @@ public class UserController {
     private UserRepository userRepo;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private InvigilatorDataRepository invigRepo;
 
     //TODO: resolve mappings
     //TODO: better error handling
@@ -83,6 +87,10 @@ public class UserController {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
+        }
+        if(toAdd.getAccessLevel() == AccessLevel.INVIGILATOR){
+            InvigilatorData newData = new InvigilatorData(toAdd);
+            invigRepo.save(newData);
         }
         userRepo.save(toAdd);
         return "redirect:../action-panel";
