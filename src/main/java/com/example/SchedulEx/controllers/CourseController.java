@@ -126,6 +126,28 @@ public class CourseController {
         return "viewCourse";
     }
 
+    @GetMapping("approved/{course}")
+    public String getApprovedCourseInfo(@PathVariable("course") String course, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return courseService.getActionPanel(model, session);
+        }
+        if(user.getAccessLevel() != AccessLevel.ADMIN){
+            return courseService.getActionPanel(model, session);
+        }
+        Course courseObj = courseService.getCourse(course).orElse(null);
+        if (courseObj == null) {
+            return courseService.getActionPanel(model, session);
+        }
+        User instructor = courseService.getInstructor(courseObj).orElse(null);
+        if (instructor == null) {
+            return courseService.getActionPanel(model, session);
+        }
+        model.addAttribute("instructor", instructor);
+        model.addAttribute("course", courseObj);
+        return courseService.appendInvigilators(model, session);
+    }
+
     @PostMapping("updateStatus/{course}")
     public String updateCourseStatus(@PathVariable("course") String course, @RequestParam Map<String, String> params, Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -175,6 +197,25 @@ public class CourseController {
     public String updateCourseInformation(@RequestParam Map<String, String> params, Model model, HttpSession session)
     {
         courseService.updateCourseInformation(params, model, session);
+        return courseService.getActionPanel(model, session);
+    }
+
+    @RequestMapping(value="debug", method=RequestMethod.POST)
+    @ResponseBody
+    public String debug(@RequestParam Map<String, String> params, Model model, HttpSession session) {
+        StringBuilder outJson = new StringBuilder("{");
+        for(String key : params.keySet()){
+            outJson.append("\"").append(key).append("\":\"").append(params.get(key)).append("\"");
+            outJson.append(",");
+        }
+        outJson.deleteCharAt(outJson.length()-1);
+        outJson.append("}");
+        return outJson.toString();
+    }
+
+    @PostMapping("assignInvigilator")
+    public String assignInvigilator(@RequestParam Map<String, String> params, Model model, HttpSession session) {
+        courseService.addCourseToInvigilator(params, model, session);
         return courseService.getActionPanel(model, session);
     }
 }

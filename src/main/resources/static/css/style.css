@@ -70,6 +70,7 @@ h1, h2, label {
     border-radius: 5px;
     width: 100%;
     display: flex;
+    padding: 2px;
 }
 
 .input-wrapper input {
@@ -85,16 +86,17 @@ h1, h2, label {
     margin: auto;
     background: #EEF7FF;
     border-radius: 20px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .time-wrapper {
     border: solid 2px #4D869C;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     width: 90%;
     padding: 0 2px 0 2px;
     display: block;
     margin: auto;
+    border-top: 0;
 }
 
 .time-wrapper input {
@@ -109,6 +111,7 @@ h1, h2, label {
     border-radius: 5px;
     width: 100%;
     padding: 0 2px 0 2px;
+    margin: 2px;
 }
 
 .date-wrapper input {
@@ -118,8 +121,13 @@ h1, h2, label {
     font-size: 16pt;
 }
 
+.warning {
+    color: crimson;
+}
+
 .button-sumbit {
-    margin: 5px 0 5px 0;
+    display: block;
+    margin: auto;
     border: 0;
     background: #4D869C;
     border-radius: 5px;
@@ -128,7 +136,8 @@ h1, h2, label {
 }
 
 .button-accept{
-    margin: 5px 0 5px 0;
+    display: block;
+    margin: auto;
     border: 0;
     background: #4D869C;
     border-radius: 5px;
@@ -137,7 +146,8 @@ h1, h2, label {
 }
 
 .button-reject{
-    margin: 5px 0 5px 0;
+    display: block;
+    margin: auto;
     border: 0;
     background: #C41E3A;
     border-radius: 5px;
@@ -346,4 +356,18 @@ select.list-element {
     position: relative;
     left: -35px;
     content: "✖";
+}
+
+.timeslot {
+    display: block;
+    margin: 2px;
+    padding: 4px 6px;
+    border: solid 2px #4D869C;
+    border-radius: 6px;
+}
+
+select.timeslot {
+    display: block;
+    width: 80vw;
+    margin: auto;
 }

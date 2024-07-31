@@ -9,14 +9,14 @@
 </head>
 <body>
     <div class="form-wrapper">
-        <a href="/action-panel">  Back  <  </a>
+        <a id="backBtn" href="/action-panel">  Back  <  </a>
         <h1 class="data-name" th:text="${course.toString()}"></h1>
         <h2 class="data-rank" th:text="${instructor.toString()}"></h2>
         <h3>Requested Dates</h3>
         <div class="form-element">
             <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
                 <input type="hidden" value="701" name="status">
-                <span th:text="|${course.getExamDate(1)} at ${course.getStartTime(1)}|"></span>
+                <span style="background-color: #8aff73" class="timeslot" th:text="|${course.getExamDate(1)} at ${course.getStartTime(1)}|"></span>
                 <button id="btn1" class="button-accept" type="submit">ACCEPT</button>
                 <th:block th:if="${overlaps1 != null}">
                     <details id="overlap1">
@@ -30,7 +30,7 @@
             </form>
             <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
                 <input type="hidden" value="702" name="status">
-                <span th:text="|${course.getExamDate(2)} at ${course.getStartTime(2)}|"></span>
+                <span style="background-color: #fdff73" class="timeslot" th:text="|${course.getExamDate(2)} at ${course.getStartTime(2)}|"></span>
                 <button id="btn2" class="button-accept" type="submit">ACCEPT</button>
                 <th:block th:if="${overlaps2 != null}">
                     <details id="overlap2">
@@ -44,7 +44,7 @@
             </form>
             <form th:action="|/updateStatus/${course.getCourseName()}|" method="post">
                 <input type="hidden" value="703" name="status">
-                <span th:text="|${course.getExamDate(3)} at ${course.getStartTime(3)}|"></span>
+                <span style="background-color: #ff7373" class="timeslot" th:text="|${course.getExamDate(3)} at ${course.getStartTime(3)}|"></span>
                 <button id="btn3" class="button-accept" type="submit">ACCEPT</button>
                 <th:block th:if="${overlaps3 != null}">
                     <details id="overlap3">

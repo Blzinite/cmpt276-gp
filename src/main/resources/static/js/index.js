@@ -17,9 +17,10 @@ async function getData(url) {
   }
 }
 
-function fetchLocalData() {
-    var testdata = '{"userExams":[{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3},{"name":"CMPT 301","date":"2024-07-12","start":"12:00","duration":3}],"OtherExams":[{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 101","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3},{"name":"CMPT 201","date":"2024-07-14","start":"12:00","duration":3}]}';
-    localData = JSON.parse(testdata);
+function clearData() {
+    localData = null;
+    switchToMonth();
+    calendarFrame.removeHighlights();
 }
 
 function addTime(time) {
@@ -76,6 +77,18 @@ function CreateNewExam(dates) {
 
 function highlightUserDates() {
     calendarFrame.removeHighlights();
+    for (let i = 0; i < localData.otherExams.length; i++) {
+        console.log(localData.otherExams[i]);
+        const day = localData.otherExams[i].date.split("-");
+        const time = localData.otherExams[i].start.split(":");
+        const examinfo = [
+            new Date(day[0],day[1]-1,day[2],time[0],time[1]),
+            localData.otherExams[i].duration,
+            localData.otherExams[i].name,
+            0
+        ];
+        calendarFrame.highlight(examinfo);
+    }
     for (let i = 0; i < localData.userExams.length; i++) {
         console.log(localData.userExams[i]);
         const day = localData.userExams[i].date.split("-");
@@ -94,7 +107,21 @@ function getDates() {
     return localData.userExams;
 }
 
+var activeDate;
+
 function switchToWeek(date) {
     document.getElementById("calendar-panel").src = "/calendarWeek.html";
-    calendarFrame.setCurrentSunday(new Date(date));
+    activeDate = date;
+}
+
+function switchToMonth() {
+    document.getElementById("calendar-panel").src = "/calendarMonth";
+}
+
+function getActiveDate() {
+    return new Date(activeDate);
+}
+
+function unlistWarning(active) {
+    actionPanelFrame.showUnlist(active, localData.userExamName);
 }

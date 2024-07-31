@@ -80,6 +80,18 @@ public class Course
         return courseName;
     }
 
+    public String getApprovedCourse() {
+        return switch (requestStatus) {
+            case RequestStatus.ACCEPTED_TIME_ONE ->
+                    String.format("%s (%s@%s)", courseName, getExamDate(1), getStartTime(1));
+            case RequestStatus.ACCEPTED_TIME_TWO ->
+                    String.format("%s (%s@%s)", courseName, getExamDate(2), getStartTime(2));
+            case RequestStatus.ACCEPTED_TIME_THREE, RequestStatus.ACCEPTED_CUSTOM_TIME ->
+                    String.format("%s (%s@%s)", courseName, getExamDate(3), getStartTime(3));
+            default -> courseName;
+        };
+    }
+
     public void removeInstructor()
     {
         instructor = null;

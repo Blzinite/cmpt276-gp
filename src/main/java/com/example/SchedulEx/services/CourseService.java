@@ -136,10 +136,18 @@ public class CourseService
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepository.findAll());
                 model.addAttribute("pending", courseRepository.findByRequestStatus(RequestStatus.PENDING));
+                model.addAttribute("approved", courseRepository.findByRequestStatusBetween(
+                        RequestStatus.ACCEPTED_TIME_ONE,
+                        RequestStatus.ACCEPTED_CUSTOM_TIME
+                ));
                 return "admin";
             }
             case INVIGILATOR -> {
                 model.addAttribute("currentUser", curr);
+//                model.addAttribute("courses", curr.getCourses());
+//                for (Course course : curr.getCourses()) {
+//                    System.out.println(course + "Added to attribute");
+//                }
                 return "invigilator";
             }
             case INSTRUCTOR -> {
@@ -235,6 +243,11 @@ public class CourseService
         }
     }
 
+    public String appendInvigilators(Model model, HttpSession session) {
+        model.addAttribute("invigilators", userRepository.findByAccessLevel("invigilator"));
+        return "approvedCourse";
+    }
+
     public Course updateCustomTime(Course courseObj, String dateOverride, String timeOverride) {
         User instructor = userRepository.findById(courseObj.getInstructorID()).orElse(null);
         if(instructor == null){
@@ -258,5 +271,17 @@ public class CourseService
         courseRepository.save(courseObj);
         instructor.addCourse(courseObj);
         userRepository.save(instructor);
+    }
+
+    public void addCourseToInvigilator(Map<String, String> params, Model model, HttpSession session) {
+        courseRepository.findByCourseName(params.get("course")).ifPresent(course -> {
+            for (String key : params.keySet()) {
+                if (!key.equals("course")) {
+                    userRepository.findByEmail(params.get(key)).ifPresent(user -> {
+                        user.addInvigCourse(course);
+                    });
+                }
+            }
+        });
     }
 }
