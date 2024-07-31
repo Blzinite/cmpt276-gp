@@ -152,7 +152,8 @@ public class EmailHelper {
     public static final String NEW_USER_EMAIL = "<h1><b>Welcome to SchedulEx!</b></h1><br><br>Your auto-generated password is:<br><b>%s </b><br>You will be prompted to change this password upon your first login.";
     public static final String EXAM_ACCEPTED_EMAIL = "Your request for %s has been accepted<br>This exam will take place on %s at %s";
     public static final String EXAM_REJECTED_EMAIL = "Your request for %s has been rejected<br>The reason given for rejection is:<br>%s";
-    public static final String SCHEDULE_FINALIZED_EMAIL = "";
+    public static final String SCHEDULE_FINALIZED_EMAIL = "The exam schedule has been finalized by an admin.<br>Please log in to view your accepted exam dates, and contact an administrator if you have any issues.";
     public static final String EMAIL_SIGN_OFF = "<br><br>This Email is from an automated sender, replies will not be read";
+    public static final String INVIGILATOR_ASSIGNED = "You have been assigned to invigilate %s on %s at %s, please log in to accept or deny this assignment";
 
 }
