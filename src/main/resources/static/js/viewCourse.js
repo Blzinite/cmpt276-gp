@@ -24,3 +24,7 @@ if(overlap3 != null){
 
 let active = document.getElementsByClassName("data-name")[0].innerText;
 index.getData("/course-info/"+active.replace(" ", "-"));
+
+document.getElementById("backBtn").addEventListener("click", () => {
+    index.clearData();
+});

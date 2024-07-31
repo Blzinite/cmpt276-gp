@@ -20,6 +20,7 @@ async function getData(url) {
 function clearData() {
     localData = null;
     switchToMonth();
+    calendarFrame.removeHighlights();
 }
 
 function addTime(time) {

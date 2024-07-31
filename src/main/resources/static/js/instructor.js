@@ -54,7 +54,6 @@ details.forEach((detail) => {
                 index.getData("/course-info/"+active.replace(" ", "-"));
             } else {
                 index.clearData();
-                index.switchToMonth()
             }
         });
     } else if (detail.className === "date-dropdown") {
