@@ -49,16 +49,30 @@ details.forEach((detail) => {
     if (detail.className === "list-element") {
         detail.addEventListener("toggle", () => {
             if (detail.open) {
-                setTargetDetail(detail);
+                closeUnrelatedDetails(detail);
                 let active = detail.getElementsByTagName("summary")[0].id;
                 index.getData("/course-info/"+active.replace(" ", "-"));
+            } else {
+                index.clearData();
+                index.switchToMonth()
+            }
+        });
+    } else if (detail.className === "date-dropdown") {
+        detail.addEventListener("toggle", () => {
+            if (detail.open) {
+                let active = detail.getElementsByTagName("summary")[0];
+                active = active.getElementsByTagName("input")[0];
+                index.switchToWeek(active.value);
+                console.log(active.value)
+            } else {
+                index.switchToMonth();
             }
         });
     }
 });
 
 // Close all the details that are not targetDetail.
-function setTargetDetail(targetDetail) {
+function closeUnrelatedDetails(targetDetail) {
   details.forEach((detail) => {
     if (detail !== targetDetail) {
       detail.open = false;
@@ -77,10 +91,30 @@ function updateLocalData() {
     let dates = index.localData.userExams;
     for (let i = 0; i < dates.length; i++) {
         dates[i].date = document.getElementById(dates[i].name+"-date"+i).value;
-        let dur = document.getElementById(dates[i].name+"-time"+i);
-        if (dur != null) {
-            dates[i].duration = dur.value;
+        let start = document.getElementById(dates[i].name+"-time"+i);
+        console.log(start)
+        if (start != null) {
+            dates[i].start = start.value;
         }
     }
+    showUnsave(true, index.localData.userExamName)
     index.highlightUserDates();
+}
+
+function showUnlist(show, id) {
+    let wrn = document.getElementById(id+"-unlist")
+    if (show) {
+        wrn.style.display = "block";
+    } else {
+        wrn.style.display = "none"
+    }
+}
+
+function showUnsave(show, id) {
+    let wrn = document.getElementById(id+"-unsave")
+    if (show) {
+        wrn.style.display = "block";
+    } else {
+        wrn.style.display = "none"
+    }
 }

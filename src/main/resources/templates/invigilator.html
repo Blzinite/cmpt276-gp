@@ -21,6 +21,10 @@
                 <a href="user/logout" class="list-element">Log Out  ></a>
             </div>
         </details>
+        <h3>Courses</h3>
+        <details class="list-element" th:each="course : ${currentUser.getCourses()}" th:object="${course}">
+            <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
+        </details>
     </div>
 </body>
 </html>

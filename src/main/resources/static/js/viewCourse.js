@@ -1,3 +1,4 @@
+const index = window.parent;
 const overlap1 = document.getElementById("overlap1");
 const overlap2 = document.getElementById("overlap2");
 const overlap3 = document.getElementById("overlap3");
@@ -20,3 +21,6 @@ if(overlap3 != null){
         return confirm("Are you sure?");
     }
 }
+
+let active = document.getElementsByClassName("data-name")[0].innerText;
+index.getData("/course-info/"+active.replace(" ", "-"));

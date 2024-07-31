@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchedulEx</title>
+    <link rel="icon" type="image/x-icon" href="/assets/SchedulEx.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="form-wrapper">
+        <a href="/action-panel">  Back  <  </a>
+        <h1 class="data-name" th:text="${course.toString()}"></h1>
+        <h2 class="data-rank" th:text="${instructor.toString()}"></h2>
+        <h3>Approved Date</h3>
+        <div class="form-element">
+            <input type="hidden" value="701" name="status">
+            <span class="timeslot" th:text="|${course.getApprovedCourse()}|"></span>
+        </div>
+        <h3>Invigilators</h3>
+        <form action="/assignInvigilator" method="post">
+            <input type="hidden" th:value="${course.getCourseName()}" name="course">
+            <div class="timeslot">
+                <label style="display: block; text-align: left;" th:each="invigilator,iter:${invigilators}">
+                    <input type="checkbox" th:text="${invigilator.toString()}" th:name="${iter.index}" th:value="${invigilator.getEmail()}">
+                </label>
+            </div>
+            <button class="button-accept" type="submit">Assign</button>
+        </form>
+        <h3>Edit Request</h3>
+        <div class="form-element">
+            <form th:action="|/admin/${course.getCourseName()}|" method="get">
+                <button class="button-reject" type="submit">EDIT</button>
+            </form>
+        </div>
+    </div>
+<script src="/js/viewCourse.js"></script>
+</body>
