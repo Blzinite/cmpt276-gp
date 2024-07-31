@@ -16,12 +16,15 @@ public class InvigilatorData {
     @OneToOne
     private User invigilator;
     private String courseIds; //CSV string course IDs
+    private String acceptedCourses; //CSV string containing course IDs
     private String unavailableDates; //CSV dates formatted as unix timestamps
 
-    public InvigilatorData() {this.courseIds = "";}
+    public InvigilatorData() {this.courseIds = ""; this.acceptedCourses = ""; this.unavailableDates = "";}
     public InvigilatorData(User invigilator){
         this.invigilator = invigilator;
         this.courseIds = "";
+        this.acceptedCourses = "";
+        this.unavailableDates = "";
     }
     public User getInvigilator() {
         return invigilator;
@@ -65,5 +68,14 @@ public class InvigilatorData {
         List<String> tmpList = new ArrayList<>(Arrays.stream(tmp).toList());
         tmpList.remove(unavailableDate.toString());
         this.unavailableDates = StringUtils.join(tmpList.toArray(), ",");
+    }
+    public void acceptAssignment(int courseId){
+        this.acceptedCourses = this.acceptedCourses + "," + courseId;
+    }
+    public void removeAcceptedAssignment(Integer courseId){
+        String[] tmp = this.acceptedCourses.split(",");
+        List<String> tmpList = new ArrayList<>(Arrays.stream(tmp).toList());
+        tmpList.remove(courseId.toString());
+        this.acceptedCourses = StringUtils.join(tmpList.toArray(), ",");
     }
 }
