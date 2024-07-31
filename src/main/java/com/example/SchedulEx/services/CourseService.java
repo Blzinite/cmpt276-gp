@@ -136,6 +136,10 @@ public class CourseService
                 model.addAttribute("currentUser", curr);
                 model.addAttribute("users", userRepository.findAll());
                 model.addAttribute("pending", courseRepository.findByRequestStatus(RequestStatus.PENDING));
+                model.addAttribute("approved", courseRepository.findByRequestStatusBetween(
+                        RequestStatus.ACCEPTED_TIME_ONE,
+                        RequestStatus.ACCEPTED_CUSTOM_TIME
+                ));
                 return "admin";
             }
             case INVIGILATOR -> {
