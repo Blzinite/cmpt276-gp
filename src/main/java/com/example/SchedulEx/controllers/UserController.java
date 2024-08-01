@@ -88,11 +88,11 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
+        userRepo.save(toAdd);
         if(toAdd.getAccessLevel() == AccessLevel.INVIGILATOR){
             InvigilatorData newData = new InvigilatorData(toAdd);
             invigRepo.save(newData);
         }
-        userRepo.save(toAdd);
         return "redirect:../action-panel";
     }
 

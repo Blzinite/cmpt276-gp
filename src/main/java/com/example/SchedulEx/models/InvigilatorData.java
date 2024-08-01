@@ -13,7 +13,7 @@ public class InvigilatorData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private User invigilator;
     private String courseIds; //CSV string course IDs
     private String acceptedCourses; //CSV string containing course IDs
