@@ -11,7 +11,8 @@ const calendarEntries = document.getElementsByClassName("calendarEntry");
 for (let entry of calendarEntries) {
     entry.addEventListener('click', function()
     {
-        let day = entry.textContent;
+        let day = entry.textContent.replace(/\D/g, "");;
+        console.log(day);
         let date = year+"-"+String(monthDict.indexOf(month)+1).padStart(2, "0")+"-"+String(day).padStart(2, "0");
         index.monthCalendarCall(date);
     })

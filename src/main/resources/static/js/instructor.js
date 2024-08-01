@@ -82,7 +82,7 @@ function closeUnrelatedDetails(targetDetail) {
 function updateDates(dates) {
     for (let i = 0; i < dates.length; i++) {
         document.getElementById(dates[i].name+"-date"+i).value = dates[i].date;
-        document.getElementById(dates[i].name+"-time"+i).value = dates[i].duration;
+        document.getElementById(dates[i].name+"-time"+i).value = dates[i].start;
     }
 }
 
@@ -117,3 +117,4 @@ function showUnsave(show, id) {
         wrn.style.display = "none"
     }
 }
+index.removeHighlights()

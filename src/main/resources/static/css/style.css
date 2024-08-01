@@ -127,12 +127,12 @@ h1, h2, label {
 
 .button-sumbit {
     display: block;
-    margin: auto;
     border: 0;
     background: #4D869C;
     border-radius: 5px;
     font-size: 26px;
     color: white;
+    margin: 4px auto auto;
 }
 
 .button-accept{
@@ -370,4 +370,8 @@ select.timeslot {
     display: block;
     width: 80vw;
     margin: auto;
+}
+
+.entry-display {
+    height: 80%;
 }

@@ -66,7 +66,7 @@ function nextWeek(){
     update();
 }
 
-const colors = ["#7AB2B2", "#8aff73", "#fdff73", "#ff7373"];
+const colors = ["#7AB2B222", "#8aff73", "#fdff73", "#ff7373"];
 
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
@@ -91,7 +91,15 @@ function highlight(e){
             let j = 0;
             j += i * 8;
             try {
+                let c = x[time + weekOfDay + j + 1].style.backgroundColor;
+                c = c.substring(5,c.length-1).split(', ');
                 x[time + weekOfDay + j + 1].style.backgroundColor = color;
+                if (c.length===4 && e[3]===0) {
+                    c[3] = parseFloat(c[3])*2;
+                    x[time + weekOfDay + j + 1].style.backgroundColor = "rgba("+c.join(', ')+")";
+                } else {
+                    x[time + weekOfDay + j + 1].style.backgroundColor = colors[e[3]];
+                }
                 if (x[time + weekOfDay + j + 1].style.borderTopColor===""
                 || x[time + weekOfDay + j + 1].style.borderBottomColor==="") {
                     x[time + weekOfDay + j + 1].style.border = "none";
