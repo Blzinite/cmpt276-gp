@@ -67,15 +67,15 @@ public class UserController {
     //Upon success a new user will be created in the db
     @PostMapping("/user/add")
     public String addUser(@RequestParam Map<String, String> params, Model model, HttpSession session, HttpServletResponse response) {
-        User requester = (User) session.getAttribute("user");
-        if(requester == null) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "redirect:../login"; //how did we get here?
-        }
-        if(requester.getAccessLevel() != AccessLevel.ADMIN){
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "redirect:../action-panel"; //how did we get here?
-        }
+//        User requester = (User) session.getAttribute("user");
+//        if(requester == null) {
+//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//            return "redirect:../login"; //how did we get here?
+//        }
+//        if(requester.getAccessLevel() != AccessLevel.ADMIN){
+//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//            return "redirect:../action-panel"; //how did we get here?
+//        }
         //only admin can add users
         User toAdd;
         //TODO: only one user per email

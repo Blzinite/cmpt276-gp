@@ -39,8 +39,10 @@
             </thead>
             <tbody id = "monthTableBody">
                 <tr th:each="week : ${dayMatrix}">
-                    <td th:each="day : ${week}" th:text="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? ${day} : ''"
-                    th:class="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? 'calendarEntry' : ''"></td>
+                    <td th:each="day : ${week}" th:class="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? 'calendarEntry' : ''">
+                        <div th:text="(${day} > 0 and ${day} < ${daysInMonth} + 1) ? ${day} : ''"></div>
+                        <div class="entry-display"></div>
+                    </td>
                 </tr>
             </tbody>
         </table>
