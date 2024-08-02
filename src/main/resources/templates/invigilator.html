@@ -22,7 +22,7 @@
             </div>
         </details>
         <h3>Courses</h3>
-        <details class="list-element" th:each="course : ${currentUser.getCourses()}" th:object="${course}">
+        <details class="list-element" th:each="course : ${courses}" th:object="${course}">
             <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
         </details>
     </div>

@@ -194,7 +194,14 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "redirect:../login";
         }
-        userRepo.delete(userRepo.findByEmail(email).get());
+        User toDelete = userRepo.findByEmail(email).orElse(null);
+        if(toDelete == null){
+            return "redirect:../action-panel";
+        }
+        if(toDelete.getAccessLevel() == AccessLevel.INVIGILATOR){
+            invigRepo.delete(invigRepo.getInvigilatorDataByInvigilator(toDelete).get());
+        }
+        userRepo.delete(toDelete);
         response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:../action-panel";
     }

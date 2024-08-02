@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="InvigilatorData")
@@ -40,13 +41,18 @@ public class InvigilatorData {
         for(String str : tmp){
             courseIdList.add(Integer.parseInt(str));
         }
+        System.out.println(courseIdList);
         return courseIdList;
     }
     public void setCourseIds(List<Integer> courseIds) {
         this.courseIds = StringUtils.join(courseIds.toArray(), ",");
     }
     public void addCourse(int courseId) {
-        this.courseIds = this.courseIds + "," + courseId;
+        if(Objects.equals(this.courseIds, "")){
+            this.courseIds = "" + courseId;
+        }else{
+            this.courseIds = this.courseIds + "," + courseId;
+        }
     }
     public void removeCourse(Integer courseId) {
         String[] tmp = this.courseIds.split(",");
@@ -63,7 +69,11 @@ public class InvigilatorData {
         return unavailableDateList;
     }
     public void addUnavailableDate(long unavailableDate) {
-        this.unavailableDates = this.unavailableDates + "," + unavailableDate;
+        if(this.unavailableDates == null){
+            this.unavailableDates = "" + unavailableDate;
+        }else{
+            this.unavailableDates = this.unavailableDates + "," + unavailableDate;
+        }
     }
     public void removeUnavailableDate(Long unavailableDate) {
         String[] tmp = this.unavailableDates.split(",");
@@ -72,7 +82,11 @@ public class InvigilatorData {
         this.unavailableDates = StringUtils.join(tmpList.toArray(), ",");
     }
     public void acceptAssignment(int courseId){
-        this.acceptedCourses = this.acceptedCourses + "," + courseId;
+        if(this.acceptedCourses == null){
+            this.acceptedCourses = "" + courseId;
+        }else{
+            this.acceptedCourses = this.acceptedCourses + "," + courseId;
+        }
     }
     public void removeAcceptedAssignment(Integer courseId){
         String[] tmp = this.acceptedCourses.split(",");
