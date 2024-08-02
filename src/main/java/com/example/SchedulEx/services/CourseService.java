@@ -311,4 +311,22 @@ public class CourseService
         invigData.removeCourse(courseObj.getCourseID());
         invigRepo.save(invigData);
     }
+
+    public void rejectAssignment(Course courseObj, User user) {
+        InvigilatorData invigData = invigRepo.getInvigilatorDataByInvigilator(user).orElse(null);
+        if(invigData == null){
+            return;
+        }
+        invigData.removeCourse(courseObj.getCourseID());
+        invigRepo.save(invigData);
+    }
+
+    public void removeAssignment(Course courseObj, User user) {
+        InvigilatorData invigData = invigRepo.getInvigilatorDataByInvigilator(user).orElse(null);
+        if(invigData == null){
+            return;
+        }
+        invigData.removeAcceptedAssignment(courseObj.getCourseID());
+        invigRepo.save(invigData);
+    }
 }

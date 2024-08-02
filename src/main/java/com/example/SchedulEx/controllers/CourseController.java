@@ -195,6 +195,9 @@ public class CourseController {
         return courseService.getActionPanel(model, session);
     }
 
+    //accepts assignment
+    //moves the ID from user.invigData.courseIds and appends it to user.invigData.acceptedCourses
+    @PostMapping("acceptAssigned/{course}")
     public String acceptAssignment(@PathVariable("course") String course, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if(user==null){
@@ -208,6 +211,44 @@ public class CourseController {
             return courseService.getActionPanel(model, session);
         }
         courseService.acceptAssignment(courseObj, user);
+        return courseService.getActionPanel(model, session);
+    }
+
+    //rejects an assignment
+    //removes course from assigned course list
+    @PostMapping("rejectAssigned/{course}")
+    public String rejectAssignment(@PathVariable("course") String course, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return courseService.getActionPanel(model, session);
+        }
+        Course courseObj = courseService.getCourse(course).orElse(null);
+        if (courseObj == null) {
+            return courseService.getActionPanel(model, session);
+        }
+        if(user.getAccessLevel() != AccessLevel.INVIGILATOR){
+            return courseService.getActionPanel(model, session);
+        }
+        courseService.rejectAssignment(courseObj, user);
+        return courseService.getActionPanel(model, session);
+    }
+
+
+    //removes an already accepted course assignment from invigilators course list
+    @PostMapping("removeAccepted/{course}")
+    public String removeAssignment(@PathVariable("course") String course, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return courseService.getActionPanel(model, session);
+        }
+        Course courseObj = courseService.getCourse(course).orElse(null);
+        if (courseObj == null) {
+            return courseService.getActionPanel(model, session);
+        }
+        if(user.getAccessLevel() != AccessLevel.INVIGILATOR){
+            return courseService.getActionPanel(model, session);
+        }
+        courseService.removeAssignment(courseObj, user);
         return courseService.getActionPanel(model, session);
     }
 }
