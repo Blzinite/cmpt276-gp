@@ -194,4 +194,20 @@ public class CourseController {
         courseService.addCourseToInvigilator(params, model, session);
         return courseService.getActionPanel(model, session);
     }
+
+    public String acceptAssignment(@PathVariable("course") String course, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return courseService.getActionPanel(model, session);
+        }
+        Course courseObj = courseService.getCourse(course).orElse(null);
+        if (courseObj == null) {
+            return courseService.getActionPanel(model, session);
+        }
+        if(user.getAccessLevel() != AccessLevel.INVIGILATOR){
+            return courseService.getActionPanel(model, session);
+        }
+        courseService.acceptAssignment(courseObj, user);
+        return courseService.getActionPanel(model, session);
+    }
 }

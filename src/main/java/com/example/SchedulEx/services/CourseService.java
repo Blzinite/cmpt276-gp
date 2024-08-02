@@ -301,4 +301,14 @@ public class CourseService
             }
         });
     }
+
+    public void acceptAssignment(Course courseObj, User user) {
+        InvigilatorData invigData = invigRepo.getInvigilatorDataByInvigilator(user).orElse(null);
+        if(invigData == null){
+            return;
+        }
+        invigData.acceptAssignment(courseObj.getCourseID());
+        invigData.removeCourse(courseObj.getCourseID());
+        invigRepo.save(invigData);
+    }
 }
