@@ -291,6 +291,7 @@ public class CourseService
                         InvigilatorData id = invigRepo.getInvigilatorDataByInvigilator(user).orElse(null);
                         if (id != null) {
                             id.addCourse(course.getCourseID());
+                            invigRepo.save(id);
                             System.out.println("ADDED");
                         } else {
                             System.out.println("CANT FIND");
