@@ -3,10 +3,7 @@ package com.example.SchedulEx.models;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name="InvigilatorData")
@@ -35,11 +32,22 @@ public class InvigilatorData {
     }
     public List<Integer> getCourseIds() {
         String[] tmp = courseIds.split(",");
-        System.out.print("OVERHERE!");
-        System.out.println(courseIds);
         List<Integer> courseIdList = new ArrayList<>();
         for(String str : tmp){
-            courseIdList.add(Integer.parseInt(str));
+            if (str != null && !str.isEmpty()){
+                courseIdList.add(Integer.parseInt(str));
+            }
+        }
+        System.out.println(courseIdList);
+        return courseIdList;
+    }
+    public List<Integer> getAcceptedIds() {
+        String[] tmp = acceptedCourses.split(",");
+        List<Integer> courseIdList = new ArrayList<>();
+        for(String str : tmp){
+            if (str != null && !str.isEmpty()){
+                courseIdList.add(Integer.parseInt(str));
+            }
         }
         System.out.println(courseIdList);
         return courseIdList;
@@ -51,7 +59,11 @@ public class InvigilatorData {
         if(Objects.equals(this.courseIds, "")){
             this.courseIds = "" + courseId;
         }else{
-            this.courseIds = this.courseIds + "," + courseId;
+            String[] tmp = this.courseIds.split(",");
+            List<String> tmpList = new ArrayList<>(Arrays.stream(tmp).toList());
+            if (tmpList.contains(Integer.toString(courseId))) {
+                this.courseIds = this.courseIds + "," + courseId;
+            }
         }
     }
     public void removeCourse(Integer courseId) {

@@ -197,7 +197,7 @@ public class CourseController {
 
     //accepts assignment
     //moves the ID from user.invigData.courseIds and appends it to user.invigData.acceptedCourses
-    @PostMapping("acceptAssigned/{course}")
+    @GetMapping("acceptAssigned/{course}")
     public String acceptAssignment(@PathVariable("course") String course, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if(user==null){
@@ -216,7 +216,7 @@ public class CourseController {
 
     //rejects an assignment
     //removes course from assigned course list
-    @PostMapping("rejectAssigned/{course}")
+    @GetMapping("rejectAssigned/{course}")
     public String rejectAssignment(@PathVariable("course") String course, Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
         if(user==null){
@@ -235,7 +235,7 @@ public class CourseController {
 
 
     //removes an already accepted course assignment from invigilators course list
-    @PostMapping("removeAccepted/{course}")
+    @GetMapping("removeAccepted/{course}")
     public String removeAssignment(@PathVariable("course") String course, Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
         if(user==null){

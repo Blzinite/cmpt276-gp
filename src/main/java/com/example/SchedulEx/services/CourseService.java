@@ -148,16 +148,18 @@ public class CourseService
             case INVIGILATOR -> {
                 model.addAttribute("currentUser", curr);
                 List<Course> courses = new ArrayList<>();
+                List<Course> accepted = new ArrayList<>();
                 InvigilatorData id = invigRepo.getInvigilatorDataByInvigilator(curr).orElse(null);
                 if(id != null){
                     for (int i : id.getCourseIds()) {
                         courseRepository.findById(i).ifPresent(courses::add);
                     }
+                    for (int i : id.getAcceptedIds()) {
+                        courseRepository.findById(i).ifPresent(accepted::add);
+                    }
                 }
                 model.addAttribute("courses", courses);
-//                for (Course course : curr.getCourses()) {
-//                    System.out.println(course + "Added to attribute");
-//                }
+                model.addAttribute("accepted", accepted);
                 return "invigilator";
             }
             case INSTRUCTOR -> {
@@ -255,6 +257,7 @@ public class CourseService
 
     public String appendInvigilators(Model model, HttpSession session) {
         model.addAttribute("invigilators", userRepository.findByAccessLevel("invigilator"));
+        model.addAttribute("invigRepo", invigRepo);
         return "approvedCourse";
     }
 

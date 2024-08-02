@@ -23,8 +23,18 @@
         </details>
         <h3>Courses</h3>
         <details class="list-element" th:each="course : ${courses}" th:object="${course}">
-            <summary th:id="${course.toString()}" th:text="${course.toString()}"></summary>
+            <summary th:id="${course.toString()}" th:text="${course.getApprovedCourse()}"></summary>
+            <a th:href="|/acceptAssigned/${course.getCourseName()}|">
+                <button class="button-accept">ACCEPT</button>
+            </a>
+            <a th:href="|/rejectAssigned/${course.getCourseName()}|">
+                <button class="button-reject">REJECT</button>
+            </a>
         </details>
+        <h3>Accepted</h3>
+        <div class="list-element" th:each="course : ${accepted}" th:object="${course}">
+            <p th:id="${course.toString()}" th:text="${course.getApprovedCourse()}"></p>
+        </div>
     </div>
 </body>
 </html>

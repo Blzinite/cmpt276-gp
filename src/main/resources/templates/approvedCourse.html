@@ -23,6 +23,7 @@
             <div class="timeslot">
                 <label style="display: block; text-align: left; border-bottom: 2px solid #4D869C;" th:each="invigilator,iter:${invigilators}">
                     <input type="checkbox" th:text="${invigilator.toString()}" th:name="${iter.index}" th:value="${invigilator.getEmail()}">
+                    <label th:text="${invigRepo.getInvigilatorDataByInvigilator(invigilator).get().getAcceptedIds().contains(course.getCourseID())} ? '✔':'❌'"></label>
                 </label>
             </div>
             <button class="button-accept" type="submit">Assign</button>

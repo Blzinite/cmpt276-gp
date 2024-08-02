@@ -274,8 +274,10 @@ public class UserController {
     }
 
     @GetMapping("/user/login/newPwd")
-    public String loginNewPwd(Model model){
+    public String loginNewPwd(Model model, HttpSession session){
         model.addAttribute("msg", "Password successfully updated.");
+        session.removeAttribute("user");
+        session.invalidate();
         return "login";
     }
 
