@@ -3,6 +3,7 @@ package com.example.SchedulEx.services;
 import com.example.SchedulEx.helpers.UnixHelper;
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
+import com.example.SchedulEx.repositories.InvigilatorDataRepository;
 import com.example.SchedulEx.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -18,12 +19,14 @@ public class CourseService
 {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+    private final InvigilatorDataRepository invigRepo;
 
     @Autowired
-    public CourseService(UserRepository userRepository, CourseRepository courseRepository)
+    public CourseService(UserRepository userRepository, CourseRepository courseRepository, InvigilatorDataRepository invigRepo)
     {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
+        this.invigRepo = invigRepo;
     }
 
     @Transactional
@@ -144,7 +147,14 @@ public class CourseService
             }
             case INVIGILATOR -> {
                 model.addAttribute("currentUser", curr);
-//                model.addAttribute("courses", curr.getCourses());
+                List<Course> courses = new ArrayList<>();
+                InvigilatorData id = invigRepo.getInvigilatorDataByInvigilator(curr).orElse(null);
+                if(id != null){
+                    for (int i : id.getCourseIds()) {
+                        courseRepository.findById(i).ifPresent(courses::add);
+                    }
+                }
+                model.addAttribute("courses", courses);
 //                for (Course course : curr.getCourses()) {
 //                    System.out.println(course + "Added to attribute");
 //                }
@@ -278,7 +288,13 @@ public class CourseService
             for (String key : params.keySet()) {
                 if (!key.equals("course")) {
                     userRepository.findByEmail(params.get(key)).ifPresent(user -> {
-                        user.addInvigCourse(course);
+                        InvigilatorData id = invigRepo.getInvigilatorDataByInvigilator(user).orElse(null);
+                        if (id != null) {
+                            id.addCourse(course.getCourseID());
+                            System.out.println("ADDED");
+                        } else {
+                            System.out.println("CANT FIND");
+                        }
                     });
                 }
             }

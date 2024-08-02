@@ -34,6 +34,8 @@ public class InvigilatorData {
     }
     public List<Integer> getCourseIds() {
         String[] tmp = courseIds.split(",");
+        System.out.print("OVERHERE!");
+        System.out.println(courseIds);
         List<Integer> courseIdList = new ArrayList<>();
         for(String str : tmp){
             courseIdList.add(Integer.parseInt(str));

@@ -29,12 +29,18 @@ function highlight(examinfo) {
         } else {
             calendarEntries[examinfo[0].getDate()-1].style.backgroundColor = colors[examinfo[3]];
         }
+        let disp = calendarEntries[examinfo[0].getDate()-1].getElementsByClassName("entry-display")[0];
+        let ex_info = document.createElement("p");
+        ex_info.innerText = examinfo[2];
+        ex_info.className = "entry-item";
+        disp.appendChild(ex_info);
     }
 }
 
 function removeHighlights() {
     for (let i = 0; i < calendarEntries.length; i++) {
         calendarEntries[i].style.backgroundColor = "";
+        calendarEntries[i].getElementsByClassName("entry-display")[0].innerHTML = "";
     }
 }
 

@@ -374,4 +374,10 @@ select.timeslot {
 
 .entry-display {
     height: 80%;
+    overflow: auto;
+}
+
+.entry-item {
+    font-size: 14px;
+    margin: 0;
 }
