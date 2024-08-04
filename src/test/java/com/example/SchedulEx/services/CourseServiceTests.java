@@ -2,6 +2,7 @@ package com.example.SchedulEx.services;
 
 import com.example.SchedulEx.models.*;
 import com.example.SchedulEx.repositories.CourseRepository;
+import com.example.SchedulEx.repositories.InvigilatorDataRepository;
 import com.example.SchedulEx.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
@@ -21,6 +22,7 @@ public class CourseServiceTests {
     private CourseService courseService;
     private UserRepository userRepository;
     private CourseRepository courseRepository;
+    private InvigilatorDataRepository invigRepository;
     private HttpSession session;
     private Model model;
 
@@ -28,7 +30,8 @@ public class CourseServiceTests {
     void setUp() {
         userRepository = mock(UserRepository.class);
         courseRepository = mock(CourseRepository.class);
-        courseService = new CourseService(userRepository, courseRepository);
+        invigRepository = mock(InvigilatorDataRepository.class);
+        courseService = new CourseService(userRepository, courseRepository, invigRepository);
         session = mock(HttpSession.class);
         model = mock(Model.class);
     }
